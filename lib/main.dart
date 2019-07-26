@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:peeps/router.dart' as router;
 import 'package:bloc/bloc.dart';
@@ -14,10 +16,14 @@ import 'package:peeps/screens/home.dart';
 
 import 'bloc/simple_bloc_delegate.dart';
 
+StreamSubscription periodicSub;
 
 void main() {
+  //RefreshToken
+  
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final userRepository = AuthRepository();
+  periodicSub = Stream.periodic(Duration(minutes: 15)).listen((_)=> userRepository.refreshToken());
   runApp(
     BlocProvider<AuthenticationBloc>(
       builder: (context) {
@@ -50,7 +56,7 @@ class AppState extends State<App> {
       ),
       initialRoute: HomeViewRoute,
       onGenerateRoute: router.generateRoute,
-      home: BlocBuilder<AuthenticationEvent, AuthenticationState>(
+      home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
         bloc: BlocProvider.of<AuthenticationBloc>(context),
         builder: (BuildContext context, AuthenticationState state) {
           if (state is AuthenticationUninitialized) {
