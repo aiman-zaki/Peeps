@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/router.dart' as router;
 import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,20 +20,22 @@ import 'bloc/simple_bloc_delegate.dart';
 StreamSubscription periodicSub;
 
 void main() {
-  //RefreshToken
-  
   BlocSupervisor.delegate = SimpleBlocDelegate();
-  final userRepository = AuthRepository();
-  periodicSub = Stream.periodic(Duration(minutes: 15)).listen((_)=> userRepository.refreshToken());
+  final authRepository = AuthRepository();
+  final userRepository = UsersRepository();
+    //RefreshToken
+  periodicSub = Stream.periodic(Duration(minutes: 15)).listen((_)=> authRepository.refreshToken());
   runApp(
     BlocProvider<AuthenticationBloc>(
       builder: (context) {
-        return AuthenticationBloc(repositry: userRepository)
+        return AuthenticationBloc(repositry: authRepository)
           ..dispatch(AppStarted());
       },
       child: BlocProvider<ProfileBloc>(
-        builder: (context) => ProfileBloc(),
-        child: App(userRepository: userRepository),
+        builder: (context) {
+          return ProfileBloc(repository: userRepository)..dispatch(LoadProfile());
+        },
+        child: App(userRepository: authRepository),
       )
     ),
   );
