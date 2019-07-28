@@ -1,19 +1,40 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:peeps/models/groupwork.dart';
 
 @immutable
 abstract class GroupworkState extends Equatable {
   GroupworkState([List props = const []]) : super(props);
 }
 
-class InitialGroupworkState extends GroupworkState {}
+class InitialGroupworkState extends GroupworkState{
+  @override
+  String toString() => "InitialGroupWorkState";
+}
+
+class InsertingGroupworkState extends GroupworkState{
+  @override
+  String toString() => "InsertingGroupworkState";
+}
+
+class InsertedGroupworkState extends GroupworkState{
+  @override
+  String toString() => "InsertedGroupworkState";
+}
 
 class LoadingGroupworkState extends GroupworkState {
   @override
   String toString() => "LoadingGroupworkState";
 }
 
-class LoadedGroupwokState extends GroupworkState {
+class LoadedGroupworkState extends GroupworkState {
+
+  final List<GroupworkModel> data;
+
+  LoadedGroupworkState({
+    @required this.data
+  }):super([data]);
+
   @override
   String toString() => "LoadedGroupworkState";
 }
