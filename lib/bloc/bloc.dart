@@ -13,3 +13,6 @@ export 'profile_state.dart';
 export 'groupwork_bloc.dart';
 export 'groupwork_event.dart';
 export 'groupwork_state.dart';
+export 'inbox_bloc.dart';
+export 'inbox_event.dart';
+export 'inbox_state.dart';

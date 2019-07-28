@@ -21,17 +21,19 @@ class _ProfileViewState extends State<ProfileView> {
     super.initState();
   }
 
-  Widget _profileForm(UserModel data){
+  Widget _buildBody(UserModel data){
 
-   return Builder(
-     builder: (context) => Form(
-       key: _formKey,
-       child: Column(
-         children: <Widget>[
-           Text(data.fname),
-           Text(data.lname)
-         ],
-       )
+   return Card(
+     child: Builder(
+       builder: (context) => Form(
+         key: _formKey,
+         child: Column(
+           children: <Widget>[
+             Text(data.fname),
+             Text(data.lname)
+           ],
+         )
+       ),
      ),
    );
   }
@@ -39,39 +41,38 @@ class _ProfileViewState extends State<ProfileView> {
   Widget _buildAvatar(){
     return CircleAvatar(
       backgroundColor: Colors.white,
-      radius: 70,
+      radius: 50,
       child: Image.asset("assets/images/male.png",width:600,height:100),
     );
   }
-
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title:  Hero(tag:'profiletag',child: Material(child:Text("Profile"),type: MaterialType.transparency,),),
+        title:  Text("Profile")
       ),
       body: Container(
         alignment: Alignment.center,
         child: Column(
           children: <Widget>[
+            SizedBox(height: 30),
             Container(
               child: _buildAvatar(),
             ),
-            
+            SizedBox(height: 30),
             Container(
-              child: BlocBuilder<ProfileEvent,ProfileState>(
+              child: BlocBuilder<ProfileBloc,ProfileState>(
                 bloc: _bloc,
                 builder: (BuildContext context, ProfileState state){
                   if(state is InitialProfileState){
-                    _bloc.dispatch(LoadProfile());
                     return CircularProgressIndicator();
                   }
                   if(state is ProfileLoading){
                     return CircularProgressIndicator();
                   }
                   if(state is ProfileLoaded){
-                    return _profileForm(state.data);
+                    return _buildBody(state.data);
                   }
                 },
 

@@ -30,10 +30,10 @@ class HomeView extends StatelessWidget{
       header,
       item(Icons.home, "Home", HomeViewRoute),
       item(Icons.people, "Account" , AccountViewRoute),
-      item(Icons.group, "Groups", GroupsViewRoute)
+      item(Icons.group, "Groups", GroupsViewRoute),
+      item(Icons.group, "Inbox", InboxBottomBarViewRoute)
       
     ];
-
     Widget _footerDrawer(){
       return Container(
         child: Align(
@@ -56,7 +56,6 @@ class HomeView extends StatelessWidget{
         ),
       );
     }
-
     ListView listView = new ListView(children:drawerChildren);
     return new Drawer(
       child: new Column(

@@ -6,15 +6,8 @@ class SplashScreen extends StatelessWidget{
   Widget build(BuildContext context){
     return Scaffold(
       body: Center(
-        child: Center(
-          child: Column(
-            children: <Widget>[
-              LinearProgressIndicator(),
-              
-            ],
-          )
-        )
-      ),
+        child: LinearProgressIndicator(),
+      )
     );
   }
 }

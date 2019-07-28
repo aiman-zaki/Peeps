@@ -1,11 +1,18 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/users_repository.dart';
 import './bloc.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final _repository = new UsersRepository();
+  final repository;
+
+  ProfileBloc({
+    @required this.repository,
+  }
+
+  );
   
   @override
   ProfileState get initialState => InitialProfileState();
@@ -16,7 +23,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async* {
     if(event is LoadProfile){
       yield ProfileLoading(); 
-      Map data = await _repository.getProfile();
+      Map data = await repository.fetchProfile();
       UserModel user = UserModel.fromJson(data);
       yield ProfileLoaded(data:user);
 
