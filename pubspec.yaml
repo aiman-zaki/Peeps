@@ -29,6 +29,9 @@ dependencies:
   cupertino_icons: ^0.1.2
   image_picker: ^0.6.0+17
   curved_navigation_bar: ^0.3.0
+  flutter_socket_io: ^0.5.1
+  adhara_socket_io: 0.2.0
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter

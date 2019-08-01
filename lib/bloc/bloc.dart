@@ -16,3 +16,6 @@ export 'groupwork_state.dart';
 export 'inbox_bloc.dart';
 export 'inbox_event.dart';
 export 'inbox_state.dart';
+export 'group_chat_bloc.dart';
+export 'group_chat_event.dart';
+export 'group_chat_state.dart';
