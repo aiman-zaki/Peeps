@@ -1,15 +1,14 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/router.dart' as router;
 import 'package:bloc/bloc.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/resources/auth_repository.dart';
 
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/routing_constant.dart';
-import 'package:peeps/screens/account.dart';
 import 'package:peeps/screens/common.dart';
 import 'package:peeps/screens/splash_page.dart';
 import 'package:peeps/screens/login_page.dart';
@@ -33,7 +32,7 @@ void main() {
       },
       child: BlocProvider<ProfileBloc>(
         builder: (context) {
-          return ProfileBloc(repository: userRepository)..dispatch(LoadProfile());
+          return ProfileBloc(repository: userRepository);
         },
         child: App(userRepository: authRepository),
       )
@@ -66,6 +65,7 @@ class AppState extends State<App> {
             return SplashScreen();
           }
           if (state is AuthenticationAuthenticated) {
+            BlocProvider.of<ProfileBloc>(context).dispatch(LoadProfile());
             return HomeView();
           }
           if (state is AuthenticationUnauthenticated) {
