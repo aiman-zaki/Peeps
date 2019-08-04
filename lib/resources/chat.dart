@@ -1,5 +1,6 @@
+import 'dart:async';
 import 'dart:convert';
-
+import 'package:rxdart/rxdart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:adhara_socket_io/manager.dart';
@@ -10,6 +11,12 @@ class ChatResources {
   SocketIO _socket;
   String _room;
   List _chats = [];
+  BehaviorSubject _chatsController = BehaviorSubject();
+
+  Sink get updateChatsSink => _chatsController.sink;
+  Stream get chatsStream => _chatsController.stream;
+  List get chats => _chats;
+
   Future connect({
    @required namespace,
    @required String room
@@ -24,6 +31,7 @@ class ChatResources {
       print("connected");
     });
     _socket.connect();
+
   }
 
   void sendMessage(String message){
@@ -34,17 +42,18 @@ class ChatResources {
     _socket.emit('send_message', [data]);
   }
 
-  List get chats => _chats;
+  //List get chats => _chats;
 
-  receiveMessage(){
+  receiveMessage() {
     _socket.on('receive_message', (data){
       _chats.add(data);
+      updateChatsSink.add(data);
     });
+    
   }
 
   disconnect() async {
     await _manager.clearInstance(_socket);
-  
   }
 
 

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:peeps/resources/chat.dart';
 
 @immutable
 abstract class GroupChatState extends Equatable {
@@ -14,6 +15,9 @@ class LoadingGroupChatState extends GroupChatState {
 }
 
 class LoadedGroupChatState extends GroupChatState{
+  final ChatResources chatResources;
+
+  LoadedGroupChatState({@required this.chatResources}):super([chatResources]);
   @override
   String toString() => "LoadedGroupChatState";
 }
