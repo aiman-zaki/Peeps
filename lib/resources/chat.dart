@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'package:peeps/models/message.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:adhara_socket_io/adhara_socket_io.dart';
@@ -10,49 +11,52 @@ class ChatResources {
   SocketIOManager _manager;
   SocketIO _socket;
   String _room;
-  List _chats = [];
-  BehaviorSubject _chatsController = BehaviorSubject();
-
+  List<MessageModel> _chats = [];
+  BehaviorSubject _chatsController;
+  bool isProbablyConnected = false;
   Sink get updateChatsSink => _chatsController.sink;
   Stream get chatsStream => _chatsController.stream;
-  List get chats => _chats;
+  List<MessageModel> get chats => _chats;
 
   Future connect({
    @required namespace,
    @required String room
   }) async {
+    String token = await accessToken();
+    isProbablyConnected = true;
+    _chatsController = = BehaviorSubject();
     _manager = SocketIOManager();
     _room = room;
     _socket = await _manager.createInstance(SocketOptions(
       domain+namespace,
+      enableLogging: true
     ));
     _socket.onConnect((data){
-      _socket.emit('join', [{'room':room}]);
+      _socket.emit('join', [{'token':token,'room':room}]);
       print("connected");
     });
     _socket.connect();
-
   }
 
-  void sendMessage(String message){
-    Map data = {
-      "message":message,
-      "room":_room,
-    };
-    _socket.emit('send_message', [data]);
+  void sendMessage(MessageModel message){
+    _socket.emit('send_message', [message.toJson()]);
   }
 
   //List get chats => _chats;
 
   receiveMessage() {
-    _socket.on('receive_message', (data){
-      _chats.add(data);
+    _socket.on('receive_message',(data){
+      MessageModel message = MessageModel.fromJson(data);
+      _chats.add(message);
       updateChatsSink.add(data);
     });
     
   }
 
   disconnect() async {
+    //updateChatsSink.close();
+    isProbablyConnected = false;
+    _chatsController.close();
     await _manager.clearInstance(_socket);
   }
 

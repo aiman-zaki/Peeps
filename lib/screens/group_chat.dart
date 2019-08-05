@@ -2,20 +2,80 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/main.dart';
+import 'package:peeps/models/message.dart';
+import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/chat.dart';
 
 class GroupChatView extends StatefulWidget {
-  GroupChatView({Key key}) : super(key: key);
+  final String room;
+  final UserModel user;
+
+  GroupChatView({Key key,@required this.room,@required this.user}) : super(key: key);
 
   _GroupChatViewState createState() => _GroupChatViewState();
 }
 
-
-
 class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserver {
   ChatResources chat;
   final _senderController = TextEditingController();
- 
+
+  Widget _buildSenderText(MessageModel senderMessage){
+    return Padding(
+      padding: EdgeInsets.only(bottom: 9.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: <Widget>[
+          Flexible(
+            child: Container(),
+          ),
+          Flexible(
+            child: Card(
+              elevation: 5.0,
+              child: Padding(
+                padding: const EdgeInsets.all(9.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(senderMessage.message),
+                  ],
+                )
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+  Widget _buildGroupsText(MessageModel participantMessage){
+    return Padding(
+      padding: EdgeInsets.only(bottom: 9.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: <Widget>[
+          Flexible(
+            child: Container(),
+          ),
+          Flexible(
+            child: Card(
+              color: Colors.blueAccent,
+              elevation: 5.0,
+              child: Padding(
+                padding: const EdgeInsets.all(9.0),
+                child: Column(
+                  children: <Widget>[
+                    Text(participantMessage.senderEmail,style: TextStyle(
+                      fontSize: 3.0
+                    ),),
+                    Text(participantMessage.message)
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      ),
+    );
+  }
+
 
   Widget _buildGroupChat(){
     return Expanded(
@@ -28,7 +88,11 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
             return ListView.builder(
               itemCount: chat.chats.length,
               itemBuilder: (BuildContext context,int index){
-                return Text(chat.chats[index]);
+                if(chat.chats[index].senderEmail == widget.user.email){
+                  return _buildSenderText(chat.chats[index]);
+                } else {
+                  _buildGroupsText(chat.chats[index]);
+                }
             },
           );
           }
@@ -60,7 +124,11 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
             flex:1,
             child: RaisedButton(
               onPressed: (){
-                chat.sendMessage(_senderController.text);
+                chat.sendMessage(MessageModel(
+                  message: _senderController.text, 
+                  senderEmail: widget.user.email, 
+                  date: new DateTime.now(), 
+                  room: widget.room));
                 _senderController.clear();
               },
               child: Text("Send"),
@@ -111,7 +179,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
 
   @override
   void initState() { 
-    BlocProvider.of<GroupChatBloc>(context).dispatch(LoadGroupChatEvent(room: "test"));
+    BlocProvider.of<GroupChatBloc>(context).dispatch(LoadGroupChatEvent(room: widget.room));
     WidgetsBinding.instance.addObserver(this);
     super.initState();
     
@@ -130,7 +198,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
     switch(state){
       case AppLifecycleState.resumed:
       setState(() {
-        BlocProvider.of<GroupChatBloc>(context).dispatch(LoadGroupChatEvent(room: "test"));
+        BlocProvider.of<GroupChatBloc>(context).dispatch(LoadGroupChatEvent(room: widget.room));
       });
       break;
       case AppLifecycleState.inactive:
