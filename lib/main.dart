@@ -25,18 +25,20 @@ void main() {
     //RefreshToken
   periodicSub = Stream.periodic(Duration(minutes: 15)).listen((_)=> authRepository.refreshToken());
   runApp(
-    BlocProvider<AuthenticationBloc>(
-      builder: (context) {
-        return AuthenticationBloc(repositry: authRepository)
-          ..dispatch(AppStarted());
-      },
-      child: BlocProvider<ProfileBloc>(
-        builder: (context) {
-          return ProfileBloc(repository: userRepository);
-        },
-        child: App(userRepository: authRepository),
-      )
-    ),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<AuthenticationBloc>(
+          builder: (context) {
+          return AuthenticationBloc(repositry: authRepository)
+            ..dispatch(AppStarted());
+          },),
+        BlocProvider<ProfileBloc>(
+          builder: (context) {
+            return ProfileBloc(repository: userRepository);
+          },), 
+      ],
+      child: App(userRepository: authRepository,),
+    )
   );
 }
 
@@ -65,7 +67,7 @@ class AppState extends State<App> {
             return SplashScreen();
           }
           if (state is AuthenticationAuthenticated) {
-            BlocProvider.of<ProfileBloc>(context).dispatch(LoadProfile());
+          
             return HomeView();
           }
           if (state is AuthenticationUnauthenticated) {
