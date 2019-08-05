@@ -24,7 +24,7 @@ class ChatResources {
   }) async {
     String token = await accessToken();
     isProbablyConnected = true;
-    _chatsController = = BehaviorSubject();
+    _chatsController = BehaviorSubject();
     _manager = SocketIOManager();
     _room = room;
     _socket = await _manager.createInstance(SocketOptions(
