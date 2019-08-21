@@ -1,10 +1,7 @@
 import 'dart:io';
-
-import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:peeps/models/groupwork.dart';
+import 'dart:convert';
 import 'common_repo.dart';
 
 class GroupworkRepository{
@@ -40,7 +37,7 @@ class GroupworkRepository{
   }
 
   //TODO: MORE RESEARCH GET/PUT
-  Future <List<dynamic>> fetchGroupworkDetail(List<dynamic> data) async{
+  Future <List<GroupworkModel>> fetchActiveGroupsDetail(List<dynamic> data) async{
     var token = accessToken();
     Map body = {
       'active_group':data
@@ -51,14 +48,31 @@ class GroupworkRepository{
     body: json.encode(body));
     if(response.statusCode == 200){
       List<dynamic> decoded = json.decode(response.body);
-      print(decoded);
-      return decoded;
+      List<GroupworkModel> activeGroups = [];
+      for(Map<String,dynamic> temp in decoded){
+        activeGroups.add(GroupworkModel.fromJson(temp));
+      }
+      return activeGroups;
     }  else {
       throw("Opps Something Wrong");
     }
-    
-  
-  
+
+  }
+  Future <List<dynamic>> fetchGroupworkStash(String groupId) async {
+    var token = accessToken();
+    Map body = {
+      'group_id':groupId,
+    };
+    var response = await http.put(_baseUrl+"stash",
+    headers: {HttpHeaders.authorizationHeader: "Bearer $token",
+            "Content-Type":"application/json"},
+    body: json.encode(body));
+    if(response.statusCode == 200){
+      List<dynamic> decoded = json.decode(response.body);
+      return decoded;
+    } else {
+      throw("Opps Message");
+    }
   }
 
   

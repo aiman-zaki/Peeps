@@ -34,12 +34,12 @@ class GroupworkBloc extends Bloc<GroupworkEvent, GroupworkState> {
     }
     if(event is LoadGroupworkEvent){
       yield LoadingGroupworkState();
-      List<dynamic> datas = await repository.fetchGroupworkDetail(event.data);
-      List<GroupworkModel> groupworks = [];
-      for(Map<String,dynamic> data in datas){
-        groupworks.add(GroupworkModel.fromJson(data));
+      if(event.data.isEmpty){
+          yield NoGroupworkState();
+      } else {
+        List<GroupworkModel> activeGroups = await this.repository.fetchActiveGroupsDetail(event.data);
+        yield LoadedGroupworkState(data:activeGroups);
       }
-      yield LoadedGroupworkState(data:groupworks);
     }
   }
 }

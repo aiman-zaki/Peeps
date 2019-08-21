@@ -38,3 +38,8 @@ class LoadedGroupworkState extends GroupworkState {
   @override
   String toString() => "LoadedGroupworkState";
 }
+
+class NoGroupworkState extends GroupworkState{
+  @override
+  String toString() => "NoGroupworkState";
+}

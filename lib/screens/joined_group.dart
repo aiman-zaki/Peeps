@@ -3,11 +3,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/groupwork.dart';
+import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
-import 'package:peeps/screens/groupwork_form.dart';
+import 'package:peeps/screens/groupwork/groupwork_form.dart';
 import 'package:peeps/screens/splash_page.dart';
 
-import 'group_detail.dart';
+import 'groupwork/groupwork_hub.dart';
 
 class GroupworksView extends StatefulWidget {
   GroupworksView({Key key}) : super(key: key);
@@ -16,11 +17,39 @@ class GroupworksView extends StatefulWidget {
 }
 
 class _GroupworksViewState extends State<GroupworksView> {
-
+  UserModel user;
   final _repository = GroupworkRepository();
   GroupworkBloc _bloc;
   ProfileBloc _profileBloc;
 
+
+  Widget _groupCard(GroupworkModel group){
+    return Container(
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.only(
+            top: 8.0,
+            bottom: 8.0,
+            left: 14.0,
+            right: 14.0
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Text(group.name,style: TextStyle(),),
+              Divider(),
+              Text(group.description),
+              Divider(color: Colors.blueAccent,),
+              Text('Quick Access')
+            ],
+          ),
+        ),
+      ),
+    );
+
+
+  }
   Widget _buildGroupworkList(List<GroupworkModel> data){
     return ListView.builder(
       itemCount: data.length,
@@ -28,19 +57,11 @@ class _GroupworksViewState extends State<GroupworksView> {
         return GestureDetector(
           onTap: (){
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => GroupworkDetailView(data:data[index]))
+              MaterialPageRoute(builder: (context) => GroupworkHubBottomBar(groupData:data[index],userData: user,))
             );
           },
-          child: Container(
-            child: Card(
-
-              child: Column(
-                children: <Widget>[
-                  Text(data[index].name)
-                ],
-              ),
-            ),
-          ),
+          child: _groupCard(data[index]),
+          
         );
       },
     );
@@ -51,11 +72,12 @@ class _GroupworksViewState extends State<GroupworksView> {
     _bloc = BlocProvider.of<GroupworkBloc>(context);
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
     //TODO : 
-    ProfileLoaded state = _profileBloc.currentState;
-    if(state is ProfileLoaded){
-      print(state.data);
-    }
-    _bloc.dispatch(LoadGroupworkEvent(data: state.data.activeGroup));
+    _profileBloc.state.listen((state){
+      if(state is ProfileLoaded){
+        this.user = state.data;
+        _bloc.dispatch(LoadGroupworkEvent(data: this.user.activeGroup));
+      }
+    });
     super.initState();
   }
 
@@ -74,8 +96,15 @@ class _GroupworksViewState extends State<GroupworksView> {
           if(state is LoadingGroupworkState){
             return Center(child: CircularProgressIndicator());
           }
-          if(state is LoadedGroupworkState){
+          if(state is LoadedGroupworkState){    
             return _buildGroupworkList(state.data);
+          }
+          if(state is NoGroupworkState){
+            return Container(
+              child: Center(
+                child: Text("No Groupwork Joined"),
+              ),
+            );
           }
 
         },

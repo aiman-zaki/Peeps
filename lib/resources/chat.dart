@@ -11,12 +11,12 @@ class ChatResources {
   SocketIOManager _manager;
   SocketIO _socket;
   String _room;
-  List<MessageModel> _chats = [];
+  List<ChatModel> _chats = [];
   BehaviorSubject _chatsController;
   bool isProbablyConnected = false;
   Sink get updateChatsSink => _chatsController.sink;
   Stream get chatsStream => _chatsController.stream;
-  List<MessageModel> get chats => _chats;
+  List<ChatModel> get chats => _chats;
 
   Future connect({
    @required namespace,
@@ -38,7 +38,7 @@ class ChatResources {
     _socket.connect();
   }
 
-  void sendMessage(MessageModel message){
+  void sendMessage(ChatModel message){
     _socket.emit('send_message', [message.toJson()]);
   }
 
@@ -46,7 +46,7 @@ class ChatResources {
 
   receiveMessage() {
     _socket.on('receive_message',(data){
-      MessageModel message = MessageModel.fromJson(data);
+      ChatModel message = ChatModel.fromJson(data);
       _chats.add(message);
       updateChatsSink.add(data);
     });

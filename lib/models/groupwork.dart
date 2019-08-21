@@ -21,6 +21,7 @@ class Member{
 
 class GroupworkModel{
   String id;
+  String creator;
   String name;
   String description;
   String course;
@@ -28,6 +29,7 @@ class GroupworkModel{
 
   GroupworkModel({
     this.id,
+    @required this.creator,
     @required this.name,
     @required this.description,
     @required this.course,
@@ -35,12 +37,9 @@ class GroupworkModel{
   });
 
   static GroupworkModel fromJson(Map<String,dynamic> data){
-    /*List<Member> temp;
-    data['members'].forEach((m)=>({
-      temp.add(Member(id: m['id']))
-    }));*/
     return GroupworkModel(
-      id: data['id'],
+      id: data['_id']['\$oid'],
+      creator: data['creator'],
       name: data['name'],
       description: data['description'],
       course: data['course'],
