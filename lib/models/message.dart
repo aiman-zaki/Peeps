@@ -2,14 +2,14 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 
-class MessageModel{
+class ChatModel{
 
   String senderEmail;
   String message;
   String room;
   DateTime date;
 
-  MessageModel(
+  ChatModel(
     {
       @required this.senderEmail,
       @required this.message,
@@ -30,8 +30,8 @@ class MessageModel{
 
   }
 
-  static MessageModel fromJson( Map<String,dynamic> json ){
-    return MessageModel(
+  static ChatModel fromJson(Map<String,dynamic> json ){
+    return ChatModel(
       senderEmail: json['senderEmail'],
       message: json['message'],
       room: json['room'],

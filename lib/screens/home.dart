@@ -2,10 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/authentication_bloc.dart';
 import 'package:peeps/bloc/authentication_event.dart';
+import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/routing_constant.dart';
 
-class HomeView extends StatelessWidget{
 
+
+class HomeView extends StatefulWidget {
+  HomeView({Key key}) : super(key: key);
+
+  _HomeViewState createState() => _HomeViewState();
+}
+
+class _HomeViewState extends State<HomeView> {
   Drawer _drawerContent(BuildContext context){
     final _authBloc = BlocProvider.of<AuthenticationBloc>(context);
     DrawerHeader header = new DrawerHeader(
@@ -28,11 +36,9 @@ class HomeView extends StatelessWidget{
 
     List<StatelessWidget> drawerChildren = [
       header,
-      item(Icons.home, "Home", HomeViewRoute),
-      item(Icons.people, "Account" , AccountViewRoute),
+      item(Icons.mail, "Inbox", InboxBottomBarViewRoute),
       item(Icons.group, "Groups", GroupsViewRoute),
-      item(Icons.group, "Inbox", InboxBottomBarViewRoute)
-      
+      item(Icons.search, "Search", SearchViewRoute)
     ];
     Widget _footerDrawer(){
       return Container(
@@ -42,6 +48,7 @@ class HomeView extends StatelessWidget{
             child: Column(
               children: <Widget>[
                 Divider(),
+                item(Icons.account_box, "Account" , AccountViewRoute),
                 ListTile(
                   leading: Icon(Icons.exit_to_app),
                   title: Text('Logout'),
@@ -71,8 +78,7 @@ class HomeView extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-
-    
+   
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("Home"),
@@ -85,5 +91,11 @@ class HomeView extends StatelessWidget{
       drawer: _drawerContent(context),
     
     );
+  }
+
+  @override
+  void initState() {
+    BlocProvider.of<ProfileBloc>(context).dispatch(LoadProfile());
+    super.initState();
   }
 }

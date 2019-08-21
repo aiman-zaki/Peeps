@@ -6,8 +6,8 @@ import './bloc.dart';
 
 class InboxBloc extends Bloc<InboxEvent, InboxState> {
   final UsersRepository repository;
-
-  InboxBloc({@required this.repository}):assert(repository != null);
+  final ProfileBloc profileBloc;
+  InboxBloc({@required this.repository, @required this.profileBloc}):assert(repository != null);
   
   @override
   InboxState get initialState => InitialInboxState();
@@ -18,13 +18,18 @@ class InboxBloc extends Bloc<InboxEvent, InboxState> {
   ) async* {
     if(event is LoadInboxEvent){
       yield LoadingInboxState();
-      var data = await repository.fetchInbox(event.query);
-      yield LoadedInboxState(data: data);
+      List data = await repository.fetchGroupInvitationInbox();
+      if(data.isEmpty){
+        yield NoInvitationState();
+      }
+      else{
+        yield LoadedInboxState(data: data);
+      }
     }
     if(event is ReplyInvitationEvent){
       await repository.replyInvitationInbox(event.reply, event.groupId);
-      this.dispatch(LoadInboxEvent(query: 'inbox.group_invitation'));
-
+      //TODO: Temp
+      profileBloc.dispatch(LoadProfile());
     }
   }
 }

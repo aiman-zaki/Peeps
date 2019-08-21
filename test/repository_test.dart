@@ -16,9 +16,9 @@ void main(){
   });
 
   test('Chat',() async{
-     ChatResources chat = new ChatResources();
-    chat.setup(namespace: 'group_chat');
-    chat.connect('test');
-    chat.sendMessage("testis");
+    String json =  '{"date":"2019-08-05 13:11:23.178026"}';
+    print(json);
+    Map<String,dynamic> jsonMap = jsonDecode(json);
+    print(jsonMap);
   });
 }

@@ -22,3 +22,8 @@ class ProfileLoaded extends ProfileState {
   @override
   String toString() => "ProfileLoaded";
 }
+
+class NoProfileLoaded extends ProfileState{
+  @override
+  String toString() => "NoProfileLoaded";
+}

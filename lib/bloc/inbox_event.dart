@@ -8,10 +8,6 @@ abstract class InboxEvent extends Equatable {
 
 
 class LoadInboxEvent extends InboxEvent{
-  final query;
-
-  LoadInboxEvent({@required this.query}):super([query]);
-
   @override
   String toString() => "LoadInboxEvent";
 }

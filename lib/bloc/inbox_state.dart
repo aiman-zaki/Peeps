@@ -20,3 +20,7 @@ class LoadedInboxState extends InboxState{
   @override
   String toString() => "LoadedInboxState";
 }
+class NoInvitationState extends InboxState{
+  @override
+  String toString() => "NoInvitationState";
+}

@@ -1,7 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
-import 'inbox.dart';
+import 'inbox_invitation.dart';
 
 class InboxBottomBarView extends StatefulWidget {
   InboxBottomBarView({Key key}) : super(key: key);

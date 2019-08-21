@@ -25,7 +25,7 @@ class UserModel {
       email: json['email'],
       contactNo: json['profile']['contactNo'],
       programmeCode: json['profile']['programmeCode'],
-      activeGroup: json['joined_group']
+      activeGroup: json['active_group']
     );
   }
 

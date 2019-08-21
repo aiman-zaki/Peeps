@@ -23,9 +23,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async* {
     if(event is LoadProfile){
       yield ProfileLoading(); 
-      Map data = await repository.fetchProfile();
-      UserModel user = UserModel.fromJson(data);
-      yield ProfileLoaded(data:user);
+      UserModel user = await repository.fetchProfile();
+      if(user == null)
+        yield NoProfileLoaded();  
+      else
+        yield ProfileLoaded(data:user);
 
     }
   }
