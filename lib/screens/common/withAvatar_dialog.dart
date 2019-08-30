@@ -4,7 +4,7 @@ import 'package:peeps/screens/common/widget_conf.dart';
 
 class DialogWithAvatar extends StatelessWidget {
 
-   final Icon avatarIcon;
+   final Widget avatarIcon;
 
    final String title; 
    final String description;
@@ -42,8 +42,15 @@ class DialogWithAvatar extends StatelessWidget {
     );
   }
 
-  if(bottomLeft != null || bottomRight != null){
+  if(children != null){
+    body.add(
+      Column(
+        children: children,
+      )
+    );
+  }
 
+  if(bottomLeft != null || bottomRight != null){
     body.add(
       Stack(
         children: <Widget>[
