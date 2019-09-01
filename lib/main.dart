@@ -56,7 +56,8 @@ class AppState extends State<App> {
       theme:  ThemeData(
         brightness: Brightness.dark,
         primaryColor: Colors.blue[800],
-        accentColor: Colors.cyan[600]
+        accentColor: Colors.cyan[600],
+        backgroundColor: Colors.grey[900]
       ),
       initialRoute: HomeViewRoute,
       onGenerateRoute: router.generateRoute,
