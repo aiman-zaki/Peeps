@@ -80,6 +80,7 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
    
     return new Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: new AppBar(
         title: new Text("Home"),
       ),
