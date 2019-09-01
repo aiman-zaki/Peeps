@@ -32,6 +32,8 @@ dependencies:
   flutter_socket_io: ^0.5.1
   adhara_socket_io: 0.2.0
   rxdart: ^0.22.1
+  vector_math: ^2.0.8
+  datetime_picker_formfield: ^0.4.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
