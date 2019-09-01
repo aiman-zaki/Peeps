@@ -11,7 +11,7 @@ class TaskModel{
   DateTime dueDate;
   int priority;
   TaskModel({
-    @required this.id,
+    this.id,
     @required this.creator,
     @required this.assignTo,
     @required this.task,
@@ -19,11 +19,10 @@ class TaskModel{
     @required this.createdDate,
     @required this.assignDate,
     @required this.dueDate,
-    @required this.priority,
+    this.priority,
   });
   static TaskModel fromJson(Map<String,dynamic> json){
     return TaskModel(
-      id: json['_id']['\$oid'],
       creator: json['creator'],
       assignTo: json['assignTo'],
       task: json['task'],
@@ -31,7 +30,7 @@ class TaskModel{
       assignDate: json['assignDate'],
       createdDate: json['createdDate'],
       dueDate: json['dueDate'],
-      priority: json['priority']
+      priority: (json['priority']),
     );
   }
   Map<String,dynamic> toJson(){

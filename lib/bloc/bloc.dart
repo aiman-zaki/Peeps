@@ -25,3 +25,6 @@ export 'kanban_board_state.dart';
 export 'stash_bloc.dart';
 export 'stash_event.dart';
 export 'stash_state.dart';
+export 'assignment_bloc.dart';
+export 'assignment_event.dart';
+export 'assignment_state.dart';

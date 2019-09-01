@@ -4,6 +4,8 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/kanban_board_bloc.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/common.dart';
+import 'package:peeps/screens/common/circular_fab.dart';
+import 'package:peeps/screens/groupwork/task_form.dart';
 import 'package:peeps/screens/splash_page.dart';
 import 'board.dart';
 
@@ -12,28 +14,20 @@ enum Mode {
   normal,
   edit,
 }
-
-
 class KanbanBoardView extends StatefulWidget {
-  KanbanBoardView({Key key}) : super(key: key);
+  final List<TaskModel> todo;
+  final List<TaskModel> doing;
+  final List<TaskModel> done;
+  KanbanBoardView({Key key, this.todo, this.doing, this.done}) : super(key: key);
 
   _KanbanBoardViewState createState() => _KanbanBoardViewState();
 }
 
 class _KanbanBoardViewState extends State<KanbanBoardView> {
-  KanbanBoardBloc bloc;
-
-  List<TaskModel> todo = [TaskModel(id: '1',creator: 'syafira@gmail.com',assignTo: 'aiman@gmail.com,',description: '1Play Rimworld',createdDate: null,assignDate: null,dueDate: null, task: "Finish ERD", priority: 1),
-  TaskModel(id: '4',creator: 'syafira@gmail.com',assignTo: 'aiman@gmail.com,',description: '1Play Rimworld',createdDate: null,assignDate: null,dueDate: null, task: "Finish ERD", priority: 2),
-  TaskModel(id: '5',creator: 'syafira@gmail.com',assignTo: 'aiman@gmail.com,',description: '1Play Rimworld',createdDate: null,assignDate: null,dueDate: null, task: "Finish ERD", priority: 3),
-  TaskModel(id: '6',creator: 'syafira@gmail.com',assignTo: 'aiman@gmail.com,',description: '1Play Rimworld',createdDate: null,assignDate: null,dueDate: null, task: "Finish ERD", priority: 4),
-  TaskModel(id: '7',creator: 'syafira@gmail.com',assignTo: 'aiman@gmail.com,',description: '1Play Rimworld',createdDate: null,assignDate: null,dueDate: null, task: "Finish ERD", priority: 5),
-  TaskModel(id: '8',creator: 'syafira@gmail.com',assignTo: 'aiman@gmail.com,',description: '1Play Rimworld',createdDate: null,assignDate: null,dueDate: null, task: "Finish ERD")] ;
- 
-  List<TaskModel> doing = [TaskModel(id: '2',creator: 'syafira@gmail.com',assignTo: 'aiman@gmail.com,',description: '2Play Rimworld',createdDate: null,assignDate: null,dueDate: null,task: "SV interview")] ;
-  List<TaskModel> done = [TaskModel(id: '3',creator: 'syafira@gmail.com',assignTo: 'aiman@gmail.com,',description: '3Play Rimworld',createdDate: null,assignDate: null,dueDate: null,task: "Submit")] ;
-
-
+  @override
+  void initState() {
+    super.initState();
+  }
   List<Widget> _buildActions(){
     return [
       InkWell(
@@ -55,8 +49,6 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
       SizedBox(width: 20,),
     ];
   }
-  
-  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,29 +57,19 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
         actions: _buildActions(),
       ),
       body: Container(
-        child: BlocBuilder<KanbanBoardBloc,KanbanBoardState>(
-          bloc: bloc,
-          builder: (BuildContext context,KanbanBoardState state){
-            if(state is InitialKanbanBoardState){
-              return SplashScreen();
-            }
-            if(state is LoadingKanbanBoardState){
-              return LoadingIndicator();
-            }
-            if(state is LoadedKanbanBoardState){
-              return Board(todo: todo,doing: doing,done: done,);
-            }
-          },
-        ),
+        child: Board(todo: widget.todo,doing: widget.doing,done: widget.done,)
+      ),
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: (){
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => TaskForm(),
+            )
+          );
+        },
       ),
     );
-  }
-
-  @override
-  void initState() {
-    bloc = BlocProvider.of<KanbanBoardBloc>(context);
-    bloc.dispatch(LoadKanbanBoardEvent());
-    super.initState();
   }
 }
 

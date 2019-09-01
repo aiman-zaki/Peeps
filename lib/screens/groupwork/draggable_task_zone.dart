@@ -23,21 +23,25 @@ class _DraggableTaskZoneState extends State<DraggableTaskZone> {
       builder: (BuildContext context, List candidateData, List rejectedData) {
           return Container(
             color: (widget.backgroundcolor),
-            child: ListView(
-              children: [
-                widget.zoneTitle != null ?
-                Container(
-                  alignment: Alignment(0.0,0.0),
-                  padding: EdgeInsets.all(4),
-                  child: Text(widget.zoneTitle,
-                    style: TextStyle(
-                      fontSize: 22,
-                    ),),
-                ) : Container(),
-                Column(
-                  children: widget.draggable,
-                )
-              ],
+            child: Scrollbar(
+              child: ListView(
+                children: [
+                  widget.zoneTitle != null ?
+                  Container(
+                    alignment: Alignment(0.0,0.0),
+                    margin: EdgeInsets.only(top: 10),
+                    child: Text(widget.zoneTitle,
+                      style: TextStyle(
+                        fontSize: 22,
+                      ),),
+                  ) : Container(),
+                  Divider(),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: widget.draggable,
+                  )
+                ],
+              ),
             ),
           );
       },
@@ -50,11 +54,16 @@ class _DraggableTaskZoneState extends State<DraggableTaskZone> {
         onAccept: (TaskModel data){
           setState(() {
             widget.taskList.add(data);
-            widget.draggable.add(DraggableTask(data: data,
-            onDragCompleted: (){
-              setState(() {
-                widget.draggable.removeWhere((item) => item.data.id == data.id);
-            });},));
+            widget.draggable.add(
+              DraggableTask(data: data,
+                onDragCompleted: (){
+                  setState(() {
+                    widget.draggable.removeWhere((item) => item.data.id == data.id);
+                    widget.taskList.removeWhere((item) => item.id == data.id);
+                  });
+                },
+              )
+            );
           });
       },
     );

@@ -1,0 +1,3 @@
+class MembersModel{
+  String email;
+}

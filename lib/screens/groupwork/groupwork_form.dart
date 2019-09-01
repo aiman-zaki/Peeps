@@ -16,7 +16,7 @@ class GroupworkForm extends StatefulWidget {
 
 class _GroupworkFormState extends State<GroupworkForm> {
   var _bloc;
-  final GlobalKey _key = new GlobalKey();
+  final  _key = new GlobalKey<FormState>();
   final _nameController = new TextEditingController();
   final _descriptionController = new TextEditingController();
   final _courseController = new TextEditingController();
@@ -41,8 +41,8 @@ class _GroupworkFormState extends State<GroupworkForm> {
           bottomRight: FlatButton(
             child: Text("Confirm"),
             onPressed: (){
-              _submitButton();
-              Navigator.of(context).popUntil(ModalRoute.withName(HomeViewRoute));
+                _submitButton();
+                Navigator.of(context).popUntil(ModalRoute.withName(HomeViewRoute));
             },
           ),
         );
@@ -64,52 +64,114 @@ class _GroupworkFormState extends State<GroupworkForm> {
     return TextFormField(
       controller: _membersController[index],
       decoration: InputDecoration(
-        labelText: "Members"+index.toString()
+        labelText: "Member : "+index.toString()
       ),
     );
   }
-  Widget _buildForm(){
-    return Form(
-      key: _key,
-      child: ListView(
+
+  Widget _buildOptionalCard(){
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Colors.blueGrey[800],
+        borderRadius: BorderRadius.only(
+        topLeft: Radius.circular(20),
+        topRight: Radius.circular(20),
+        bottomLeft: Radius.circular(20),
+        bottomRight: Radius.circular(20),
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          TextFormField(
-            controller: _nameController,
-            decoration: InputDecoration(
-              labelText: 'Name'
-            ),
-          ),
-          TextFormField(
-            controller: _descriptionController,
-            decoration: InputDecoration(
-              labelText: 'Description'
-            ),
-          ),
-          TextFormField(
-            controller: _courseController,
-            decoration: InputDecoration(
-              labelText: 'Course'
-            ),
-          ),
+          Text("Optional"),
           Row(children: <Widget>[
             Text("Invite Members"),
-            RaisedButton(
-              child: Text("Add"),
-              onPressed: (){
+            InkWell(
+              child: Icon(Icons.add),
+              onTap: (){
                 setState(() {
                   _membersController.add(new TextEditingController());
+                });
+              },
+            ),
+            InkWell(
+              child: Icon(Icons.remove),
+              onTap: (){
+                setState(() {
+                  if(_membersController.isNotEmpty){
+                    _membersController.removeLast();
+                  }
                 });
               },
             )
           ],),
           ListView.builder(
             shrinkWrap: true,
+            physics: ScrollPhysics(),
             itemCount: _membersController.length,
             itemBuilder: (BuildContext context,int index){
               return _buildInviteMembers(index);
             },
           )
         ],
+      ),
+    );
+  }
+
+  Widget _buildMandatoryCard(){
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.only(
+   
+        ),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text('Groupwork Information'),
+            TextFormField(
+              validator: (v){
+                if(v.isEmpty){
+                  return "Enter The Groupwork Name";
+                }
+                return null;
+              },
+              controller: _nameController,
+              decoration: InputDecoration(
+                labelText: 'Name'
+              ),
+            ),
+            TextFormField(
+              controller: _descriptionController,
+              decoration: InputDecoration(
+                labelText: 'Description'
+              ),
+            ),
+            TextFormField(
+              controller: _courseController,
+              decoration: InputDecoration(
+                labelText: 'Course'
+              ),
+            ),
+            Divider(),
+        ],
+      ),
+    );
+  }
+
+
+  Widget _buildForm(){
+    return Container(
+      child: Form(
+        key: _key,
+        child: ListView(
+          children: <Widget>[
+            _buildMandatoryCard(),
+            _buildOptionalCard(),
+          ],
+        ),
       ),
     );
   }
@@ -121,12 +183,15 @@ class _GroupworkFormState extends State<GroupworkForm> {
           title: Text("Create"),  
         ),
         body: Container(
+          padding: EdgeInsets.all(9),
           child: _buildForm(),
         ),
         floatingActionButton: FloatingActionButton(
           child: Icon(Icons.arrow_right),
           onPressed: (){
-            _showConfirmationDialog();
+           if(_key.currentState.validate()){
+              _showConfirmationDialog();
+           }
         },
       ),
     );

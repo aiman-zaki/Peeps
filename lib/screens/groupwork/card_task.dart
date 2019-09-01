@@ -11,13 +11,13 @@ class CardTask extends StatelessWidget {
   Color _cardColorSwitch(int priority){
     switch(priority){
       case(1):
-        return Colors.red;
+        return Colors.red[800];
       case(2):
         return Colors.amber;
       case(3):
-        return Colors.yellow;
+        return Colors.yellow[700];
       default:
-        return Colors.grey;
+        return Colors.grey[700];
     }
   }
 
@@ -33,9 +33,7 @@ class CardTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Color _color = _cardColorSwitch(task.priority);
-    return Container(
-      padding: EdgeInsets.only(bottom: 2),
-      child: GestureDetector(
+    return GestureDetector(
         onLongPress: (){
           _showDialog(context,task,_color);
         },
@@ -45,7 +43,12 @@ class CardTask extends StatelessWidget {
           color: _color,
           child: Column(
             children: <Widget>[
-              Text(task.task),
+              Text(task.task,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                ),
+              ),
               Text(task.assignTo,style: 
                 TextStyle(
                   fontSize: 12,
@@ -54,7 +57,6 @@ class CardTask extends StatelessWidget {
             ],
           ),
         ),
-      ),
     );
   }
 }
@@ -134,7 +136,7 @@ class DialogTaskCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
       child: Container(
-        height: 400,
+        height: 300,
         child: Dialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           child: Container(

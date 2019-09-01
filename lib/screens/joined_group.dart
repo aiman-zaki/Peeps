@@ -6,9 +6,10 @@ import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/screens/groupwork/groupwork_form.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub.dart';
 import 'package:peeps/screens/splash_page.dart';
 
-import 'groupwork/groupwork_hub.dart';
+import 'groupwork/groupwork_bottombar.dart';
 
 class GroupworksView extends StatefulWidget {
   GroupworksView({Key key}) : super(key: key);
@@ -37,9 +38,11 @@ class _GroupworksViewState extends State<GroupworksView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              Text(group.name,style: TextStyle(),),
-              Divider(),
-              Text(group.description),
+              Row(
+                children: <Widget>[
+                  Hero(tag: group.id, child: Text(group.name,style: TextStyle(),),)
+                ],
+              ),
               Divider(color: Colors.blueAccent,),
               Text('Quick Access')
             ],
@@ -57,7 +60,7 @@ class _GroupworksViewState extends State<GroupworksView> {
         return GestureDetector(
           onTap: (){
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => GroupworkHubBottomBar(groupData:data[index],userData: user,))
+              CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:data[index],userData: user,))
             );
           },
           child: _groupCard(data[index]),

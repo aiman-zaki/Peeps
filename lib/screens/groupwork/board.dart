@@ -40,6 +40,7 @@ class _BoardState extends State<Board> {
           onDragCompleted: (){
             setState(() {
               draggableTodo.removeWhere((item) => item.data.id == data.id);
+              widget.todo.removeWhere((item) => item.id == data.id);
             });
           },
           )
@@ -52,6 +53,7 @@ class _BoardState extends State<Board> {
         onDragCompleted: (){
           setState(() {
             draggableDoing.removeWhere((item) => item.data.id == data.id);
+             widget.doing.removeWhere((item) => item.id == data.id);
           });
         },
         )
@@ -64,6 +66,7 @@ class _BoardState extends State<Board> {
         onDragCompleted: (){
           setState(() {
             draggableDone.removeWhere((item) => item.data.id == data.id);
+             widget.done.removeWhere((item) => item.id == data.id);
           });
         },
         )

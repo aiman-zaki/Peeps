@@ -20,6 +20,7 @@ class _DraggableTaskState extends State<DraggableTask> {
           onDragCompleted: widget.onDragCompleted,
           child: Container(
             width: 100,
+            height: 80,
             child: CardTask(task: widget.data,),
           ), feedback: CardTask(task: widget.data,),
      
