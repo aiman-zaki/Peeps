@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
-import 'package:peeps/bloc/kanban_board_bloc.dart';
-import 'package:peeps/models/task.dart';
-import 'package:peeps/screens/common.dart';
-import 'package:peeps/screens/common/circular_fab.dart';
+import 'package:peeps/models/assignment.dart';
+import 'package:peeps/models/changed_status.dart';
 import 'package:peeps/screens/groupwork/task_form.dart';
-import 'package:peeps/screens/splash_page.dart';
 import 'board.dart';
 
 //TODO editmode
@@ -15,24 +12,34 @@ enum Mode {
   edit,
 }
 class KanbanBoardView extends StatefulWidget {
-  final List<TaskModel> todo;
-  final List<TaskModel> doing;
-  final List<TaskModel> done;
-  KanbanBoardView({Key key, this.todo, this.doing, this.done}) : super(key: key);
+  final String groupId;
+  final AssignmentModel data;
+  KanbanBoardView({Key key,this.data,this.groupId}) : super(key: key);
 
   _KanbanBoardViewState createState() => _KanbanBoardViewState();
 }
 
 class _KanbanBoardViewState extends State<KanbanBoardView> {
+  List<ChangedStatus> changedStatus = [];
+
+  callBack(newChangedStatus){
+    setState(() {
+      changedStatus = newChangedStatus;
+    });
+  }
+  
   @override
   void initState() {
     super.initState();
   }
+  @override
+  Widget build(BuildContext context) {
+  final _taskBloc = BlocProvider.of<TaskBloc>(context);
   List<Widget> _buildActions(){
     return [
       InkWell(
           onTap: (){
-
+            _taskBloc.dispatch(RefreshAssignmentEvent(assignmentId: widget.data.id,groupId: widget.groupId));
           },
           child: Icon(Icons.refresh),
       ),
@@ -40,31 +47,45 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
       InkWell(
         child: Icon(Icons.save),
         onTap: (){
-          print("test");
-          setState(() {
-      
-          });
+          _taskBloc.dispatch(UpdateTaskStatus(tasks: changedStatus, assignmentId: widget.data.id));
         }, 
       ),
       SizedBox(width: 20,),
-    ];
-  }
-  @override
-  Widget build(BuildContext context) {
+      ];
+    }
+
+
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Kanban Board"),
         actions: _buildActions(),
       ),
-      body: Container(
-        child: Board(todo: widget.todo,doing: widget.doing,done: widget.done,)
+      body: BlocListener(
+        bloc: _taskBloc,
+        listener: (context,state){
+          if(state is DisplayMessageSnackbar){
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text(state.message),
+              )
+            );
+          }
+        },
+        child: Container(
+          child: Board(todo: widget.data.todo,doing: widget.data.ongoing,done: widget.data.done,callback: callBack,)
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
           Navigator.of(context).push(
             MaterialPageRoute(
-              builder: (context) => TaskForm(),
+              builder: (context) => BlocProvider.value(
+                value: _taskBloc,
+                child: TaskForm(groupId: widget.groupId,assignmentId: widget.data.id,)),
+              fullscreenDialog: true,
             )
           );
         },

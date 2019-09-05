@@ -21,8 +21,24 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
   ) async* {
     if(event is LoadAssignmentEvent){
       yield LoadingAssignmentState();
-      List<AssignmentModel> assignments = await repository.fetchAssignment(groupId: event.groupId);
+      final List<AssignmentModel> assignments = await repository.fetchAllAssignments(groupId: event.groupId);
       yield LoadedAssignmentState(data:assignments);
     }
+    if(event is AddAssignmentEvent){
+      await repository.createAssignment(assignment: event.assignment.toJson(),groupId: event.groupId);
+    }
+    if(event is TaskRefreshButtonClicked){
+      yield LoadingAssignmentState();
+      //TODO 
+      for(int i = 0 ;i<event.assignments.length;i++){
+        if(event.assignments[i].id == event.latestAssignment.id){
+          event.assignments[i] = event.latestAssignment;
+        }
+      }
+      yield LoadedAssignmentState(data:event.assignments);
+
+    }
+
+ 
   }
 }

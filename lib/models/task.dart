@@ -9,6 +9,8 @@ class TaskModel{
   DateTime createdDate;
   DateTime assignDate;
   DateTime dueDate;
+  DateTime lastUpdated;
+  int status;
   int priority;
   TaskModel({
     this.id,
@@ -19,31 +21,37 @@ class TaskModel{
     @required this.createdDate,
     @required this.assignDate,
     @required this.dueDate,
+    @required this.lastUpdated,
+    @required this.status,
     this.priority,
   });
   static TaskModel fromJson(Map<String,dynamic> json){
     return TaskModel(
+      id: json['_id']['\$oid'],
       creator: json['creator'],
       assignTo: json['assignTo'],
       task: json['task'],
       description: json['description'],
-      assignDate: json['assignDate'],
-      createdDate: json['createdDate'],
-      dueDate: json['dueDate'],
+      assignDate: DateTime.parse(json['assignDate']),
+      createdDate: DateTime.parse(json['createdDate']),
+      dueDate: DateTime.parse(json['dueDate']),
+      lastUpdated: DateTime.parse(json['lastUpdated']),
+      status: json['status'],
       priority: (json['priority']),
     );
   }
   Map<String,dynamic> toJson(){
     return {
-      "id":this.id,
+      "_id":this.id,
       "creator":this.creator,
       "assignTo":this.assignTo,
       "task":this.task,
       "description":this.description,
-      "createdData":this.createdDate,
-      "assignDate":this.assignDate,
-      "dueDate":this.dueDate,
-      "priority":this.priority,
+      "createdDate":this.createdDate.toString(),
+      "assignDate":this.assignDate.toString(),
+      "dueDate":this.dueDate.toString(),
+      "lastUpdated":this.lastUpdated.toString(),
+      "priority": 3,
     };
   }
 }

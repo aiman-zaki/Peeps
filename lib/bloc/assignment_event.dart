@@ -19,6 +19,25 @@ class LoadAssignmentEvent extends AssignmentEvent{
 }
 
 class AddAssignmentEvent extends AssignmentEvent{
+  final assignment;
+  final String groupId;
+  AddAssignmentEvent({
+    @required this.assignment,
+    @required this.groupId,
+  });
   @override
   String toString() => "AddAssignmentEvent";
+}
+
+class TaskRefreshButtonClicked extends AssignmentEvent{
+  final latestAssignment;
+  final assignments;
+
+  TaskRefreshButtonClicked({
+    @required this.latestAssignment,
+    @required this.assignments,
+  });
+
+  @override
+  String toString() => "TaskRefreshButtonClicked";
 }

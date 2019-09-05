@@ -1,6 +1,6 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-const String domain = "http://192.168.1.119:5000/";
+const String domain = "http://192.168.43.112:5000/";
 const String authUrl = "api/auth/";
 const String userUrl = "api/users/";
 const String groupworkUrl = "api/groupworks/";

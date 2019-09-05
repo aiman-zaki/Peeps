@@ -3,22 +3,42 @@ import 'package:peeps/models/task.dart';
 
 import 'draggable_task.dart';
 import 'draggable_task_zone.dart';
-
-
+enum TaskStatus{
+  todo,
+  doing,
+  done,
+}
+typedef AddToChangeStatusList = void Function(String,int); 
 class DraggableTaskZone extends StatefulWidget {
   
   final List<DraggableTask> draggable;
   final List<TaskModel> taskList;
   final Color backgroundcolor;
   final String zoneTitle;
+  final Function onAccept;
 
-  DraggableTaskZone({Key key,@required this.draggable,@required this.taskList,@required this.backgroundcolor,this.zoneTitle}) : super(key: key);
+  DraggableTaskZone({Key key,@required this.draggable,@required this.taskList,@required this.backgroundcolor,this.zoneTitle, this.onAccept}) : super(key: key);
   _DraggableTaskZoneState createState() => _DraggableTaskZoneState();
 }
 
 class _DraggableTaskZoneState extends State<DraggableTaskZone> {
   @override
   Widget build(BuildContext context) {
+    //TODO: Temp will change
+    
+    int status = 0;
+    if(widget.zoneTitle != null){
+      if(widget.zoneTitle.toLowerCase() == "todo")
+        status = 0;
+      if(widget.zoneTitle.toLowerCase() == "doing")
+        status = 1;
+      if(widget.zoneTitle.toLowerCase() == "done")
+        status = 2;
+    }
+
+    
+    
+    AddToChangeStatusList _addToChangeStatusList = widget.onAccept;
     return DragTarget(
       builder: (BuildContext context, List candidateData, List rejectedData) {
           return Container(
@@ -53,13 +73,13 @@ class _DraggableTaskZoneState extends State<DraggableTaskZone> {
       },
         onAccept: (TaskModel data){
           setState(() {
-            widget.taskList.add(data);
+            _addToChangeStatusList(data.id,status);
             widget.draggable.add(
               DraggableTask(data: data,
                 onDragCompleted: (){
                   setState(() {
                     widget.draggable.removeWhere((item) => item.data.id == data.id);
-                    widget.taskList.removeWhere((item) => item.id == data.id);
+                    
                   });
                 },
               )

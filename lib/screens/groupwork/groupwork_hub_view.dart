@@ -5,6 +5,7 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
+import 'package:peeps/resources/assignment_repository.dart';
 import 'package:peeps/screens/common/custom_milestone.dart';
 
 import 'assignment_form.dart';
@@ -31,6 +32,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
   Widget build(BuildContext context) {
     final _groupChatBloc = BlocProvider.of<GroupChatBloc>(context);
     final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
+    final _taskBloc = BlocProvider.of<TaskBloc>(context);
    _stashOverview(){
       return Card(
         elevation: 8,
@@ -54,12 +56,10 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
         ),
       );
     }
-
     //TODO : Brainstorm Feature 
     _brainstorm(){
       
     }
-
     //TODO : Members 
     _members(){
       return Card(
@@ -105,12 +105,13 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
             onTap: (){
               Navigator.of(context).push(
                 MaterialPageRoute(
-                  builder: (context) => KanbanBoardView(
-                      todo: data[index].todo,
-                      doing: data[index].ongoing,
-                      done: data[index].done,
-                      
+                  builder: (context) => BlocProvider<TaskBloc>.value(
+                    value: _taskBloc,
+                    child: KanbanBoardView(
+                        data: data[index],
+                        groupId: widget.groupData.id,                      
                       ),
+                  ),
                 )
               );
             },
@@ -122,11 +123,11 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                   children: <Widget>[
                     Expanded(
                       flex: 2,
-                      child: Text(widget.groupData.assignments[index].title,style: TextStyle(color: Colors.blue[700]),),
+                      child: Text(data[index].title,style: TextStyle(color: Colors.blue[700]),),
                     ),
                     Expanded(
                       flex: 2,
-                      child: Text(widget.groupData.assignments[index].status,),
+                      child: data[index].status != null ? Text(data[index].status) : Text(""),
                     ),
                     
                   ],
@@ -140,7 +141,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                     ),
                     Expanded(
                       flex: 2,
-                      child: widget.groupData.assignments[index].todo.isNotEmpty? Text(widget.groupData.assignments[index].todo.first.task) : Text("No"),
+                      child: data[index].todo.isNotEmpty? Text(data[index].todo.first.task) : Text("No"),
                     )
                   ],
                 )
@@ -169,14 +170,25 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      flex: 3,
-                      child: Text('Assigment Overview'),
+                      flex: 2,
+                      child: Row(
+                        children: <Widget>[
+                          Text('Assigment Overview '),
+                          InkWell(
+                            onTap: (){
+                              _assignmentBloc.dispatch(LoadAssignmentEvent(groupId: widget.groupData.id));
+                            },
+                            child: Icon(Icons.refresh)
+                          ),
+                        ],
+                      ),
                     ),
+
                     Expanded(
                       flex: 1,
                       child: FlatButton(onPressed:(){
                         Navigator.of(context).push(new MaterialPageRoute(
-                          builder: (context) => const AssignmentForm(),
+                          builder: (context) => BlocProvider.value(value: _assignmentBloc,child: AssignmentForm(groupId: widget.groupData.id,)),
                           fullscreenDialog: true,
                         ));
 

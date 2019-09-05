@@ -36,7 +36,8 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
         BlocProvider<GroupChatBloc>(builder: (context) => GroupChatBloc(chat: ChatResources(),)),
         BlocProvider<KanbanBoardBloc>(builder: (context) => KanbanBoardBloc(),),
         BlocProvider<StashBloc>(builder: (context) => StashBloc()),
-        BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: AssignmentRepository(),))
+        BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: const AssignmentRepository(),)),
+        BlocProvider<TaskBloc>(builder: (context) => TaskBloc(repository: const AssignmentRepository()),)
       ],
       child: GroupworkHubView(groupData:widget.groupData,userData:widget.userData)
     );
