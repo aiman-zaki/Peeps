@@ -1,6 +1,10 @@
 # peeps
 
-A new Flutter project.
+My CSP650 Project
+
+Backend : Restful-Flask + SocketIo-Flask with Docker and Nginx
+
+Frontend : Flutter + Bloc Pattern 
 
 ## Getting Started
 
