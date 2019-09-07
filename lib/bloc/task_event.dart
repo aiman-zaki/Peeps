@@ -28,9 +28,33 @@ class UpdateTaskStatus extends TaskEvent{
     @required this.tasks,
     @required this.assignmentId,
   });
+
   @override
   String toString() => "UpdateTaskStatus";
 }
+
+class DeleteTaskButtonClickedEvent extends TaskEvent{
+  final taskId;
+  DeleteTaskButtonClickedEvent({
+    @required this.taskId
+  });
+
+  @override
+  String toString() => "DeleteButtonEvent";
+}
+
+class DeleteTaskEvent extends TaskEvent{
+  final assignmentId;
+  final taskId;
+  DeleteTaskEvent({
+    @required this.assignmentId,
+    @required this.taskId,
+  });
+  @override
+  String toString() => "DeleteTaskEvent";
+
+}
+
 
 class RefreshAssignmentEvent extends TaskEvent{
   final groupId;

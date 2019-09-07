@@ -23,11 +23,12 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
   List<ChangedStatus> changedStatus = [];
 
   callBack(newChangedStatus){
+
     setState(() {
       changedStatus = newChangedStatus;
     });
   }
-  
+
   @override
   void initState() {
     super.initState();
@@ -54,17 +55,18 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
       ];
     }
 
-
-
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Kanban Board"),
         actions: _buildActions(),
       ),
+      backgroundColor: Theme.of(context).backgroundColor,
       body: BlocListener(
         bloc: _taskBloc,
         listener: (context,state){
+          if(state is DeletingTaskState){
+            _taskBloc.dispatch(DeleteTaskEvent(assignmentId: widget.data.id,taskId: state.taskId));
+          }
           if(state is DisplayMessageSnackbar){
             Scaffold.of(context).showSnackBar(
               SnackBar(

@@ -1,5 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import 'package:peeps/bloc/bloc.dart';
 
 @immutable
 abstract class TaskState extends Equatable {
@@ -19,6 +20,16 @@ class DisplayMessageSnackbar extends TaskState{
   
   @override
   String toString() => "SucceedAddTaskState";
+}
+
+class DeletingTaskState extends TaskState{
+  final taskId;
+  DeletingTaskState({
+    @required this.taskId,
+  });
+
+  @override
+  String toString() => "DeletingTaskState";
 }
 class RefreshedAssignmentState extends TaskState{
   final assignment;

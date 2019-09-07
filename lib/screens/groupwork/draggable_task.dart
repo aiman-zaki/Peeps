@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peeps/bloc/task_bloc.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/groupwork/card_task.dart';
 
@@ -14,6 +16,7 @@ class DraggableTask extends StatefulWidget {
 class _DraggableTaskState extends State<DraggableTask> {
   @override
   Widget build(BuildContext context) {
+    final _taskBloc = BlocProvider.of<TaskBloc>(context);
     return Draggable<TaskModel>(
           maxSimultaneousDrags: widget.mode == null ? 1 : widget.mode ,
           data: widget.data,
@@ -22,7 +25,10 @@ class _DraggableTaskState extends State<DraggableTask> {
             width: 100,
             height: 80,
             child: CardTask(task: widget.data,),
-          ), feedback: CardTask(task: widget.data,),
+          ), feedback: BlocProvider.value(
+            value: _taskBloc,
+            child: CardTask(task: widget.data,),
+          ),
      
       );
   }

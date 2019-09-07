@@ -16,13 +16,14 @@ class Board extends StatefulWidget {
   final List<TaskModel> done;
 
   final Function(List<ChangedStatus>) callback;
-
+  final String  assignmentId;
   Board({
     Key key,
     @required this.todo,
     @required this.doing,
     @required this.done,
     this.callback,
+    this.assignmentId,
     
     }) : super(key: key);
 
@@ -30,21 +31,18 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> {
-  TaskBloc _taskBloc;
-
-  List<ChangedStatus> changedStatus = [];
-  List<DraggableTask> draggableTodo = [];
-  List<DraggableTask> draggableDoing = [];
-  List<DraggableTask> draggableDone = [];
+  
+  final List<ChangedStatus> changedStatus = [];
+  final List<DraggableTask> draggableTodo = [];
+  final List<DraggableTask> draggableDoing = [];
+  final List<DraggableTask> draggableDone = [];
 
   @override
   void initState() {
     _buildDraggable();
-    _taskBloc = BlocProvider.of<TaskBloc>(context);
     super.initState();
   }
 
-  
   _addToChangedStatusList(String taskId,int status){
       int index = changedStatus.indexWhere((item) => item.taskId == taskId);
       if(index == -1){
@@ -54,7 +52,6 @@ class _BoardState extends State<Board> {
       }
       widget.callback(changedStatus);
     }
-
 
   _buildDraggable(){
       for(TaskModel data in widget.todo){
@@ -97,7 +94,7 @@ class _BoardState extends State<Board> {
   
   @override
   Widget build(BuildContext context) {
- 
+    final _taskBloc = BlocProvider.of<TaskBloc>(context);
     Size size = MediaQuery.of(context).size;
     return Container(
       child: Row(

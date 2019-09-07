@@ -28,6 +28,15 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       }
       yield InitialTaskState();
     }
+    //Im too lazy to come out with new solution
+    //From card_task delete button, deleting task button will be emit and listend on kanban then dispatch to delete task
+    if(event is DeleteTaskButtonClickedEvent){
+      yield DeletingTaskState(taskId: event.taskId);
+    }
+    if(event is DeleteTaskEvent){
+      repository.deleteTask(assignmentId: event.assignmentId,taskId: event.taskId);
+      yield InitialTaskState();
+    }
     if(event is UpdateTaskStatus){
       List<dynamic> changedStatusTask = [];
       for(ChangedStatus task in event.tasks){
@@ -42,7 +51,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       }
       yield InitialTaskState();
     }
-
     if(event is RefreshAssignmentEvent){
       AssignmentModel assignment = await repository.fetchAssignment(groupId: event.groupId,assignmentId: event.assignmentId);
       yield RefreshedAssignmentState(assignment: assignment);

@@ -55,8 +55,6 @@ class _TaskFormState extends State<TaskForm> {
             _taskController.clear();
             _descriptionController.clear();
             Navigator.of(context).pop();
-        
-          
           },
           child: Text("Accept"),
         ),
@@ -70,7 +68,6 @@ class _TaskFormState extends State<TaskForm> {
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
                                   dueDate: dueDate, assignTo: email, lastUpdated: DateTime.now(), status: 0)));
-
             Navigator.of(context).pop();
           },
           child: Text("Cancel"),

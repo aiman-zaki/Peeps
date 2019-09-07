@@ -75,7 +75,6 @@ class AssignmentRepository{
 
   createTask({Map<String,dynamic> todo, String groupId, String assignmentId}) async{
     Map data = {
-      "group_id":groupId,
       "assignment_id":assignmentId,
       "todo":todo,
     };
@@ -83,7 +82,7 @@ class AssignmentRepository{
     var body = json.encode(data);
     var token = await storage.read(key:"access_token");
 
-    var response = await http.post(_baseUrl+"task",
+    var response = await http.post(_baseUrl+"task/add",
       body: body,
       headers: {HttpHeaders.authorizationHeader: "Bearer $token", "Content-Type":"application/json",});
       Map<String,dynamic> responseData = json.decode(response.body);
@@ -96,12 +95,10 @@ class AssignmentRepository{
     }
 
     void updateTaskState({String assignmentId ,List changedStatusTask}) async{
-     
       Map data = {
         "assignment_id":assignmentId,
         "tasks": changedStatusTask,
       };
-      print(data);
       var body = json.encode(data);
       var token = await storage.read(key: "access_token");
       var response = await http.put(_baseUrl+"task/status",
@@ -112,6 +109,19 @@ class AssignmentRepository{
 
       } else {
         throw ("Something");
+      }
+    }
+
+    void deleteTask({String assignmentId,String taskId}) async {      
+      final url = '$assignmentId/$taskId/task';
+      var token = await storage.read(key: "access_token");
+      var response = await http.delete(_baseUrl+url,
+        headers: {HttpHeaders.authorizationHeader: "Bearer $token", "Content-Type":"application/json"}
+      );
+      if(response.statusCode == 200){
+        
+      } else {
+        throw (response.body);
       }
     }
 
