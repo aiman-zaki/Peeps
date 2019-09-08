@@ -1,5 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 import 'package:peeps/models/assignment.dart';
+import 'package:peeps/resources/common_repo.dart';
 
 class GroupworkModel{
   String id;
@@ -9,7 +10,7 @@ class GroupworkModel{
   String course;
   List<dynamic> members;
   List<AssignmentModel> assignments;
-
+  String profilePicturerUrl;
   GroupworkModel({
     this.id,
     @required this.creator,
@@ -17,10 +18,12 @@ class GroupworkModel{
     @required this.description,
     @required this.course,
     @required this.members,
+    this.profilePicturerUrl
 
   });
 
   static GroupworkModel fromJson(Map<String,dynamic> data){
+    final String url = domain+'static/groupworks/${data['_id']['\$oid']}/profile/image';
     return GroupworkModel(
       id: data['_id']['\$oid'],
       creator: data['creator'],
@@ -28,6 +31,7 @@ class GroupworkModel{
       description: data['description'],
       course: data['course'],
       members: data['members'],
+      profilePicturerUrl: url,
     
     );
   }

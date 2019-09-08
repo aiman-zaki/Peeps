@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/foundation.dart';
+import 'package:meta/meta.dart';
 import 'package:peeps/resources/auth_repository.dart';
 import './bloc.dart';
 
@@ -30,11 +30,11 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         yield AuthenticationAuthenticated();
           
       }
-
       if(event is LoggedOut){
         yield AuthenticationLoading();
         await repositry.deleteToken();
         yield AuthenticationUnauthenticated();
       }
+
   }
 }

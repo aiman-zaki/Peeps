@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
+import 'package:peeps/screens/groupwork/detail_task.dart';
 import 'package:peeps/screens/groupwork/task_form.dart';
 
 
@@ -222,7 +223,12 @@ class DialogTaskCard extends StatelessWidget {
               child: Icon(Icons.edit),
               onTap: (){
                 Navigator.pop(context);
-               
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => DetailTaskView(),
+                    fullscreenDialog: true
+                  )
+                );
               },
             ),
           )

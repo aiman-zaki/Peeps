@@ -7,9 +7,12 @@ import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/assignment_repository.dart';
 import 'package:peeps/screens/common/custom_milestone.dart';
+import 'package:peeps/screens/groupwork/invite_members.dart';
+
 
 import 'assignment_form.dart';
 import 'group_chat.dart';
+import 'groupwork_profile.dart';
 import 'kanban.dart';
 
 class GroupworkHubView extends StatefulWidget {
@@ -33,6 +36,8 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
     final _groupChatBloc = BlocProvider.of<GroupChatBloc>(context);
     final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
     final _taskBloc = BlocProvider.of<TaskBloc>(context);
+    final _membersBloc = BlocProvider.of<MembersBloc>(context);
+    final _groupProfileBloc = BlocProvider.of<GroupProfileBloc>(context);
    _stashOverview(){
       return Card(
         elevation: 8,
@@ -76,7 +81,15 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                 ),
                 Expanded(
                   flex: 1,
-                  child: FlatButton(onPressed:(){},child: Text('Invite',textAlign: TextAlign.center,),),
+                  child: FlatButton(onPressed:(){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => BlocProvider<MembersBloc>.value(value:_membersBloc,child: InviteMembersView()),
+                        fullscreenDialog: true
+                      ),
+                    );
+
+                  },child: Text('Invite',textAlign: TextAlign.center,),),
                 )
 
               ],),
@@ -164,13 +177,12 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
             children: <Widget>[
               Container(
                 decoration: BoxDecoration(
-            
+
                 ),
-            
                 child: Row(
                   children: <Widget>[
                     Expanded(
-                      flex: 2,
+                      flex: 3,
                       child: Row(
                         children: <Widget>[
                           Text('Assigment Overview '),
@@ -217,7 +229,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
             ],
           ),
         ),
-        );
+      );
     }
 
     _buildMilestone(){
@@ -276,13 +288,17 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                     flex: 1,
                     child: CircleAvatar(
                       radius: 30,
-                      child: Icon(Icons.cake),
+                      child: CircleAvatar(
+                        child: FadeInImage.assetNetwork(
+                          image:widget.groupData.profilePicturerUrl,
+                          placeholder: "assets/images/male.png",
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(width: 20,),
                   //TODO : Hero Bugged , remove the singlescrollview
                   Expanded(
-                    
                     flex: 3,
                     child: Hero(
                       flightShuttleBuilder: (flightContext ,animation,direction,fromContext,toContext){
@@ -311,7 +327,16 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                 ],
               ),
               SizedBox(height: 10),
-              
+              FlatButton(
+                child: Text("More"),
+                onPressed: (){
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider.value(value: _groupProfileBloc , child: GroupworkProfile(data: widget.groupData,))
+                    ),
+                  );
+                },
+              )
             ],
           ),
         )

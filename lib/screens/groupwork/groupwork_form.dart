@@ -6,9 +6,6 @@ import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
 import '../../routing_constant.dart';
 
-
-
-
 class GroupworkForm extends StatefulWidget {
   GroupworkForm({Key key}) : super(key: key);
   _GroupworkFormState createState() => _GroupworkFormState();

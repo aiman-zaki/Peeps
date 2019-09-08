@@ -1,4 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:peeps/screens/common/circular_fab.dart';
+import 'package:vector_math/vector_math.dart' show radians, Vector3;
 
 class SearchView extends StatefulWidget {
   SearchView({Key key}) : super(key: key);
@@ -75,11 +79,8 @@ class _SearchViewState extends State<SearchView> {
       appBar: AppBar(
         title: Text("Search"),
       ),
-      body: Column(
-          children: <Widget>[
-            _buildSearchFilter(),
-          ],
-        ),
+      body: SizedBox.expand(child:CircularFab(),),
     );
   }
 }
+

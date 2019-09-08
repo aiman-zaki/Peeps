@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:meta/meta.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/users_repository.dart';
 import './bloc.dart';

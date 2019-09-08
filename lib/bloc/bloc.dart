@@ -31,3 +31,4 @@ export 'assignment_state.dart';
 export 'task_bloc.dart';
 export 'task_event.dart';
 export 'task_state.dart';
+export 'groupwork/bloc.dart';

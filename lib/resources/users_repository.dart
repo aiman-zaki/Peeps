@@ -11,6 +11,7 @@ import 'common_repo.dart';
 class UsersRepository{
   final String _baseUrl = domain+userUrl;
   
+  const UsersRepository();
   Future<UserModel> fetchProfile() async {
     var token = await storage.read(key:"access_token");
     var response = await http.get(
@@ -64,9 +65,30 @@ class UsersRepository{
       return "Invitation $answer";
     }
     return "Something Wrong";
-
-    
   } 
 
+  Future<List<UserModel>> searchedResult(String search) async{
+    var token = await accessToken();
+    List<UserModel> users = [];
+    Map data = {
+      "search":search
+    };
+    var body = json.encode(data);
+
+    var response = await http.post(
+      _baseUrl+"search",
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"},
+      body: body
+    );
+
+    var jsonData = json.decode(response.body);
+
+    if(response.statusCode == 200){
+      for(Map<String,dynamic> user in jsonData){
+          users.add(UserModel.fromJson(user));
+      }
+    }
+    return users;
+  }
 
 }
