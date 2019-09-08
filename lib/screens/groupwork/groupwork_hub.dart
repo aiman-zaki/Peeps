@@ -6,6 +6,8 @@ import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/assignment_repository.dart';
 import 'package:peeps/resources/chat.dart';
+import 'package:peeps/resources/groupwork_repository.dart';
+import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/screens/common/custom_milestone.dart';
 import 'package:peeps/screens/groupwork/assignment_form.dart';
 import 'package:peeps/screens/groupwork/group_chat.dart';
@@ -37,7 +39,9 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
         BlocProvider<KanbanBoardBloc>(builder: (context) => KanbanBoardBloc(),),
         BlocProvider<StashBloc>(builder: (context) => StashBloc()),
         BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: const AssignmentRepository(),)),
-        BlocProvider<TaskBloc>(builder: (context) => TaskBloc(repository: const AssignmentRepository()),)
+        BlocProvider<TaskBloc>(builder: (context) => TaskBloc(repository: const AssignmentRepository()),),
+        BlocProvider<MembersBloc>(builder: (context) => MembersBloc(repository: const UsersRepository()),),
+        BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: const GroupworkRepository()),)
       ],
       child: GroupworkHubView(groupData:widget.groupData,userData:widget.userData)
     );
