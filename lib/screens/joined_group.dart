@@ -89,6 +89,14 @@ class _GroupworksViewState extends State<GroupworksView> {
     return Scaffold(
       appBar: AppBar(
         title: Text("GroupWork"),
+        actions: <Widget>[
+          InkWell(
+            onTap: (){
+              _profileBloc.dispatch(LoadProfile());
+            },
+            child: Icon(Icons.refresh),
+          )
+        ],
       ),
       body: BlocBuilder<GroupworkBloc,GroupworkState>(
         bloc: _bloc,
