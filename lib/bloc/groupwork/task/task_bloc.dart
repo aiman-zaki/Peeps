@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/changed_status.dart';
 import 'package:peeps/resources/assignment_repository.dart';
-import './bloc.dart';
+import '../bloc.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final AssignmentRepository repository;

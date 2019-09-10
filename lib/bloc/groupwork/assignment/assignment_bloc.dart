@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/resources/assignment_repository.dart';
-import './bloc.dart';
+import '../bloc.dart';
 
 class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
   final AssignmentRepository repository;

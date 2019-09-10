@@ -6,9 +6,13 @@ abstract class MembersEvent extends Equatable {
   MembersEvent([List props = const <dynamic>[]]) : super(props);
 }
 
-class LoadMembersList extends MembersEvent{
+class LoadMembersEvent extends MembersEvent{
+  final groupId;
+  LoadMembersEvent({
+    @required this.groupId
+  });
   @override
-  String toString () => "LoadMembersList";
+  String toString () => "LoadMembersEvent";
 }
 
 class LoadMemberProfile extends MembersEvent{

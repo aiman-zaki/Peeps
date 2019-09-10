@@ -8,9 +8,18 @@ abstract class MembersState extends Equatable {
 
 class InitialMembersState extends MembersState {}
 
-class LoadedMembers extends MembersState{
+class LoadingMembersState extends MembersState{
+
   @override
-  String toString() => "LoadMembers";
+  String toString() => "LoadingMembersState";
+}
+class LoadedMembersState extends MembersState{
+  final data;
+  LoadedMembersState({
+    @required this.data
+  });
+  @override
+  String toString() => "LoadedMembersState";
 }
 
 class LoadedProfileMember extends MembersState{

@@ -2,11 +2,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:peeps/models/user.dart';
+import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import '../bloc.dart';
 
 class MembersBloc extends Bloc<MembersEvent, MembersState> {
-  final UsersRepository repository;
+  final GroupworkRepository repository;
 
   MembersBloc({
     @required this.repository
@@ -19,10 +20,16 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
   Stream<MembersState> mapEventToState(
     MembersEvent event,
   ) async* {
+    if(event is LoadMembersEvent){
+      yield LoadingMembersState();
+      var members = await repository.fetchMembers(event.groupId);
+      yield LoadedMembersState(data: members);
+    }
     if(event is SearchButtonClicked){
       yield LoadingSearchedResult();
       List<UserModel> data = await repository.searchedResult(event.search);
       yield LoadedSearchedUserResult(data: data);
+      
     }
   }
 }
