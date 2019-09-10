@@ -3,7 +3,7 @@ import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/users_repository.dart';
-import './bloc.dart';
+import '../bloc.dart';
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   final repository;

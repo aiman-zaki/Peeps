@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:peeps/resources/auth_repository.dart';
-import './bloc.dart';
+import '../bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
 

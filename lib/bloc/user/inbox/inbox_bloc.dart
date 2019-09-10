@@ -2,7 +2,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/foundation.dart';
 import 'package:peeps/resources/users_repository.dart';
-import './bloc.dart';
+import '../bloc.dart';
 
 class InboxBloc extends Bloc<InboxEvent, InboxState> {
   final UsersRepository repository;
