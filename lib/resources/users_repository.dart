@@ -7,11 +7,62 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:peeps/models/inbox.dart';
 import 'package:peeps/models/user.dart';
 import 'common_repo.dart';
-
+import 'package:async/async.dart';
 class UsersRepository{
   final String _baseUrl = domain+userUrl;
   
   const UsersRepository();
+
+  createUser(String email,String password) async {
+    var data = {
+      "email":email,
+      "password":password
+    };
+    var body = jsonEncode(data);
+
+    var response = await http.post(
+      _baseUrl+"user",
+      body: body,
+      headers: {"Content-Type": "application/json"}
+    );
+    Map responseData = jsonDecode(response.body);
+    if(response.statusCode != 200){
+      throw (responseData);
+    }
+  }
+
+  updateProfile(Map<String,dynamic> user) async{
+    var body = jsonEncode(user);
+    var response = await http.put(
+      _baseUrl+"user",
+      body: body
+    );
+    Map responseData = jsonDecode(response.body);
+    if(response.statusCode != 200){
+      throw (responseData);
+    }
+  }
+
+  updateProfilePictre(File image) async {
+    var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
+    final Uri uri = Uri.parse(_baseUrl+"profile/image");
+    var token = await accessToken();
+    var length = await image.length();
+
+    var request = new http.MultipartRequest("POST",
+      uri);
+
+    var multipartFile = new http.MultipartFile('image', stream, length,filename: (image.path));
+    request.files.add(multipartFile);
+    request.headers.addAll({HttpHeaders.authorizationHeader: "Bearer $token"});
+    
+    var response = await request.send();
+    if(response.statusCode != 200){
+      throw("Picture Failed to Upload");
+    }
+  }
+
+
   Future<UserModel> fetchProfile() async {
     var token = await storage.read(key:"access_token");
     var response = await http.get(
@@ -67,28 +118,5 @@ class UsersRepository{
     return "Something Wrong";
   } 
 
-  Future<List<UserModel>> searchedResult(String search) async{
-    var token = await accessToken();
-    List<UserModel> users = [];
-    Map data = {
-      "search":search
-    };
-    var body = json.encode(data);
-
-    var response = await http.post(
-      _baseUrl+"search",
-      headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"},
-      body: body
-    );
-
-    var jsonData = json.decode(response.body);
-
-    if(response.statusCode == 200){
-      for(Map<String,dynamic> user in jsonData){
-          users.add(UserModel.fromJson(user));
-      }
-    }
-    return users;
-  }
-
+  
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/resources/users_repository.dart';
+import 'package:peeps/screens/register_form.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -41,6 +43,7 @@ class _LoginFormState extends State<LoginForm> {
           LoginState state,
         ) {
           return Card(
+            color: Theme.of(context).backgroundColor,
             borderOnForeground: true,
             child: Padding(
               padding: EdgeInsets.all(9.0),
@@ -81,7 +84,25 @@ class _LoginFormState extends State<LoginForm> {
                         child: new Center(child: Text("Login"),),
                       ),
                     ),
-    
+                    SizedBox(height: 10),
+                    InkWell(
+                      onTap: (){
+                        Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => 
+                          BlocProvider.value(value:_loginBloc,
+                            child: BlocProvider(
+                              builder: (context) => RegisterBloc(loginBloc: _loginBloc,repository: const UsersRepository()),
+                              child: RegisterForm())),fullscreenDialog: true));
+                      },
+                      child: Container(
+                        height: 50,
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent[500],
+                          border: Border.all(color: Colors.white,width: 2.0),
+                          borderRadius: BorderRadius.circular(10.0)
+                        ),
+                        child: Center(child: Text('Register'))),
+                    ),
                     Container(
                       child: state is LoginLoading
                           ? new CircularProgressIndicator()
