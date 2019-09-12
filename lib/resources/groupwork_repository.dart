@@ -1,6 +1,8 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:peeps/models/groupwork.dart';
+import 'package:peeps/models/member.dart';
+import 'package:peeps/models/user.dart';
 import 'dart:convert';
 import 'common_repo.dart';
 import 'package:async/async.dart';
@@ -96,5 +98,45 @@ class GroupworkRepository{
     }
   }
 
-  
+  Future <List<MemberModel>> fetchMembers(String groupId) async {
+    var token = accessToken();
+    var response = await http.get(_baseUrl+"$groupId/members",
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
+    var responeData = jsonDecode(response.body);
+    List<MemberModel> members = [];
+    if(response.statusCode == 200){
+      for(Map<String,dynamic> member in responeData){
+        members.add(MemberModel.fromJson(member));
+      }
+    } 
+    else{
+      throw {"Message":"${responeData['message']}"};
+    }
+    return members;
+  }
+
+  Future<List<UserModel>> searchedResult(String search) async{
+    var token = await accessToken();
+    List<UserModel> users = [];
+    Map data = {
+      "search":search
+    };
+    var body = json.encode(data);
+
+    var response = await http.post(
+      _baseUrl+"search",
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"},
+      body: body
+    );
+
+    var jsonData = json.decode(response.body);
+
+    if(response.statusCode == 200){
+      for(Map<String,dynamic> user in jsonData){
+          users.add(UserModel.fromJson(user));
+      }
+    }
+    return users;
+  }
+
 }

@@ -12,13 +12,13 @@ import 'package:peeps/screens/splash_page.dart';
 import 'groupwork/groupwork_bottombar.dart';
 
 class GroupworksView extends StatefulWidget {
-  GroupworksView({Key key}) : super(key: key);
+  final UserModel user;
+  GroupworksView({Key key,this.user}) : super(key: key);
 
   _GroupworksViewState createState() => _GroupworksViewState();
 }
 
 class _GroupworksViewState extends State<GroupworksView> {
-  UserModel user;
   final _repository = GroupworkRepository();
   GroupworkBloc _bloc;
   ProfileBloc _profileBloc;
@@ -60,7 +60,7 @@ class _GroupworksViewState extends State<GroupworksView> {
         return GestureDetector(
           onTap: (){
             Navigator.of(context).push(
-              CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:data[index],userData: user,))
+              CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:data[index],userData: widget.user,))
             );
           },
           child: _groupCard(data[index]),
@@ -74,13 +74,6 @@ class _GroupworksViewState extends State<GroupworksView> {
   void initState(){
     _bloc = BlocProvider.of<GroupworkBloc>(context);
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
-    //TODO : 
-    _profileBloc.state.listen((state){
-      if(state is ProfileLoaded){
-        this.user = state.data;
-        _bloc.dispatch(LoadGroupworkEvent(data: this.user.activeGroup));
-      }
-    });
     super.initState();
   }
 
@@ -102,6 +95,7 @@ class _GroupworksViewState extends State<GroupworksView> {
         bloc: _bloc,
         builder: (BuildContext context, GroupworkState state){
           if(state is InitialGroupworkState){
+            _bloc.dispatch(LoadGroupworkEvent(data: widget.user.activeGroup));
             return SplashScreen();
           }
           if(state is LoadingGroupworkState){

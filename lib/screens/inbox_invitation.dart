@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/inbox.dart';
-import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/screens/splash_page.dart';
 
 import 'groupwork/groupwork_profile.dart';

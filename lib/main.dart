@@ -68,7 +68,7 @@ class AppState extends State<App> {
             return SplashScreen();
           }
           if (state is AuthenticationAuthenticated) {
-          
+            
             return HomeView();
           }
           if (state is AuthenticationUnauthenticated) {

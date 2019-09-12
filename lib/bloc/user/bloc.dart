@@ -10,3 +10,6 @@ export 'login/login_state.dart';
 export 'profile/profile_bloc.dart';
 export 'profile/profile_event.dart';
 export 'profile/profile_state.dart';
+export 'register/register_bloc.dart';
+export 'register/register_event.dart';
+export 'register/register_state.dart';

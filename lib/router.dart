@@ -17,13 +17,13 @@ Route<dynamic> generateRoute(RouteSettings settings){
     case HomeViewRoute:
       return CupertinoPageRoute(builder: (context) => HomeView());
     case AccountViewRoute:
-      return CupertinoPageRoute(builder: (context) => AccountView());
+      return CupertinoPageRoute(builder: (context) => AccountView(data: settings.arguments,));
     case GroupsViewRoute:
       return CupertinoPageRoute<GroupworksView>(
                 builder: (context) {
                   return BlocProvider<GroupworkBloc>.value(
                     value: GroupworkBloc(repository: GroupworkRepository()),
-                    child: GroupworksView(),
+                    child: GroupworksView(user:settings.arguments),
                   );
                 }
               );
