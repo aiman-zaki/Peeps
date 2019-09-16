@@ -52,6 +52,7 @@ class TaskModel{
       "dueDate":this.dueDate.toString(),
       "lastUpdated":this.lastUpdated.toString(),
       "priority": 3,
+      "status":0,
     };
   }
 }
