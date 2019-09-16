@@ -28,7 +28,10 @@ class LoginPage extends StatelessWidget {
             repository: userRepository,
           );
         },
-        child: LoginForm(),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: LoginForm(),
+        ),
       ),
     );
   }

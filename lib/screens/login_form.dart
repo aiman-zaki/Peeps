@@ -51,13 +51,18 @@ class _LoginFormState extends State<LoginForm> {
                 child: ListView(
                   children: [
                     CircleAvatar(
+                      foregroundColor: Colors.amber,
                       radius: 100,
                       backgroundColor: Colors.black12,
                       child: new Image.asset("assets/images/logo.png",width:600,height:100),
                     ),
+                    SizedBox(height: 10,),
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Email',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9)
+                        )
                         ),
         
                       controller: _usernameController,
@@ -66,6 +71,9 @@ class _LoginFormState extends State<LoginForm> {
                     TextFormField(
                       decoration: InputDecoration(
                         labelText: 'Password',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(9)
+                        )
                        ),
                       controller: _passwordController,
                       obscureText: true,
@@ -78,10 +86,10 @@ class _LoginFormState extends State<LoginForm> {
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colors.blueAccent[500],
-                          border: Border.all(color: Colors.white,width: 2.0),
+                          border: Border.all(color: Colors.green,width: 2.0),
                           borderRadius: BorderRadius.circular(10.0)
                         ),
-                        child: new Center(child: Text("Login"),),
+                        child: new Center(child: Text("Sign in"),),
                       ),
                     ),
                     SizedBox(height: 10),
@@ -98,7 +106,7 @@ class _LoginFormState extends State<LoginForm> {
                         height: 50,
                         decoration: BoxDecoration(
                           color: Colors.blueAccent[500],
-                          border: Border.all(color: Colors.white,width: 2.0),
+                          border: Border.all(color: Colors.blue,width: 2.0),
                           borderRadius: BorderRadius.circular(10.0)
                         ),
                         child: Center(child: Text('Register'))),

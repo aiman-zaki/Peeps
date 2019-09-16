@@ -9,6 +9,8 @@ import 'package:peeps/main.dart';
 import 'package:peeps/resources/auth_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/routing_constant.dart';
+import 'package:peeps/screens/common/custom_colored_border_button.dart';
+import 'package:peeps/screens/common/custom_gradient_button.dart';
 import 'package:peeps/screens/common/custom_wave_clip.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 import 'package:peeps/screens/profile.dart';
@@ -36,7 +38,8 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<RegisterBloc>(context);
-  
+    double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
 
     _buildFooterWave(){
       return ClipPath(
@@ -78,14 +81,20 @@ class _RegisterFormState extends State<RegisterForm> {
               builder: (context,state){
                 if(state is InitialRegisterState){
                   return DialogWithAvatar(
-                    title: "Register?",
-                    description: "",
+                    title: "Registration",
+                    description: "Are you sure to continue ? ",
                     children: <Widget>[
                       SizedBox(height: 15,)
                     ],
                     avatarIcon: Icon(Icons.check),
                     width: 300,
                     height: 180,
+                    bottomLeft: FlatButton(
+                      child: Text("Cancel"),
+                      onPressed: (){
+                        Navigator.pop(context);
+                      },
+                    ),
                     bottomRight: FlatButton(
                       onPressed: (){
                         _bloc.dispatch(RegisterButtonClickedEvent(
@@ -113,11 +122,14 @@ class _RegisterFormState extends State<RegisterForm> {
                 if(state is CompletedRegisterState){
                   return DialogWithAvatar(
                     avatarIcon: Icon(Icons.account_circle),
-                    title: "Profile?",
+                    title: "Update Your Profile Now?",
                     width: 300,
                     height: 180,
+                    children: <Widget>[
+                      SizedBox(height: 10,)
+                    ],
                     bottomLeft: FlatButton(
-                      child: Text("Nay"),
+                      child: Text("Proceed to Home"),
                       onPressed: (){
                        setState(() {
                           Navigator.pushReplacementNamed(context, '/');
@@ -125,7 +137,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       },
                     ),
                     bottomRight: FlatButton(
-                      child: Text("Yeay"),
+                      child: Text("Yes!"),
                       onPressed: (){
                         Navigator.of(context).push(
                           MaterialPageRoute(
@@ -142,12 +154,19 @@ class _RegisterFormState extends State<RegisterForm> {
         }
       );
     }
+    
+    _snackbar(){
+      return SnackBar(
+        backgroundColor: Colors.red,
+        content: Text("Password Not Match"),
+      );
+    }
 
     _buildBody(){
       return [
         Center(
           child: CircleAvatar(
-            backgroundColor: Colors.cyan[800],
+            backgroundColor: Colors.grey[800],
             radius: 90,
             child: _image == null ? FlatButton(onPressed:_getImage,child: Text("Upload Image"),) 
                   : InkWell(
@@ -188,6 +207,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   SizedBox(height: 10,),
                   TextFormField(
                     controller: _passwordController,
+                    obscureText: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.teal)
@@ -198,26 +218,27 @@ class _RegisterFormState extends State<RegisterForm> {
                   SizedBox(height: 10,),
                   TextFormField(
                     controller: _confirmPasswordContorller,
+                    obscureText: true,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.teal)
+                        borderSide: BorderSide(color: Colors.blue[900])
                       ),
                       labelText: "Confirm Password"
                     ),
                   ),
-                  SizedBox(height: 10,),
+                  SizedBox(height: 30,),
                   Container(
-                    width: double.infinity,
-                    child: RaisedButton(
-                      color: Colors.cyan[900],
+                    child: CustomColoredBorderButton(
+                      borderColor: Colors.green,
                       onPressed: (){
                         _passwordController.text == _confirmPasswordContorller.text ?
                         _buildShowDialog() :
-                        print("nope");
+                        Scaffold.of(context).showSnackBar(_snackbar());
                       },
-                      child: Text("Get Started"),
-                    ),
-                  )
+                      child: Center(child: Text("Get Started")),
+                    )
+                  ),
+                  SizedBox(height: 10,)
                 ],
               ),
             ),
@@ -234,19 +255,20 @@ class _RegisterFormState extends State<RegisterForm> {
         title: Text("Register"),
       ),
       body: SingleChildScrollView(
-        child: Padding(
+        child: Container(
+          height: height-100,
           padding: EdgeInsets.all(9),
           child: Stack(
             children: <Widget>[
+  
               Positioned(
-                bottom: 1,
-                left: 1,
-                right: 1,
-                child: Container(),
+                width: width*0.97,
+                top: height*0.05,
+                child: Column(
+                  children: _buildBody()
+                ),
               ),
-              Column(
-                children: _buildBody()
-              ),
+              
             ],
           ),
         ),
