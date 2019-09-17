@@ -85,7 +85,10 @@ class _GroupworksViewState extends State<GroupworksView> {
         actions: <Widget>[
           InkWell(
             onTap: (){
-              _profileBloc.dispatch(LoadProfile());
+              setState(() {
+                _profileBloc.dispatch(LoadProfileEvent());
+                _bloc.dispatch(LoadGroupworkEvent(data: widget.user.activeGroup));
+              });
             },
             child: Icon(Icons.refresh),
           )

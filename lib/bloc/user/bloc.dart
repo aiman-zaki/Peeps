@@ -13,3 +13,6 @@ export 'profile/profile_state.dart';
 export 'register/register_bloc.dart';
 export 'register/register_event.dart';
 export 'register/register_state.dart';
+export 'profile_form/profile_form_bloc.dart';
+export 'profile_form/profile_form_event.dart';
+export 'profile_form/profile_form_state.dart';

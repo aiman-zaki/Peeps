@@ -30,7 +30,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       if(event.image != null){
         yield UploadingProfilePictureState();
         try{
-          await repository.updateProfilePictre(event.image);
+          await repository.updateProfilePicture(event.image);
         }catch(e){
           yield ErrorMessageState(message: e.toString());
         }

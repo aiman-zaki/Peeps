@@ -18,13 +18,25 @@ class UserModel {
     @required this.activeGroup,
   });
 
+  static UserModel defaultConst(){
+    return UserModel(
+      email: "",
+      fname: "",
+      lname: "",
+      contactNo: "",
+      programmeCode: "",
+      activeGroup: [],
+    );
+  }
+
   static UserModel fromJson(Map<String,dynamic> json){
+    
     return UserModel(
       fname: json['profile']['fname'],
       lname: json['profile']['lname'],
       email: json['email'],
-      contactNo: json['profile']['contactNo'],
-      programmeCode: json['profile']['programmeCode'],
+      contactNo: json['profile']['contact_no'],
+      programmeCode: json['profile']['programme_code'],
       activeGroup: json['active_group']
     );
   }
