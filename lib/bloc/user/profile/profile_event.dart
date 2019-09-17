@@ -6,12 +6,16 @@ abstract class ProfileEvent extends Equatable {
   ProfileEvent([List props = const []]) : super(props);
 }
 
-class UpdateProfile extends ProfileEvent {
+class UpdateProfileButtonEvent extends ProfileEvent {
+  final Map<String,dynamic> user;
+  UpdateProfileButtonEvent({
+    @required this.user,
+  });
   @override
-  String toString() => "UpdateProfile";
+  String toString() => "UpdateProfileEvent";
 }
 
-class LoadProfile extends ProfileEvent {
+class LoadProfileEvent extends ProfileEvent {
   @override
-  String toString() => 'LoadProfile';
+  String toString() => 'LoadProfileEvent';
 }

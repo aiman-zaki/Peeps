@@ -31,11 +31,20 @@ class UsersRepository{
     }
   }
 
-  updateProfile(Map<String,dynamic> user) async{
-    var body = jsonEncode(user);
+  updateProfile({@required Map<String,dynamic> data}) async{
+    print(data);
+    var body = {
+      "fname":data["fname"],
+      "lname":data["lname"],
+      "contact_no":data["contactNo"],
+      "programme_code":data["programmeCode"],
+    };
+    var token = await accessToken();
     var response = await http.put(
-      _baseUrl+"user",
-      body: body
+      _baseUrl+"user/profile",
+      body: jsonEncode(body),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token",
+                "Content-Type":"application/json"}
     );
     Map responseData = jsonDecode(response.body);
     if(response.statusCode != 200){
@@ -43,7 +52,7 @@ class UsersRepository{
     }
   }
 
-  updateProfilePictre(File image) async {
+  updateProfilePicture(File image) async {
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     final Uri uri = Uri.parse(_baseUrl+"profile/image");
     var token = await accessToken();
@@ -66,7 +75,7 @@ class UsersRepository{
   Future<UserModel> fetchProfile() async {
     var token = await storage.read(key:"access_token");
     var response = await http.get(
-      _baseUrl+"profile",
+      _baseUrl+"user/profile",
       headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
     );
     if(response.statusCode == 200){

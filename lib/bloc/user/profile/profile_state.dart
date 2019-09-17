@@ -27,3 +27,14 @@ class NoProfileLoaded extends ProfileState{
   @override
   String toString() => "NoProfileLoaded";
 }
+
+class ProfileErrorMessageState extends ProfileState{
+  final String message;
+
+  ProfileErrorMessageState({
+    @required this.message
+  });
+  
+  @override
+  String toString() => "ErrorMessageState";
+}
