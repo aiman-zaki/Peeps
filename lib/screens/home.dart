@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/user.dart';
+import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/routing_constant.dart';
-
 
 
 class HomeView extends StatefulWidget {
@@ -13,14 +13,20 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  UserModel currentUser;
+
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<ProfileBloc>(context).dispatch(LoadProfileEvent());
+    currentUser = UserModel.defaultConst(); 
+  }
 
   @override
   Widget build(BuildContext context) {
    
-   
     final _authBloc = BlocProvider.of<AuthenticationBloc>(context);
     final _profileBloc = BlocProvider.of<ProfileBloc>(context);
-
 
     Drawer _drawerContent(BuildContext context,user){
       DrawerHeader header = new DrawerHeader(
@@ -35,7 +41,11 @@ class _HomeViewState extends State<HomeView> {
             if(routeName == "/"){
               Navigator.pushReplacementNamed(context, routeName);
             }else if(routeName == AccountViewRoute || routeName == GroupsViewRoute){
-              Navigator.pushNamed(context, routeName,arguments: user);
+              
+              Navigator.pushNamed(context, routeName,arguments: NavigatorArguments(
+                bloc: _profileBloc,
+                data: user
+              ));
             }
             else {
               Navigator.pushNamed(context, routeName);
@@ -76,7 +86,6 @@ class _HomeViewState extends State<HomeView> {
       ListView listView = new ListView(children:drawerChildren);
       return new Drawer(
         child: new Column(
-          
           children: <Widget>[
             Expanded(child: listView,),
             _footerDrawer(),
@@ -84,39 +93,43 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
     }
-  
 
-    return BlocBuilder(
-      bloc: _profileBloc,
-      builder: (context,state){
-        if(state is InitialProfileState){
-          _profileBloc.dispatch(LoadProfile());
-          return Container();
-        }
-        if(state is ProfileLoading){
-          return Center(child: CircularProgressIndicator(),);
-        }
-        if(state is ProfileLoaded){
-          return Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
-            appBar: new AppBar(
-              title: new Text("Home"),
-            ),
-            body: new Container(
-              child: new Center(
-
+    return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
+      appBar: new AppBar(
+        title: new Text("Home"),
+      ),
+      body: BlocListener(
+        bloc: _profileBloc,
+        listener: (context,state){
+          if(state is ProfileLoading){
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text("Loading User Information"),
+              )
+            );
+          }
+          if(state is ProfileLoaded){
+            setState(() {
+              currentUser = state.data;
+            });
+            Scaffold.of(context).removeCurrentSnackBar();
+            Scaffold.of(context).showSnackBar(
+              SnackBar(
+                content: Text("User Information Loaded"),
               ),
-            ),
-            drawer: _drawerContent(context,state.data),
-          
-          );
-        }
-      },
+            );
+          }
+        },
+        child: new Container(
+          child: new Center(
+
+          ),
+        ),
+      ),
+      drawer: _drawerContent(context,currentUser),
+    
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-  }
 }
