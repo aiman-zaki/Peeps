@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:peeps/bloc/bloc.dart';
-import 'package:peeps/bloc/profile_bloc.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 class TaskForm extends StatefulWidget {
@@ -50,7 +49,7 @@ class _TaskFormState extends State<TaskForm> {
         children: <Widget>[
           SizedBox(height: 15,)
         ],
-        bottomRight: FlatButton(
+        bottomLeft: FlatButton(
           onPressed: (){
             _taskController.clear();
             _descriptionController.clear();
@@ -58,7 +57,7 @@ class _TaskFormState extends State<TaskForm> {
           },
           child: Text("Accept"),
         ),
-        bottomLeft: FlatButton(
+        bottomRight: FlatButton(
           onPressed: (){
             //TODO using bloc or not?
             DateTime assignDate = DateTime.parse(_assignedDate.text);
