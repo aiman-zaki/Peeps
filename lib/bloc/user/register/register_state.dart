@@ -25,12 +25,12 @@ class RegisteredUserState extends RegisterState{
   String toString() => "RegisteredUserState";
 }
 
-class UploadingProfilePictureState extends RegisterState{
+class UploadingInitProfilePictureState extends RegisterState{
   @override
   String toString() => "UploadingProfilePictureState";
 }
 
-class UploadedProfilePictureState extends RegisterState{
+class UploadedInitProfilePictureState extends RegisterState{
   @override
   String toString() => "UploadedProfilePictureState";
 }

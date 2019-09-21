@@ -9,6 +9,8 @@ class AssignmentModel{
   String status;
   double totalMarks;
   double scoredMark;
+  DateTime createdDate;
+  DateTime dueDate;
   List<TaskModel> tasks;
   List<TaskModel> todo;
   List<TaskModel> ongoing;
@@ -25,6 +27,8 @@ class AssignmentModel{
       this.scoredMark,
       this.status,
       this.tasks,
+      this.createdDate,
+      this.dueDate,
       this.todo,
       this.ongoing,
       this.done,  
@@ -36,7 +40,7 @@ class AssignmentModel{
       "title":this.title,
       "description":this.description,
       "leader":this.leader,
-      "totalMarks":this.totalMarks,
+      "total_marks":this.totalMarks,
     };
   }
 
@@ -83,9 +87,11 @@ class AssignmentModel{
       title: json['title'],
       description: json['description'],
       leader: json['leader'],
-      totalMarks: json['totalMarks'],
-      scoredMark: json['scoredMarks'] != null ? json['scoredMarks'] : null,
+      totalMarks: json['total_marks'],
+      scoredMark: json['scored_marks'] != null ? json['scored_marks'] : null,
       status: json['status'] != null ? json['status'] : null,
+      createdDate: json['created_date'] != null ? json['created_date'] : null,
+      dueDate: json['due_date'] != null ? json['due_date'] : null,
       todo: _todo,
       ongoing: _ongoing,
       done: _done,

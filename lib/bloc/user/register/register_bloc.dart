@@ -28,13 +28,13 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       }
       yield RegisteredUserState();
       if(event.image != null){
-        yield UploadingProfilePictureState();
+        yield UploadingInitProfilePictureState();
         try{
-          await repository.updateProfilePicture(event.image);
+          //await repository.updateProfilePicture(event.image);
         }catch(e){
           yield ErrorMessageState(message: e.toString());
         }
-        yield UploadedProfilePictureState();
+        yield UploadedInitProfilePictureState();
       }
       yield CompletedRegisterState();
       loginBloc.dispatch(LoginButtonPressed(email: event.email,password: event.password));

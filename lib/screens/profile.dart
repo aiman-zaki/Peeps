@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/user.dart';
-import 'package:peeps/screens/common.dart';
-import 'package:peeps/screens/splash_page.dart';
+
 
 class ProfileView extends StatefulWidget {
   ProfileView({Key key}) : super(key: key);

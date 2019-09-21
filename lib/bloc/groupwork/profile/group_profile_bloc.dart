@@ -20,7 +20,7 @@ class GroupProfileBloc extends Bloc<GroupProfileEvent, GroupProfileState> {
   Stream<GroupProfileState> mapEventToState(
     GroupProfileEvent event,
   ) async* {
-   if(event is UploadProfileImage){
+   if(event is UploadGroupworkProfileImage){
      yield UploadingProfileImageState();
      await repository.uploadProfileImage(event.image, event.groupId);
      yield UploadedProfileImageState();
