@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/user/profile_form/profile_form_bloc.dart';
 import 'package:peeps/models/user.dart';
+import 'package:peeps/screens/common/common_profile_picture.dart';
+import 'package:peeps/screens/common/custom_stack_background.dart';
+import 'package:peeps/screens/common/custom_stack_front.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
 class AccountView extends StatefulWidget{
@@ -20,10 +26,21 @@ class AccountView extends StatefulWidget{
 
 class AccountViewState extends State<AccountView> {
   bool edit = true;
+  bool updatePicture = false;
+  File _image;
   final _fnameController = TextEditingController();
   final _lnameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _programmeController = TextEditingController();
+
+  Future _getImage() async{
+    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+    setState(() {
+      _image = image;
+      updatePicture = true;
+    });
+  }
+
 
   @override
   void initState() {
@@ -41,6 +58,10 @@ class AccountViewState extends State<AccountView> {
     
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
+    
+    _upload(){
+      _bloc.dispatch(UploadProfilePictureEvent(image:_image,userId: widget.data.id));
+    }
 
     _buildBlocListenerDialog({@required icon,@required children}){
       return DialogWithAvatar(
@@ -51,7 +72,6 @@ class AccountViewState extends State<AccountView> {
         children: children,
       );
     }
-    
     
     _fabOnPressed(){
       if(edit == false){
@@ -87,6 +107,7 @@ class AccountViewState extends State<AccountView> {
 
     Widget _buildOtherSettingList(){
       return ListView(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         children: <Widget>[
           ListTile(
@@ -96,11 +117,16 @@ class AccountViewState extends State<AccountView> {
               });
             },
             leading: Icon(Icons.edit),
-            title: Text('Update Profile'),
+            title: Text('Edit Profile'),
           ),            
           ListTile(
             leading: Icon(Icons.security),
             title: Text('Privacy'),
+            trailing: Icon(Icons.keyboard_arrow_right),
+          ),
+          ListTile(
+            leading: Icon(Icons.fiber_smart_record),
+            title: Text('Record | Achievement'),
             trailing: Icon(Icons.keyboard_arrow_right),
           )
         ],
@@ -150,11 +176,67 @@ class AccountViewState extends State<AccountView> {
       );
     }
 
+    //TODO : Default Picture
     Widget _buildAvatar(){
       return CircleAvatar(
         backgroundColor: Colors.white,
         radius: 70,
-        child: Image.asset("assets/images/male.png",width:600,height:100),
+        child: _image == null ?
+          CustomNetworkProfilePicture(
+            image: widget.data.picture,
+            onTap: _getImage,
+            child: Container(alignment: FractionalOffset.bottomCenter,child: Text(""),),
+          ):
+          InkWell(
+            onTap: _getImage,
+            child: Container(
+              width: 190,
+              height: 190,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(120),
+                image: DecorationImage(
+                  image: new FileImage(_image),
+                  fit: BoxFit.cover
+                )
+              ),
+              child: Container(alignment: FractionalOffset.bottomCenter, child:Text(""))),
+          ),  
+      );
+    }
+
+    _buildFrontBody(){
+      return Positioned(
+        child: CustomStackFrontBody(
+          color: Colors.grey[900],
+          width: width,
+          height: height*0.9,
+          child: Column(
+            children: <Widget>[
+              Expanded(child: Container(),),
+              SizedBox(height: 10,),
+              _buildAvatar(),
+              FlatButton(
+                onPressed: updatePicture == false ?
+                  null :
+                  _upload, 
+                child: Text("Upload"),
+              ),
+              _buildBody(),
+            ],  
+          ),
+        ),
+      );
+    }
+
+    _buildBackgroundColor(){
+      return Positioned(
+        top: 20,
+        child: CustomStackBackground(
+          color: Colors.blue[600],
+          width: width,
+          height: height*0.8,
+          child: Container(),
+        ),
       );
     }
 
@@ -202,43 +284,14 @@ class AccountViewState extends State<AccountView> {
           title: Text('Account'),
         ),
         floatingActionButton: _fab(),
-        body: Center(
-          child: Container(
-            padding: EdgeInsets.only(top:20),
-            child: Stack(
-              children: <Widget>[
-                Positioned(
-                  top: 20,
-                  width: width,
-                  height: height*0.8,
-                  child: Card(
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-                    color: Colors.blue[600],
-                    elevation: 0.00,
-                    child: Text(""),
-                  ),
-                ),
-                Positioned(
-                  width: width,
-                  height: height*0.85,
-                  child: Padding(
-                    padding: const EdgeInsets.all(9.0),
-                    child: Card(
-                      elevation: 5.00,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20))),
-                      color: Colors.grey[900],
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(height: 10,),
-                          _buildAvatar(),
-                          _buildBody(),
-                        ],  
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
+        body: SingleChildScrollView(
+          scrollDirection: Axis.vertical,
+          padding: EdgeInsets.only(top: 20),
+          child: Stack(
+            children: <Widget>[ 
+              _buildBackgroundColor(),
+              _buildFrontBody(),
+            ],
           ),
         ),
       ),

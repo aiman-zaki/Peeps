@@ -21,6 +21,16 @@ class UpdatedProfileState extends ProfileFormState{
   String toString() => "UpdatedProfileState";
 }
 
+class UploadingProfilePictureState extends ProfileFormState{
+  @override
+  String toString() => "UploadingProfilePictureState";
+}
+
+class UploadedProfilePictureState extends ProfileFormState{
+  @override
+  String toString() => "UploadedProfilePictureState";
+}
+
 class PopState extends ProfileFormState{
   @override
   String toString() => "PopState";

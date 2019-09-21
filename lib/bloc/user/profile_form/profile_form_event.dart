@@ -11,7 +11,18 @@ class UpdateProfileEvent extends ProfileFormEvent{
   UpdateProfileEvent({
     @required this.data
   });
-  
   @override
   String toString() => "UpdateProfileEvent";
+}
+
+class UploadProfilePictureEvent extends ProfileFormEvent{
+  final userId;
+  final image;
+  UploadProfilePictureEvent({
+    @required this.image,
+    @required this.userId,
+  });
+
+  @override
+  String toString() => "UpdateProfilePictureEvent";
 }

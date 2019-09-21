@@ -52,17 +52,17 @@ class UsersRepository{
     }
   }
 
-  updateProfilePicture(File image) async {
+  updateProfilePicture(File image,String id) async {
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
-    final Uri uri = Uri.parse(_baseUrl+"profile/image");
+    final Uri uri = Uri.parse(_baseUrl+"user/upload");
     var token = await accessToken();
     var length = await image.length();
-
     var request = new http.MultipartRequest("POST",
       uri);
 
     var multipartFile = new http.MultipartFile('image', stream, length,filename: (image.path));
     request.files.add(multipartFile);
+    request.fields['user_id'] = id;
     request.headers.addAll({HttpHeaders.authorizationHeader: "Bearer $token"});
     
     var response = await request.send();
