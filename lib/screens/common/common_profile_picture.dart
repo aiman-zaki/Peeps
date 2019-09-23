@@ -7,6 +7,8 @@ class CustomNetworkProfilePicture extends StatelessWidget {
   final String image;
   final double width;
   final double heigth;
+  final double topRadius;
+  final double bottomRadius;
    
   const CustomNetworkProfilePicture({
     Key key, 
@@ -15,6 +17,8 @@ class CustomNetworkProfilePicture extends StatelessWidget {
     @required this.image,
     this.width,
     this.heigth,
+    this.topRadius,
+    this.bottomRadius,
     
     }) : super(key: key);
   //TODO: Handle error no image
@@ -39,7 +43,12 @@ class CustomNetworkProfilePicture extends StatelessWidget {
         width: width == null ? 190.00 : width,
         height: heigth == null ? 190.00 : heigth,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(120),
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(topRadius == null ? 120 : topRadius),
+            topRight: Radius.circular(topRadius == null ? 120 : topRadius),
+            bottomLeft: Radius.circular(bottomRadius == null ? 120 : bottomRadius),
+            bottomRight: Radius.circular(bottomRadius == null ?120 : bottomRadius),
+          ),
           image: DecorationImage(
             image:  _image,
             fit: BoxFit.cover

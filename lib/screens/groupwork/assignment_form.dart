@@ -4,19 +4,27 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 //TODO : Dynamic Role Assignation - Madam Faridah
-class AssignmentForm extends StatelessWidget {
-  final String groupId;
 
-  const AssignmentForm({Key key,this.groupId}) : super(key: key);
+class AssignmentFormView extends StatefulWidget{
+  final String groupId;
+  
+  const AssignmentFormView({Key key,this.groupId}) : super(key: key);
+
+
+  _AssignmentFormState createState() => new _AssignmentFormState();
+}
+class _AssignmentFormState extends State<AssignmentFormView> {
+
+  final _titleController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _leaderController = TextEditingController();
+  final _totalMarks = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
     final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
-    final _titleController = TextEditingController();
-    final _descriptionController = TextEditingController();
-    final _leaderController = TextEditingController();
-    final _totalMarks = TextEditingController();
-
+  
     _buildDialog(){
       showDialog(
         context: (context),
@@ -45,7 +53,7 @@ class AssignmentForm extends StatelessWidget {
                     description: _descriptionController.text,
                     leader: _leaderController.text,
                     totalMarks: 0.01              
-                  ), groupId: groupId
+                  ), groupId: widget.groupId
                   ));
                 Navigator.of(context).pop();
               },
@@ -54,6 +62,7 @@ class AssignmentForm extends StatelessWidget {
         }
       );
     }
+
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -62,13 +71,16 @@ class AssignmentForm extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(9),
         child: Form(
-          child: Column(
-            children: <Widget>[
-              TextFormField(controller:_titleController,decoration: InputDecoration(labelText:  "Title"),),
-              TextFormField(controller:_descriptionController,decoration: InputDecoration(labelText:  "Description"),),
-              TextFormField(controller:_leaderController,decoration: InputDecoration(labelText:  "Leader"),),
-              TextFormField(controller:_totalMarks,decoration: InputDecoration(labelText:  "Total Marks"),),
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: <Widget>[
+                TextFormField(controller:_titleController,decoration: InputDecoration(labelText:  "Title"),),
+                TextFormField(controller:_descriptionController,decoration: InputDecoration(labelText:  "Description"),),
+                TextFormField(controller:_leaderController,decoration: InputDecoration(labelText:  "Leader"),),
+                TextFormField(controller:_totalMarks,decoration: InputDecoration(labelText:  "Total Marks"),),
+              ],
+            ),
           ),
         ),
       ),

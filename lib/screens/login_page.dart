@@ -18,8 +18,10 @@ class LoginPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
+        elevation: 0.00,
         backgroundColor: Theme.of(context).backgroundColor,
-        title: Text('Login'),
+        centerTitle: true,
+        title: Text('Sign In'),
       ),
       body: BlocProvider(
         builder: (context) {
@@ -28,7 +30,9 @@ class LoginPage extends StatelessWidget {
             repository: userRepository,
           );
         },
-        child: Padding(
+        child: Container(
+          width: MediaQuery.of(context).size.width,
+          height: MediaQuery.of(context).size.height,
           padding: const EdgeInsets.all(8.0),
           child: LoginForm(),
         ),

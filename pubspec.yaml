@@ -34,6 +34,9 @@ dependencies:
   rxdart: ^0.22.1
   vector_math: ^2.0.8
   datetime_picker_formfield: ^0.4.2
+  flutter_image: 2.0.0
+  expandable: ^3.0.0+1
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

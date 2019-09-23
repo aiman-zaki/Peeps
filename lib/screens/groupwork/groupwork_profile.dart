@@ -6,9 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/groupwork/profile/group_profile_bloc.dart';
+import 'package:peeps/models/groupwork.dart';
+import 'package:peeps/screens/common/common_profile_picture.dart';
 
 class GroupworkProfile extends StatefulWidget {
-  final data;
+  final GroupworkModel data;
   GroupworkProfile({Key key,this.data}) : super(key: key);
 
   _GroupworkProfileState createState() => _GroupworkProfileState();
@@ -16,17 +18,46 @@ class GroupworkProfile extends StatefulWidget {
 
 class _GroupworkProfileState extends State<GroupworkProfile> {
   File _image;
-  Future getImage() async {
+  bool upload = false;
+  final _creatorController = TextEditingController();
+  final _supervisorController = TextEditingController();
+  final _descriptionController = TextEditingController();
+  final _courseController = TextEditingController();
+
+  @override
+  void initState() { 
+    super.initState();
+    _creatorController.text = widget.data.creator;
+    _descriptionController.text = widget.data.description;
+    _courseController.text = widget.data.course;
+  }
+
+
+  Future _getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
     setState(() {
       _image = image;
+      upload = true;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final _bloc =  BlocProvider.of<GroupProfileBloc>(context);
-    
+    final edit = true;
+
+    _readOnlyFormField({String labelText,String data,TextEditingController controller}){
+      return TextField(
+        controller: controller,
+        readOnly: edit,
+        decoration: InputDecoration(
+          labelText: labelText,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(9))
+          )
+        ),
+      );
+    }
 
     _buildGroupAdminSetting(){
       return Container(
@@ -68,16 +99,29 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
-                  Text("creator : ${widget.data.creator}"),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 2,
+                        child: _readOnlyFormField(labelText: "Creator",data: widget.data.creator,controller: _creatorController)),
+                      SizedBox(width: 10,),
+                      Expanded(
+                        flex: 2,
+                        child: _readOnlyFormField(labelText: "Supervisor", data:widget.data.creator)),
+                    ],
+                  ),                  
                   SizedBox(height: 10,),
-                  Text("supervisor: "),
+                  _readOnlyFormField(labelText: "Description", data:widget.data.description,controller: _descriptionController),
                   SizedBox(height: 10,),
-                  Text("description : ${widget.data.description}"),
+                  _readOnlyFormField(labelText: "Course",data: widget.data.course,controller: _courseController),
                   SizedBox(height: 10,),
-                  Text("course : ${widget.data.course}"),
                   Align(
                     alignment: Alignment.centerRight,
-                    child: InkWell(child: Text('Update')),
+                    child: FlatButton(
+                      onPressed:(){
+
+                      },
+                      child: Text('Update')),
                   ),
                 ],
               ),
@@ -85,6 +129,45 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
           ],
         ),
       );   
+    }
+
+    Widget _uploadButton(){
+      return FlatButton(
+        onPressed: !upload ? null :
+            (){
+              _bloc.dispatch(UploadGroupworkProfileImage(groupId: widget.data.id,image: _image));
+            },
+        child: Text("Upload"),
+      );
+    }
+
+    Widget _buildAvatar(){
+      return Center(
+        child: CircleAvatar(
+          backgroundColor: Colors.white,
+          radius: 70,
+          child: _image == null ?
+            CustomNetworkProfilePicture(
+              image: widget.data.profilePicturerUrl,
+              onTap: _getImage,
+              child: Container(alignment: FractionalOffset.bottomCenter,child: Text(""),),
+            ):
+            InkWell(
+              onTap: _getImage,
+              child: Container(
+                width: 190,
+                height: 190,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(120),
+                  image: DecorationImage(
+                    image: new FileImage(_image),
+                    fit: BoxFit.cover
+                  )
+                ),
+                child: Container(alignment: FractionalOffset.bottomCenter, child:Text(""))),
+            ),  
+        ),
+      );
     }
 
     return Scaffold(
@@ -121,19 +204,8 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                  mainAxisAlignment: MainAxisAlignment.start,
                  crossAxisAlignment: CrossAxisAlignment.start,
                  children: <Widget>[
-                   Center(
-                     child: Hero(
-                       tag: 'dp',
-                       child: CircleAvatar(
-                         radius: 80,
-                         backgroundColor: Colors.grey[850],
-                         child: Image.network(
-                           widget.data.profilePicturerUrl,
-                           width: 120,
-                         ),
-                       ),
-                     ),
-                   ),
+                  _buildAvatar(),
+                  _uploadButton(),
                   _buildProfileDetail(),
                   SizedBox(height: 10,),
                   Text('Administrator'),
