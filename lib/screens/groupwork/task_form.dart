@@ -75,7 +75,17 @@ class _TaskFormState extends State<TaskForm> {
       );
     }
 
+    Widget _captions({@required text}){
+      return Text(
+          "$text",
+          style: TextStyle(
+            color: Colors.white30
+          ),
+        );
+    }
+
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text("New Task"),
       ),
@@ -91,28 +101,29 @@ class _TaskFormState extends State<TaskForm> {
           }
         },
         child: Container(
-          padding: EdgeInsets.all(9),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20) 
+          ),
+          padding: EdgeInsets.all(16),
           child: Form(
             key: _key,
             child: ListView(
               children: <Widget>[
+                _captions(text: "Define your task as simple as possible"),
                 TextFormField(
                   controller: _taskController,
                   decoration: InputDecoration(
                     labelText: "Task"
                   ),
                 ),
-                TextFormField(
-                  controller: _descriptionController,
-                  decoration: InputDecoration(
-                    labelText: "Description"
-                  ),
-                ),
+                SizedBox(height: 15,),
+                _captions(text: "Ellaborate What the task is"),
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: "Description"
                   ),
                 ),
+                SizedBox(height: 15,),
                 DateTimeField(
                   decoration: InputDecoration(
                     labelText: "Assign Date"
@@ -137,6 +148,8 @@ class _TaskFormState extends State<TaskForm> {
                     }
                   },
                 ),
+                SizedBox(height: 15,),
+                _captions(text: "Correspond with the Assignment Due Date"),
                 DateTimeField(
                   decoration: InputDecoration(
                     labelText: "Due Date"

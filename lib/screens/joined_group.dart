@@ -5,6 +5,7 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
+import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/groupwork_form.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub.dart';
 import 'package:peeps/screens/splash_page.dart';
@@ -23,53 +24,6 @@ class _GroupworksViewState extends State<GroupworksView> {
   GroupworkBloc _bloc;
   ProfileBloc _profileBloc;
 
-
-  Widget _groupCard(GroupworkModel group){
-    return Container(
-      child: Card(
-        child: Padding(
-          padding: const EdgeInsets.only(
-            top: 8.0,
-            bottom: 8.0,
-            left: 14.0,
-            right: 14.0
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Hero(tag: group.id, child: Text(group.name,style: TextStyle(),),)
-                ],
-              ),
-              Divider(color: Colors.blueAccent,),
-              Text('Quick Access')
-            ],
-          ),
-        ),
-      ),
-    );
-
-
-  }
-  Widget _buildGroupworkList(List<GroupworkModel> data){
-    return ListView.builder(
-      itemCount: data.length,
-      itemBuilder: (BuildContext context, int index){
-        return GestureDetector(
-          onTap: (){
-            Navigator.of(context).push(
-              CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:data[index],userData: widget.user,))
-            );
-          },
-          child: _groupCard(data[index]),
-          
-        );
-      },
-    );
-  }
-
   @override
   void initState(){
     _bloc = BlocProvider.of<GroupworkBloc>(context);
@@ -79,9 +33,88 @@ class _GroupworksViewState extends State<GroupworksView> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
+    
+    Widget _buildAvatar(GroupworkModel groupwork){
+      return Container(
+        child: CustomNetworkProfilePicture(
+          bottomRadius: 0,
+          topRadius: 10,
+          heigth: 100,
+          image: groupwork.profilePicturerUrl,
+          child: Center(child: Text(groupwork.name),),
+        ),
+      );
+    }
+
+    Widget _groupCard(GroupworkModel groupwork){
+      return Container(
+        child: Column(
+          children: <Widget>[
+            _buildAvatar(groupwork),
+            Container(
+              width: double.infinity,
+              color: Colors.grey[900],
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        flex: 3,
+                        child: Text('Pinned Notes')),
+                      Expanded(
+                        flex: 1,
+                        child: Icon(Icons.info_outline)),
+                    ],
+                  ),
+                  SizedBox(height: 10,),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    itemCount: groupwork.notes.isEmpty ? 0 : groupwork.notes.length,
+                    itemBuilder: (context,index){
+                      if(groupwork.notes.isEmpty){
+                        return Text("No Pinned Notes");
+                      } else {
+                        return Text(groupwork.notes[index].note);
+                      }
+
+                    },
+                  )
+                ],
+              ),
+            ),
+          ],
+        ),
+      );
+    }
+    Widget _buildGroupworkList(List<GroupworkModel> data){
+      return GridView.builder(
+        gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+        ),
+        itemCount: data.length,
+        itemBuilder: (BuildContext context, int index){
+          return GestureDetector(
+            onTap: (){
+              Navigator.of(context).push(
+                CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:data[index],userData: widget.user,))
+              );
+            },
+            child: _groupCard(data[index]),
+            
+          );
+        },
+      );
+    }
+
+
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text("GroupWork"),
+        title: Text("Groupwork"),
         actions: <Widget>[
           InkWell(
             onTap: (){
@@ -105,7 +138,10 @@ class _GroupworksViewState extends State<GroupworksView> {
             return Center(child: CircularProgressIndicator());
           }
           if(state is LoadedGroupworkState){    
-            return _buildGroupworkList(state.data);
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: _buildGroupworkList(state.data),
+            );
           }
           if(state is NoGroupworkState){
             return Container(

@@ -7,6 +7,7 @@ class GroupInvitationMailModel{
   String groupInviteId;
   String answer;
   GroupworkModel group;
+  DateTime sentDate;
 
 
   GroupInvitationMailModel(
@@ -15,6 +16,7 @@ class GroupInvitationMailModel{
       @required this.groupInviteId,
       @required this.answer,
       @required this.group,
+      @required this.sentDate,
     }
   );
 
@@ -25,7 +27,9 @@ class GroupInvitationMailModel{
       inviterEmail: json['invitation']['inviter'],
       groupInviteId: json['invitation']['group_id']['\$oid'],
       answer: json['invitation']['answer'].toString(),
-      group: GroupworkModel.fromJson(json['group'])
+      group: GroupworkModel.fromJson(json['group']),
+      sentDate: json['invitation']['sentDate'],
+
     );
   }
 
@@ -34,6 +38,7 @@ class GroupInvitationMailModel{
       "inviter":this.inviterEmail,
       "group_id":this.groupInviteId,
       "answer":this.answer,
+      "sent_date":DateTime.now(),
     };
   }
 

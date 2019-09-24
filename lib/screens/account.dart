@@ -149,10 +149,9 @@ class AccountViewState extends State<AccountView> {
     Widget _buildBody(){
       return Container(
         padding: EdgeInsets.all(9),
-        width: double.infinity,
+        width: width,
         child: Column(
           children: [
-            SizedBox(height: 20,),
             Text(widget.data.email,style: TextStyle(fontSize: 20),), 
             SizedBox(height: 20,),
             _readOnlyFormField(data: widget.data.fname,labelText: "First Name",controller: _fnameController),
@@ -208,11 +207,10 @@ class AccountViewState extends State<AccountView> {
       return Positioned(
         child: CustomStackFrontBody(
           color: Colors.grey[900],
-          width: width,
-          height: height*0.9,
+   
           child: Column(
             children: <Widget>[
-              Expanded(child: Container(),),
+            
               SizedBox(height: 10,),
               _buildAvatar(),
               FlatButton(
@@ -285,8 +283,6 @@ class AccountViewState extends State<AccountView> {
         ),
         floatingActionButton: _fab(),
         body: SingleChildScrollView(
-          scrollDirection: Axis.vertical,
-          padding: EdgeInsets.only(top: 20),
           child: Stack(
             children: <Widget>[ 
               _buildBackgroundColor(),

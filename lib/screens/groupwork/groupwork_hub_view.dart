@@ -1,4 +1,5 @@
 import 'package:expandable/expandable.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as prefix0;
 import 'package:flutter/services.dart';
@@ -47,7 +48,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
       return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
         elevation: 8,
-        color: Colors.grey[850],
+        color: Colors.grey[900],
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
@@ -82,7 +83,14 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
         itemCount: data.length,
         itemBuilder: (context,index){
           return ListTile(
-          leading: Icon(Icons.search),
+          leading: CircleAvatar(
+            radius: 30.0,
+            child: CustomNetworkProfilePicture(
+              width: 120,
+              heigth: 120,
+              image: data[index].profilePicture,
+            ),
+          ),
             title: Text(data[index].email),
           trailing: InkWell(onTap:(){},child: Text("Chat"),),
           );
@@ -94,14 +102,15 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
     _members() {
       return Card(
         elevation: 8,
-        color: Colors.grey[850],
+        color: Colors.grey[900],
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
             children: <Widget>[
               Row(
                 children: <Widget>[
-                  Expanded(flex: 3, child: Text('Members')),
+                  Expanded(flex: 4, child: Text('Members',
+                    style: TextStyle(fontSize: 16),)),
                   Expanded(
                     flex: 1,
                     child: FlatButton(
@@ -140,9 +149,10 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                   return Container();
                 },
               ),
+              Divider(),
               SizedBox(
                   width: double.maxFinite,
-                  child: RaisedButton(
+                  child: FlatButton(
                     child: Text("Group Chat"),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
@@ -168,34 +178,32 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
         shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (context,index){
-          return ExpandablePanel(
+          if(data.length != 0){
+            return ExpandablePanel(
             tapBodyToCollapse: true,
             header: Text(data[index].title,style: TextStyle(
-              fontSize: 18,
-              color: Colors.amber
+              fontSize: 15,
+           
             ),),
               collapsed: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: <Widget>[
                   ListTile(
+                    onTap: (){
+                      Navigator.of(context).push(CupertinoPageRoute(
+                          builder: (context) => BlocProvider<TaskBloc>.value(
+                            value: _taskBloc,
+                            child: KanbanBoardView(
+                              data: data[index],
+                              groupId: widget.groupData.id,
+                            ),
+                          ),
+                        )
+                      );
+                    },
                     leading: Icon(Icons.developer_board),
                     title: Text("Kanban Board"),
-                    trailing: InkWell(
-                      onTap: (){
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BlocProvider<TaskBloc>.value(
-                              value: _taskBloc,
-                              child: KanbanBoardView(
-                                data: data[index],
-                                groupId: widget.groupData.id,
-                              ),
-                            ),
-                          )
-                        );
-                      },
-                      child: Icon(Icons.keyboard_arrow_right),
-                    ),
-                  )
+                  ),
                 ],
               ),
               expanded: Column(
@@ -231,7 +239,13 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                   Divider(height: 20,)
                 ],
               )
-          );
+            );
+          } else {
+            return Container(
+              width: size.width,
+              child: Text("No Assignments"),
+            );
+          }  
         },
       );
     }
@@ -239,7 +253,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
     _buildAssignmentOverview() {
       return Card(
         elevation: 8,
-        color: Colors.grey[850],
+        color: Colors.grey[900],
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(
@@ -253,7 +267,9 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                       flex: 3,
                       child: Row(
                         children: <Widget>[
-                          Text('Assingments'),
+                          Text('Assignments',style: TextStyle( 
+                            color: Colors.lightBlue,
+                            fontSize: 16),),
                           SizedBox(width: 10,),
                           InkWell(
                               onTap: () {
@@ -312,56 +328,52 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
 
     _buildMilestone() {
       return Card(
-          elevation: 8,
-          color: Colors.grey[850],
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Container(
-                  decoration: BoxDecoration(),
-                  child: Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Text(
-                          'Milestone',
-                          style: TextStyle(color: Colors.green),
-                        ),
+        elevation: 8,
+        color: Colors.grey[900],
+        child: Padding(
+          padding: const EdgeInsets.all(9.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(),
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 3,
+                      child: Text(
+                        'Milestone',
+                        style: TextStyle(
+                          color: Colors.green,
+                          fontSize: 16),
                       ),
-                      Expanded(
-                        flex: 1,
-                        child: FlatButton(
-                          onPressed: () {},
-                          child: Text("More", textAlign: TextAlign.center),
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-                CustomMilestone(
-                  totalGoals: 5,
-                  completedGoals: 2,
-                  icon: Icons.check_circle_outline,
-                  completedIcon: Icons.check,
-                ),
-                SizedBox(
-                  height: 2,
-                ),
-              ],
-            ),
-          ));
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              CustomMilestone(
+                totalGoals: 5,
+                completedGoals: 2,
+                icon: Icons.check_circle_outline,
+                completedIcon: Icons.check,
+              ),
+              SizedBox(
+                height: 2,
+              ),
+            ],
+          ),
+        )
+      );
     }
 
     _buildHeader(){
       return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         elevation: 8,
-        color: Colors.grey[850],
+        color: Colors.grey[900],
         child: Container(
           width: size.width,
           height: 120,
@@ -426,96 +438,6 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
       );
     }
 
-
-    _buildHeader1() {
-      return Card(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-          elevation: 8,
-          color: Colors.grey[850],
-          child: Padding(
-            padding: const EdgeInsets.all(5.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Expanded(
-                      flex: 1,
-                      child: Hero(
-                        tag: 'dp',
-                        child: CustomNetworkProfilePicture(
-                          heigth: 80.00,
-                          width: 90.00,
-                          image: widget.groupData.profilePicturerUrl,
-                          child: Text(""),
-                        )
-                        
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    ),
-                    //TODO : Hero Bugged , remove the singlescrollview
-                    Expanded(
-                      flex: 3,
-                      child: Hero(
-                          flightShuttleBuilder: (flightContext, animation,
-                              direction, fromContext, toContext) {
-                            return DefaultTextStyle(
-                              style: DefaultTextStyle.of(toContext).style,
-                              child: SingleChildScrollView(
-                                  child: toContext.widget),
-                            );
-                          },
-                          tag: widget.groupData.id,
-                          child: Column(
-                            children: <Widget>[
-                              Builder(
-                                builder: (context) => GestureDetector(
-                                  child: Text(
-                                    "id : ${widget.groupData.id}",
-                                    style: TextStyle(
-                                        fontSize: 11, color: Colors.cyan[300]),
-                                  ),
-                                  onLongPress: () {
-                                    Clipboard.setData(ClipboardData(
-                                        text: widget.groupData.id));
-                                    Scaffold.of(context).showSnackBar(SnackBar(
-                                      content: Text("Copied to Clipboard"),
-                                    ));
-                                  },
-                                ),
-                              ),
-                              Text(
-                                "${widget.groupData.name}",
-                                style: TextStyle(fontSize: 22),
-                              ),
-                            ],
-                          )),
-                    )
-                  ],
-                ),
-                SizedBox(height: 10),
-                FlatButton(
-                  child: Text("More"),
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                          builder: (context) => BlocProvider.value(
-                              value: _groupProfileBloc,
-                              child: GroupworkProfile(
-                                data: widget.groupData,
-                              )),
-                          fullscreenDialog: true),
-                    );
-                  },
-                )
-              ],
-            ),
-          ));
-    }
-
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
@@ -525,7 +447,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
         elevation: 0.00,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(9.0),
+       
         child: Stack(
           children: <Widget>[
             Positioned(
@@ -533,7 +455,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
               left: 0,
               right: 0,
               child: CustomStackBackground(
-                color: Colors.amber[600],
+                color: Colors.blue[600],
                 width: size.width,
                 height: size.height/2,
                 child: Container(),
