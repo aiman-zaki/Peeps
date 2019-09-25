@@ -7,10 +7,9 @@ import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/groupwork_form.dart';
-import 'package:peeps/screens/groupwork/groupwork_hub.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
 import 'package:peeps/screens/splash_page.dart';
 
-import 'groupwork/groupwork_bottombar.dart';
 
 class GroupworksView extends StatefulWidget {
   final UserModel user;

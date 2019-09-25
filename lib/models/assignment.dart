@@ -41,6 +41,8 @@ class AssignmentModel{
       "description":this.description,
       "leader":this.leader,
       "total_marks":this.totalMarks,
+      "created_date": this.createdDate.toString(),
+      "due_date":this.dueDate.toString(),
     };
   }
 
@@ -49,22 +51,6 @@ class AssignmentModel{
     List<TaskModel> _todo = [];
     List<TaskModel> _ongoing = [];
     List<TaskModel> _done = [];
-    /*if(json['todo'] != null){
-      for(Map<String,dynamic> task in json['todo']){
-        _todo.add(TaskModel.fromJson(task));
-    
-      }
-    }
-    if(json['ongoing'] != null){
-      for(Map<String,dynamic> task in json['ongoing']){
-        _ongoing.add(TaskModel.fromJson(task));
-      }
-    }
-    if(json['done'] != null){
-      for(Map<String,dynamic> task in json['done']){
-        _done.add(TaskModel.fromJson(task));
-      }
-    }*/
 
     if(json['tasks'] != null){
       for(Map<String,dynamic> item in json['tasks']){
@@ -87,11 +73,11 @@ class AssignmentModel{
       title: json['title'],
       description: json['description'],
       leader: json['leader'],
-      totalMarks: json['total_marks'],
-      scoredMark: json['scored_marks'] != null ? json['scored_marks'] : null,
+      totalMarks: json['total_marks'].toDouble(),
+      scoredMark: json['scored_marks'] != null ? json['scored_marks'].toDouble() : null,
       status: json['status'] != null ? json['status'] : null,
-      createdDate: json['created_date'] != null ? json['created_date'] : null,
-      dueDate: json['due_date'] != null ? json['due_date'] : null,
+      createdDate: json['created_date'] != null ? DateTime.parse(json['created_date']) : null,
+      dueDate: json['due_date'] != null ? DateTime.parse(json['due_date']) : null,
       todo: _todo,
       ongoing: _ongoing,
       done: _done,

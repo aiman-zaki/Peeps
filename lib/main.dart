@@ -61,12 +61,12 @@ class AppState extends State<App> {
         scaffoldBackgroundColor: Colors.grey[900],
         primaryColor: Color.fromARGB(255, 126, 87, 194),
         cardColor: Color.fromARGB(50, 173, 102, 227),
-        accentColor: Colors.cyan[600],
+        accentColor: Colors.pink[400],
         backgroundColor: Colors.grey[900],
         focusColor: Colors.blueGrey[600],
         buttonColor: Colors.pink[600],
         floatingActionButtonTheme: FloatingActionButtonThemeData(
-        backgroundColor: Colors.pink[600]
+          backgroundColor: Colors.pink[600],
         )
       ),
       initialRoute: HomeViewRoute,

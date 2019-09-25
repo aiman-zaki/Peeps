@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/task.dart';
-import 'package:peeps/screens/groupwork/card_task.dart';
+
+import 'card_task.dart';
 
 class DraggableTask extends StatefulWidget {
   final TaskModel data;

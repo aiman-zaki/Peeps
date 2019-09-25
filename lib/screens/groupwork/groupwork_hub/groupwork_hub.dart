@@ -10,8 +10,8 @@ import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/screens/common/custom_milestone.dart';
 import 'package:peeps/screens/groupwork/assignment_form.dart';
-import 'package:peeps/screens/groupwork/group_chat.dart';
-import 'package:peeps/screens/groupwork/groupwork_hub_view.dart';
+import 'package:peeps/screens/groupwork/chat/group_chat.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub_view.dart';
 
 class GroupworkHub extends StatefulWidget {
   final GroupworkModel groupData;
