@@ -33,7 +33,7 @@ class _InboxBottomBarViewState extends State<InboxBottomBarView> {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(
-        color: Colors.blueAccent,
+        color: Colors.indigoAccent,
         backgroundColor: Colors.black,
         buttonBackgroundColor: Colors.black,
         items: <Widget>[

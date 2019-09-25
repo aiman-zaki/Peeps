@@ -48,45 +48,48 @@ class _GroupworksViewState extends State<GroupworksView> {
     }
 
     Widget _groupCard(GroupworkModel groupwork){
-      return Container(
-        child: Column(
-          children: <Widget>[
-            _buildAvatar(groupwork),
-            Container(
-              width: double.infinity,
-              color: Colors.grey[900],
-              padding: const EdgeInsets.all(12),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        flex: 3,
-                        child: Text('Pinned Notes')),
-                      Expanded(
-                        flex: 1,
-                        child: Icon(Icons.info_outline)),
-                    ],
-                  ),
-                  SizedBox(height: 10,),
-                  ListView.builder(
-                    shrinkWrap: true,
-                    itemCount: groupwork.notes.isEmpty ? 0 : groupwork.notes.length,
-                    itemBuilder: (context,index){
-                      if(groupwork.notes.isEmpty){
-                        return Text("No Pinned Notes");
-                      } else {
-                        return Text(groupwork.notes[index].note);
-                      }
+      return Padding(
+        padding: const EdgeInsets.all(6.0),
+        child: Container(
+          child: Column(
+            children: <Widget>[
+              _buildAvatar(groupwork),
+              Container(
+                width: double.infinity,
+                color: Theme.of(context).primaryColor,
+                padding: const EdgeInsets.all(12),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 3,
+                          child: Text('Pinned Notes')),
+                        Expanded(
+                          flex: 1,
+                          child: Icon(Icons.info_outline)),
+                      ],
+                    ),
+                    SizedBox(height: 10,),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      itemCount: groupwork.notes.isEmpty ? 0 : groupwork.notes.length,
+                      itemBuilder: (context,index){
+                        if(groupwork.notes.isEmpty){
+                          return Text("No Pinned Notes");
+                        } else {
+                          return Text(groupwork.notes[index].note);
+                        }
 
-                    },
-                  )
-                ],
+                      },
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       );
     }
@@ -112,7 +115,6 @@ class _GroupworksViewState extends State<GroupworksView> {
 
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text("Groupwork"),
         actions: <Widget>[

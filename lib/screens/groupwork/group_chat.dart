@@ -155,6 +155,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: new AppBar(
         title: Text("Group Chat"),
       ),

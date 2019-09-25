@@ -55,9 +55,19 @@ class AppState extends State<App> {
     return MaterialApp(
       theme:  ThemeData(
         brightness: Brightness.dark,
-        primaryColor: Colors.blue[800],
+        appBarTheme: AppBarTheme(
+          color: Color.fromARGB(255, 77,44, 145)
+        ),
+        scaffoldBackgroundColor: Colors.grey[900],
+        primaryColor: Color.fromARGB(255, 126, 87, 194),
+        cardColor: Color.fromARGB(50, 173, 102, 227),
         accentColor: Colors.cyan[600],
-        backgroundColor: Colors.black
+        backgroundColor: Colors.grey[900],
+        focusColor: Colors.blueGrey[600],
+        buttonColor: Colors.pink[600],
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+        backgroundColor: Colors.pink[600]
+        )
       ),
       initialRoute: HomeViewRoute,
       onGenerateRoute: router.generateRoute,

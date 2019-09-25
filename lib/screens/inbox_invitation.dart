@@ -111,7 +111,7 @@ class _InboxInvitationViewState extends State<InboxInvitationView> {
             expanded: Card(
               color: Colors.blueGrey[800],
               child: Padding(
-                padding: const EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(12.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
@@ -154,72 +154,54 @@ class _InboxInvitationViewState extends State<InboxInvitationView> {
 
     Widget _buildGroupInvitationListView(List<GroupInvitationMailModel> data) {
       return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         itemCount: data.length,
         itemBuilder: (BuildContext context, int index) {
           return _buildItem(data[index]);
-
-          ListTile(
-            onTap: () {
-              Navigator.of(context).push(CupertinoPageRoute(
-                  builder: (context) =>
-                      GroupworkProfile(data: data[index].group)));
-            },
-            leading: Text(data[index].inviterEmail),
-            trailing: RaisedButton(
-              onPressed: () {
-                setState(() {
-                  bloc.dispatch(ReplyInvitationEvent(
-                      reply: true, groupId: data[index].groupInviteId));
-                });
-              },
-              child: new Text('Accept'),
-            ),
-          );
         },
       );
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).backgroundColor,
       ),
-      body: SingleChildScrollView(
-        child: BlocBuilder<InboxBloc, InboxState>(
-          bloc: bloc,
-          builder: (BuildContext context, InboxState state) {
-            if (state is InitialInboxState) {
-              return SplashScreen();
-            }
-            if (state is LoadingInboxState) {
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-            }
-            if (state is LoadedInboxState) {
-              return Column(
-                children: <Widget>[
-                  Text(
+      body: BlocBuilder<InboxBloc, InboxState>(
+        bloc: bloc,
+        builder: (BuildContext context, InboxState state) {
+          if (state is InitialInboxState) {
+            return SplashScreen();
+          }
+          if (state is LoadingInboxState) {
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }
+          if (state is LoadedInboxState) {
+            return ListView(
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Text(
                     "Groupwork Invitation",
                     style: TextStyle(fontSize: 22),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(18.0),
-                    child: _buildGroupInvitationListView(state.data),
-                  ),
-                ],
-              );
-            }
-            if (state is NoInvitationState) {
-              return Center(
-                child: Container(
-                  child: Text("No Invitation"),
                 ),
-              );
-            }
-          },
-        ),
+                Padding(
+                  padding: const EdgeInsets.all(18.0),
+                  child: _buildGroupInvitationListView(state.data),
+                ),
+              ],
+            );
+          }
+          if (state is NoInvitationState) {
+            return Center(
+              child: Container(
+                child: Text("No Invitation"),
+              ),
+            );
+          }
+        },
       ),
     );
   }

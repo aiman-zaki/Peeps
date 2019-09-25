@@ -20,7 +20,7 @@ class CustomMilestone extends StatelessWidget {
     List<Widget> totalGoalsIcon = [];
     for(int i = 0 ; i<totalGoals; i++){
       if(i < completedGoals){
-        totalGoalsIcon.add(CustomMilestoneIcon(icon: completedIcon,backgroundColor: Colors.green,iconColor: Colors.black,));
+        totalGoalsIcon.add(CustomMilestoneIcon(icon: completedIcon,backgroundColor: Colors.green,iconColor: Colors.white70,));
       } else {
         totalGoalsIcon.add(
         CustomMilestoneIcon(icon: icon,backgroundColor: Colors.grey,),

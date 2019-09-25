@@ -204,25 +204,19 @@ class AccountViewState extends State<AccountView> {
     }
 
     _buildFrontBody(){
-      return Positioned(
-        child: CustomStackFrontBody(
-          color: Colors.grey[900],
-   
-          child: Column(
-            children: <Widget>[
-            
-              SizedBox(height: 10,),
-              _buildAvatar(),
-              FlatButton(
-                onPressed: updatePicture == false ?
-                  null :
-                  _upload, 
-                child: Text("Upload"),
-              ),
-              _buildBody(),
-            ],  
+      return Column(
+        children: <Widget>[
+        
+          SizedBox(height: 10,),
+          _buildAvatar(),
+          FlatButton(
+            onPressed: updatePicture == false ?
+              null :
+              _upload, 
+            child: Text("Upload"),
           ),
-        ),
+          _buildBody(),
+        ],  
       );
     }
 
@@ -274,10 +268,8 @@ class AccountViewState extends State<AccountView> {
         }
       },
       child: Scaffold(
-        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           elevation: 5.00,
-          backgroundColor: Theme.of(context).backgroundColor,
           centerTitle: true,
           title: Text('Account'),
         ),
@@ -285,7 +277,6 @@ class AccountViewState extends State<AccountView> {
         body: SingleChildScrollView(
           child: Stack(
             children: <Widget>[ 
-              _buildBackgroundColor(),
               _buildFrontBody(),
             ],
           ),
