@@ -41,7 +41,8 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
         BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: const AssignmentRepository(),)),
         BlocProvider<TaskBloc>(builder: (context) => TaskBloc(repository: const AssignmentRepository()),),
         BlocProvider<MembersBloc>(builder: (context) => MembersBloc(repository: const GroupworkRepository()),),
-        BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: const GroupworkRepository()),)
+        BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: const GroupworkRepository()),),
+        BlocProvider<InviteMembersBloc>(builder: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository: const GroupworkRepository()),),
       ],
       child: GroupworkHubView(groupData:widget.groupData,userData:widget.userData)
     );

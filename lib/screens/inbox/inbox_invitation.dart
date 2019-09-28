@@ -8,7 +8,7 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/inbox.dart';
 import 'package:peeps/screens/splash_page.dart';
 
-import '../groupwork/groupwork_profile.dart';
+import '../groupwork/profile/groupwork_profile.dart';
 
 class InboxInvitationView extends StatefulWidget {
   InboxInvitationView({Key key}) : super(key: key);

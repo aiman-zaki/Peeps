@@ -10,9 +10,11 @@ import '../assignment_form.dart';
 
 class HubAssignments extends StatefulWidget {
   final groupData;
+  final userData;
   HubAssignments({
     Key key,
     @required this.groupData,
+    @required this.userData,
   }) : super(key: key);
 
   _HubAssignmentsState createState() => _HubAssignmentsState();
@@ -26,6 +28,18 @@ class _HubAssignmentsState extends State<HubAssignments> {
     final _taskBloc = BlocProvider.of<TaskBloc>(context);
     final size = MediaQuery.of(context).size;
 
+    _buildLeaderTag(String leader){
+      if(leader == widget.userData.email) 
+        return Card(
+          elevation: 5.00,
+          color:Colors.pink, 
+          child: Padding(
+            padding: const EdgeInsets.all(2.0),
+            child: Text("Leader"),
+          ));
+      else
+        return Text(""); 
+    }
     _buildAssignmentList(List<AssignmentModel> data) {
       return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
@@ -39,10 +53,21 @@ class _HubAssignmentsState extends State<HubAssignments> {
                 padding: const EdgeInsets.all(8.0),
                 child: ExpandablePanel(
                     tapBodyToCollapse: true,
-                    header: Text(
-                      data[index].title,
-                      style: TextStyle(
-                        fontSize: 17,
+                    header: Container(
+                      width: size.width,
+                      child: Stack(
+                        children: <Widget>[
+                          Text(
+                            data[index].title,
+                            style: TextStyle(
+                              fontSize: 17,
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: _buildLeaderTag(data[index].leader),
+                          )
+                        ],
                       ),
                     ),
                     collapsed: Column(
@@ -109,7 +134,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
             child: Row(
               children: <Widget>[
                 Expanded(
-                  flex: 3,
+                  flex: 5,
                   child: Row(
                     children: <Widget>[
                       Text(

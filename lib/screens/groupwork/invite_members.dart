@@ -2,10 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/user.dart';
+import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/common/custom_search.dart';
 
 class InviteMembersView extends StatefulWidget {
-  InviteMembersView({Key key}) : super(key: key);
+
+  final groupData;
+  
+  InviteMembersView({Key key,
+    @required this.groupData
+  }) : super(key: key);
 
   _InviteMembersViewState createState() => _InviteMembersViewState();
 }
@@ -14,12 +20,14 @@ class _InviteMembersViewState extends State<InviteMembersView> {
  
 @override
 Widget build(BuildContext context) {
-  final _membersBloc = BlocProvider.of<MembersBloc>(context);
+
+
+  final _bloc = BlocProvider.of<InviteMembersBloc>(context);
   List datas = [];
 
   List _dataFromState(){
-    var currentState = _membersBloc.currentState;
-    if(currentState is LoadedSearchedUserResult){
+    var currentState = _bloc.currentState;
+    if(currentState is LoadedUsersState){
         return currentState.data;
     } else {
       return [];
@@ -27,19 +35,49 @@ Widget build(BuildContext context) {
   }
 
   datas = _dataFromState();
+
+  _buildInvitationButton(user){
+    print(widget.groupData.invitations);
+    List filter = widget.groupData.invitations.where((invite)
+      => invite == user.email
+    ).toList();
+    if(filter.isEmpty){
+      return FlatButton(
+          onPressed: (){
+            Map<String,dynamic> data = {
+              "email":user.email,
+              "groupId":widget.groupData.id
+            };
+            _bloc.dispatch(InviteMemberEvent(data: data));
+          },
+          child: Text("Invite"));
+    }
+    else {
+      return FlatButton(
+        onPressed: null,
+        child: Text("Invited"),
+      );
+    }
+  }
   
-  Widget _listViewChild(data){
+  Widget _listViewChild(user){
     return Card(
-      child: ListTile(
-        leading: CircleAvatar(child: Icon(Icons.access_alarm)),
-        trailing: Icon(Icons.add),
-        title: Text(data.email),
+      child: Padding(
+        padding: const EdgeInsets.all(4.0),
+        child: ListTile(
+          leading: CustomNetworkProfilePicture(
+            width: 60,
+            image: user.picture,
+          ),
+          trailing: _buildInvitationButton(user),
+          title: Text(user.email),
+        ),
       ),
     );
   }
 
   _searchInput(String searchIn){
-    _membersBloc.dispatch(SearchButtonClicked(search: searchIn));    
+    _bloc.dispatch(SearchButtonClickedEvent(data: searchIn));    
   }
 
   _showLoadingDialog(){
@@ -61,11 +99,11 @@ Widget build(BuildContext context) {
     ),
     backgroundColor: Theme.of(context).backgroundColor,
     body: BlocListener(
-      bloc: _membersBloc,
+      bloc: _bloc,
       listener: (context,state){
-        if(state is LoadingSearchedResult)
+        if(state is LoadingUsersState)
           _showLoadingDialog();
-        if(state is LoadedSearchedUserResult){
+        if(state is LoadedUsersState){
             Navigator.pop(context);
             setState(() {
               

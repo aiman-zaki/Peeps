@@ -127,5 +127,29 @@ class UsersRepository{
     return "Something Wrong";
   } 
 
+  Future<List<UserModel>> searchUser(String search) async{
+    var token = await accessToken();
+    List<UserModel> users = [];
+    Map data = {
+      "search":search
+    };
+    var body = json.encode(data);
+
+    var response = await http.post(
+      _baseUrl+"search",
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"},
+      body: body
+    );
+
+    var jsonData = json.decode(response.body);
+
+    if(response.statusCode == 200){
+      for(Map<String,dynamic> user in jsonData){
+          users.add(UserModel.fromJson(user));
+      }
+    }
+    return users;
+  }
+
   
 }

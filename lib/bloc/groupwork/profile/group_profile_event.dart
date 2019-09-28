@@ -19,3 +19,24 @@ class UploadGroupworkProfileImage extends GroupProfileEvent{
   @override
   String toString() => "UploadProfileImage";
 }
+
+
+class UpdateAdminRoleEvent extends GroupProfileEvent{
+  final data;
+  UpdateAdminRoleEvent({
+    @required this.data
+  });
+
+  @override
+  String toString() => "UpdateAdminRoleEvent";
+}
+
+class DeleteMemberEvent extends GroupProfileEvent{
+  final data;
+  DeleteMemberEvent({
+    @required this.data,
+  });
+
+  @override
+  String toString() => "DeleteMemberEvent";
+}

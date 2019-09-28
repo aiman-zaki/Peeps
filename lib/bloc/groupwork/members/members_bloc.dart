@@ -25,11 +25,6 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
       var members = await repository.fetchMembers(event.groupId);
       yield LoadedMembersState(data: members);
     }
-    if(event is SearchButtonClicked){
-      yield LoadingSearchedResult();
-      List<UserModel> data = await repository.searchedResult(event.search);
-      yield LoadedSearchedUserResult(data: data);
-      
-    }
+    
   }
 }

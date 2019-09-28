@@ -22,9 +22,14 @@ import 'package:peeps/screens/groupwork/invite_members.dart';
 
 import '../assignment_form.dart';
 import '../chat/group_chat.dart';
-import '../groupwork_profile.dart';
+import '../profile/groupwork_profile.dart';
 import '../kanban/kanban.dart';
 import 'header.dart';
+
+enum Role{
+  admin,
+  normal,
+}
 
 class GroupworkHubView extends StatefulWidget {
   final GroupworkModel groupData;
@@ -35,8 +40,23 @@ class GroupworkHubView extends StatefulWidget {
 }
 
 class _GroupworkHubViewState extends State<GroupworkHubView> {
+  bool _isAdmin = false;
+
+  bool checkIsAdmin(){
+
+    for(Map<String,dynamic> member in widget.groupData.members){
+      if(member['email'] == widget.userData.email){
+        if(member['role'] == Role.admin.index){
+          return true;
+        }         
+      }
+    }
+    return false;
+  }
+
   @override
   void initState() {
+    _isAdmin = checkIsAdmin();
     super.initState();
   }
 
@@ -83,7 +103,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
 
     //TODO : Brainstorm Feature
     _brainstorm() {}
- 
+
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -124,7 +144,10 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
               Positioned(
                 child: Column(
                   children: <Widget>[
-                    HubHeader(groupData: widget.groupData,),
+                    HubHeader(
+                      isAdmin: _isAdmin,
+                      groupData: widget.groupData,
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -132,11 +155,17 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                     SizedBox(
                       height: 10,
                     ),
-                    HubAssignments(groupData: widget.groupData,),
+                    HubAssignments(
+                      groupData: widget.groupData,
+                      userData: widget.userData,
+                    ),
                     SizedBox(
                       height: 10,
                     ),
-                    HubMembers(groupData: widget.groupData,userData: widget.userData,),
+                    HubMembers(
+                      groupData: widget.groupData,
+                      userData: widget.userData,
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -146,6 +175,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
               )
             ],
           ),
-        ));
+        )
+      );
   }
 }

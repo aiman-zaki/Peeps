@@ -24,7 +24,8 @@ class _HubMembersState extends State<HubMembers> {
   Widget build(BuildContext context) {
 
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
-    final _groupChatBloc = BlocProvider.of<MembersBloc>(context); 
+    final _groupChatBloc = BlocProvider.of<GroupChatBloc>(context);
+    final _inviteMembersBloc = BlocProvider.of<InviteMembersBloc>(context);
 
     _buildMembersList(List<MemberModel> data) {
       return ListView.builder(
@@ -75,9 +76,9 @@ class _HubMembersState extends State<HubMembers> {
                     Navigator.of(context).push(
                       MaterialPageRoute(
                           builder: (context) =>
-                              BlocProvider<MembersBloc>.value(
-                                  value: _membersBloc,
-                                  child: InviteMembersView()),
+                              BlocProvider<InviteMembersBloc>.value(
+                                  value: _inviteMembersBloc,
+                                  child: InviteMembersView(groupData: widget.groupData,)),
                           fullscreenDialog: true),
                     );
                   },

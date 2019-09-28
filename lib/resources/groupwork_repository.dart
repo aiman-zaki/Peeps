@@ -115,28 +115,45 @@ class GroupworkRepository{
     return members;
   }
 
-  Future<List<UserModel>> searchedResult(String search) async{
-    var token = await accessToken();
-    List<UserModel> users = [];
-    Map data = {
-      "search":search
-    };
-    var body = json.encode(data);
+  
 
-    var response = await http.post(
-      _baseUrl+"search",
+  Future updateRole(Map<String,dynamic> data) async{
+    var token = await accessToken();
+   
+    var response = await http.put(
+      _baseUrl+data['groupId']+"/roles",
       headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"},
-      body: body
+      body: jsonEncode(data)
     );
 
-    var jsonData = json.decode(response.body);
-
     if(response.statusCode == 200){
-      for(Map<String,dynamic> user in jsonData){
-          users.add(UserModel.fromJson(user));
-      }
+      return 200;
     }
-    return users;
   }
 
+  Future inviteMember(Map<String,dynamic> data) async{
+    var token = await accessToken();
+    var response = await http.post(
+      _baseUrl+data['groupId']+"/members",
+      body: jsonEncode(data),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"}
+    );
+
+    if(response.statusCode == 200){
+      return 200;
+    }
+  }
+
+  Future deleteMember(Map<String,dynamic> data) async {
+    var token = await accessToken();
+    var response = await http.put(
+      _baseUrl+data['groupId']+"/members",
+      body: jsonEncode(data),
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"}  
+    );
+
+    if(response.statusCode == 200){
+      return 200;
+    }
+  }
 }

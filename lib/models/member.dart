@@ -9,6 +9,7 @@ class MemberModel {
   String contactNo;
   String programmeCode;
   String profilePicture;
+  int role;
 
   MemberModel({
     @required this.id,
@@ -18,6 +19,7 @@ class MemberModel {
     @required this.contactNo,
     @required this.programmeCode,
     this.profilePicture,
+    @required this.role,
   });
 
   static MemberModel fromJson(Map<String,dynamic> data){
@@ -30,7 +32,8 @@ class MemberModel {
       email: data['email'],
       contactNo: data['contactNo'],
       programmeCode: data['programmeCode'],
-      profilePicture: url
+      profilePicture: url,
+      role: data['role'],
     );
   }
 

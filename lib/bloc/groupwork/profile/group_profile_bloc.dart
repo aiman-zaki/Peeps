@@ -25,5 +25,15 @@ class GroupProfileBloc extends Bloc<GroupProfileEvent, GroupProfileState> {
      await repository.uploadProfileImage(event.image, event.groupId);
      yield UploadedProfileImageState();
    }
+   if(event is UpdateAdminRoleEvent){
+    yield UpdatingAdminRoleState();
+    await repository.updateRole(event.data);  
+    yield UpdatedAdminRoleState();
+   }
+   if(event is DeleteMemberEvent){
+     yield DeletingMemberState();
+     await repository.deleteMember(event.data);
+     yield DeletedMemberState();
+   }
   }
 }

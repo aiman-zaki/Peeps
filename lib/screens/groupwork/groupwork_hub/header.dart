@@ -4,19 +4,32 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/screens/common/captions.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 
-import '../groupwork_profile.dart';
-class HubHeader extends StatelessWidget {
+import '../profile/groupwork_profile.dart';
 
+class HubHeader extends StatelessWidget {
+  final isAdmin;
   final groupData;
 
-  const HubHeader({Key key, @required this.groupData}) : super(key: key);
+  const HubHeader({Key key, @required this.groupData, this.isAdmin})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final _groupProfileBloc = BlocProvider.of<GroupProfileBloc>(context);
+    final _membersBloc = BlocProvider.of<MembersBloc>(context);
     final size = MediaQuery.of(context).size;
 
-    return Container(
+    return BlocListener(
+      bloc: _groupProfileBloc,
+      listener: (context,state){
+        if(state is UpdatedAdminRoleState){
+          _membersBloc.dispatch(LoadMembersEvent(groupId: groupData.id));
+        }
+        if(state is DeletedMemberState){
+          _membersBloc.dispatch(LoadMembersEvent(groupId: groupData.id));
+        }
+      },
+      child: Container(
         padding: EdgeInsets.all(18),
         width: size.width,
         height: 250,
@@ -35,11 +48,14 @@ class HubHeader extends StatelessWidget {
                           MaterialPageRoute(
                               builder: (context) => BlocProvider.value(
                                   value: _groupProfileBloc,
-                                  child: GroupworkProfile(
-                                    data: groupData,
-                                  )
-                                ),
-                            fullscreenDialog: true),
+                                  child: BlocProvider.value(
+                                    value: _membersBloc,
+                                    child: GroupworkProfile(
+                                      isAdmin: isAdmin,
+                                      data: groupData,
+                                    ),
+                                  )),
+                              fullscreenDialog: true),
                         );
                       },
                       child: Hero(
@@ -68,11 +84,15 @@ class HubHeader extends StatelessWidget {
                   SizedBox(
                     height: 10,
                   ),
-                  CustomCaptions(text: groupData.id,)                ],
+                  CustomCaptions(
+                    text: groupData.id,
+                  )
+                ],
               ),
             ],
           ),
         ),
-      );
+      ),
+    );
   }
 }
