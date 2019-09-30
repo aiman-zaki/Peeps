@@ -63,7 +63,10 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
     return [
       InkWell(
           onTap: (){
-            _taskBloc.dispatch(RefreshAssignmentEvent(assignmentId: widget.data.id,groupId: widget.groupId));
+            _todo = [];
+            _doing = [];
+            _done = [];
+            _taskBloc.dispatch(LoadTaskEvent(data: widget.data.id));
           },
           child: Icon(Icons.refresh),
       ),
@@ -71,6 +74,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
       InkWell(
         child: Icon(Icons.save),
         onTap: (){
+       
           _taskBloc.dispatch(UpdateTaskStatus(tasks: changedStatus, assignmentId: widget.data.id));
         }, 
       ),

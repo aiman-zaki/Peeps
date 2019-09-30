@@ -37,7 +37,7 @@ class TaskModel{
       dueDate: DateTime.parse(json['dueDate']),
       lastUpdated: DateTime.parse(json['lastUpdated']),
       status: json['status'],
-      priority: (json['priority']),
+      priority: json['priority'],
     );
   }
   Map<String,dynamic> toJson(){
@@ -51,7 +51,7 @@ class TaskModel{
       "assignDate":this.assignDate.toString(),
       "dueDate":this.dueDate.toString(),
       "lastUpdated":this.lastUpdated.toString(),
-      "priority": 3,
+      "priority": this.priority,
       "status":0,
     };
   }

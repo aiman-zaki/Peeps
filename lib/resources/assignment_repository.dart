@@ -91,13 +91,13 @@ class AssignmentRepository{
 
   createTask({Map<String,dynamic> todo, String groupId, String assignmentId}) async{
     Map data = {
-      "todo":todo,
+      "task":todo,
     };
 
     var body = json.encode(data);
     var token = await storage.read(key:"access_token");
 
-    var response = await http.post(_baseUrl+"groupwork/$assignmentId/task",
+    var response = await http.post(_baseUrl+"groupwork/$assignmentId/tasks",
       body: body,
       headers: {HttpHeaders.authorizationHeader: "Bearer $token", "Content-Type":"application/json",});
       Map<String,dynamic> responseData = json.decode(response.body);

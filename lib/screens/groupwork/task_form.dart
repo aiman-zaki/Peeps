@@ -5,6 +5,8 @@ import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
+
+
 class TaskForm extends StatefulWidget {
   final String assignmentId;
   final String groupId;
@@ -15,6 +17,8 @@ class TaskForm extends StatefulWidget {
 class _TaskFormState extends State<TaskForm> {
   ProfileBloc _profileBloc;
   String email;
+
+
   final format = DateFormat("yyyy-MM-dd HH:mm");
   final _taskController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -22,7 +26,7 @@ class _TaskFormState extends State<TaskForm> {
   final _dueDate = TextEditingController();
   final  _key = new GlobalKey<FormState>();
   var dropdownValue;
-
+    var priorityDropdown;
   @override
   void initState() {
     super.initState();
@@ -67,7 +71,7 @@ class _TaskFormState extends State<TaskForm> {
                   task: TaskModel(task: _taskController.text, description: _descriptionController.text, 
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
-                                  dueDate: dueDate, assignTo: dropdownValue, lastUpdated: DateTime.now(), status: 0)));
+                                  dueDate: dueDate, assignTo: dropdownValue, lastUpdated: DateTime.now(), priority: priorityDropdown,status: 0)));
             Navigator.of(context).pop();
           },
           child: Text("Accept"),
@@ -83,6 +87,30 @@ class _TaskFormState extends State<TaskForm> {
             color: Colors.white30
           ),
         );
+    }
+
+    _buildPriorityDropdown(){
+
+      //TODO Dumbfuck but working
+
+      var data  = ['highest','high','normal'];
+      List<DropdownMenuItem> items = [];
+      for(int i = 0 ; i<data.length;i++){
+        items.add(DropdownMenuItem<int>(
+          value: i,
+          child: Text(data[i]),
+        ));
+      }
+
+      return DropdownButtonFormField(
+        items: items,
+        value: priorityDropdown,
+        onChanged: (value){
+          setState(() {
+            priorityDropdown = value;
+          });
+        }
+      );
     }
 
      _buildMembersDropdown() {
@@ -207,6 +235,9 @@ class _TaskFormState extends State<TaskForm> {
                     }
                   },
                 ),
+                SizedBox(height: 15,),
+                _captions(text: "Priority"),
+                _buildPriorityDropdown(),
               ],
           ),
           )
