@@ -165,6 +165,7 @@ class _InboxInvitationViewState extends State<InboxInvitationView> {
 
     return Scaffold(
       appBar: AppBar(
+        title: Text("Groupwork Invitation"),
       ),
       body: BlocBuilder<InboxBloc, InboxState>(
         bloc: bloc,

@@ -94,7 +94,6 @@ class _BoardState extends State<Board> {
   
   @override
   Widget build(BuildContext context) {
-    final _taskBloc = BlocProvider.of<TaskBloc>(context);
     Size size = MediaQuery.of(context).size;
     return Container(
       child: Row(

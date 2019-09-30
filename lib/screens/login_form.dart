@@ -57,7 +57,7 @@ class _LoginFormState extends State<LoginForm> {
             ),
             RaisedButton(
               elevation: 12.00,
-              color: Colors.blue[800],
+       
               padding: EdgeInsets.all(15),
               shape: OutlineInputBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20)),
@@ -148,7 +148,7 @@ class _LoginFormState extends State<LoginForm> {
                             BoxShadow(
                               offset: Offset(0,0),
                               blurRadius: 10.0,
-                                color: Colors.blue[900],
+                                color: Theme.of(context).accentColor,
                             )
                           ]
                         ),

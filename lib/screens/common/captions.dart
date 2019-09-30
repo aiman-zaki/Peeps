@@ -9,9 +9,14 @@ class CustomCaptions extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color _color = Colors.white30;
+    if(color != null){
+      _color = color;
+    }
+
     return Text(
       "$text",
-      style: TextStyle(color: Colors.white30),
+      style: TextStyle(color: _color),
     );
   }
 }
