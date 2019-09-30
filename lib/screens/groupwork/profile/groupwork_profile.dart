@@ -36,7 +36,7 @@ class GroupworkProfile extends StatefulWidget {
 class _GroupworkProfileState extends State<GroupworkProfile> {
   File _image;
   bool upload = false;
- 
+  bool  readOnly = true;
   
   final _creatorController = TextEditingController();
   final _supervisorController = TextEditingController();
@@ -63,7 +63,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<GroupProfileBloc>(context);
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
-    final edit = true;
+    
     final size = MediaQuery.of(context).size;
 
     _buildAdminFeatures(){
@@ -81,7 +81,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
         {String labelText, String data, TextEditingController controller}) {
       return TextField(
         controller: controller,
-        readOnly: edit,
+        readOnly: readOnly,
         decoration: InputDecoration(
             labelText: labelText,
             border: OutlineInputBorder(
@@ -213,7 +213,12 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
             ),
             SizedBox(
               width: size.width,
-              child: FlatButton(onPressed: () {}, child: Text('Update')),
+              child: FlatButton(onPressed: () {
+                setState(() {
+                  readOnly = false;
+                });
+
+              }, child: Text('Update')),
             ),
           ],
         ),
@@ -261,6 +266,17 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                 ),
         ),
       );
+    }
+
+    _fabOnPressed(){
+      Map<String,dynamic> data = {
+        "group_id":widget.data.id,
+        "supervisor":_supervisorController.text,
+        "description":_descriptionController.text,
+        "course":_courseController.text
+      };
+
+      _bloc.dispatch(UpdateGroupworkProfileEvent(data: data));
     }
 
     return Scaffold(
@@ -322,6 +338,10 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: readOnly? null : FloatingActionButton(
+        onPressed: _fabOnPressed,
+        child: Icon(Icons.check),
       ),
     );
   }

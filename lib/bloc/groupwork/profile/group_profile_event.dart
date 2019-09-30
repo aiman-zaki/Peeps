@@ -6,6 +6,16 @@ abstract class GroupProfileEvent extends Equatable {
   GroupProfileEvent([List props = const <dynamic>[]]) : super(props);
 }
 
+class UpdateGroupworkProfileEvent extends GroupProfileEvent{
+  final data;
+  UpdateGroupworkProfileEvent({
+    @required this.data
+  });
+
+  @override
+  String toString() => "UpdateGroupworkEvent";
+}
+
 class UploadGroupworkProfileImage extends GroupProfileEvent{
   final image;
   final groupId;

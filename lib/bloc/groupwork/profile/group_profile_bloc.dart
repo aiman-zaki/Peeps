@@ -2,17 +2,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 
-
 import 'package:peeps/resources/groupwork_repository.dart';
 import '../bloc.dart';
 
 class GroupProfileBloc extends Bloc<GroupProfileEvent, GroupProfileState> {
   final GroupworkRepository repository;
 
-  GroupProfileBloc({
-    @required this.repository
-  });
-  
+  GroupProfileBloc({@required this.repository});
+
   @override
   GroupProfileState get initialState => InitialGroupProfileState();
 
@@ -20,20 +17,26 @@ class GroupProfileBloc extends Bloc<GroupProfileEvent, GroupProfileState> {
   Stream<GroupProfileState> mapEventToState(
     GroupProfileEvent event,
   ) async* {
-   if(event is UploadGroupworkProfileImage){
-     yield UploadingProfileImageState();
-     await repository.uploadProfileImage(event.image, event.groupId);
-     yield UploadedProfileImageState();
-   }
-   if(event is UpdateAdminRoleEvent){
-    yield UpdatingAdminRoleState();
-    await repository.updateRole(event.data);  
-    yield UpdatedAdminRoleState();
-   }
-   if(event is DeleteMemberEvent){
-     yield DeletingMemberState();
-     await repository.deleteMember(event.data);
-     yield DeletedMemberState();
-   }
+    if (event is UpdateGroupworkProfileEvent) {
+      yield UpdatingGroupProfileState();
+      await repository.updateGroupwork(event.data);
+      yield UpdatedGroupProfileState();
+
+    }
+    if (event is UploadGroupworkProfileImage) {
+      yield UploadingProfileImageState();
+      await repository.uploadProfileImage(event.image, event.groupId);
+      yield UploadedProfileImageState();
+    }
+    if (event is UpdateAdminRoleEvent) {
+      yield UpdatingAdminRoleState();
+      await repository.updateRole(event.data);
+      yield UpdatedAdminRoleState();
+    }
+    if (event is DeleteMemberEvent) {
+      yield DeletingMemberState();
+      await repository.deleteMember(event.data);
+      yield DeletedMemberState();
+    }
   }
 }

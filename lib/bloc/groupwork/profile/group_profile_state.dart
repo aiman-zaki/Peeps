@@ -9,6 +9,17 @@ class InitialGroupProfileState extends GroupProfileState {
   @override
   String toString() => "InitialGroupProfileState";
 }
+
+class UpdatingGroupProfileState extends GroupProfileState{
+  @override
+  String toString() => "UpdatingGroupProfileState";
+}
+
+class UpdatedGroupProfileState extends GroupProfileState{
+  @override
+  String toString() => "UpdatedGroupProfileState";
+}
+
 class UploadingProfileImageState extends GroupProfileState{
   @override
   String toString() => "UploadingProfileImageState";

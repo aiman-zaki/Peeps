@@ -12,20 +12,7 @@ class GroupworkRepository{
 
   const GroupworkRepository();
 
-  Future<Map<String,dynamic>> joinedGroup() async{
-    var token = await storage.read(key:"access_token");
-    var response = await http.get(_baseUrl+"joined_group",
-    headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
-
-    if(response.statusCode == 200){
-      Map<String,dynamic> data = json.decode(response.body);
-      return data;
-    }
-    else{
-      throw Exception(response.statusCode);
-    }
-  }
-
+ 
   createGroupwork(Map data) async{
     var token = await storage.read(key:"access_token");
     var response = await http.post(_baseUrl+"groupwork",
@@ -39,6 +26,21 @@ class GroupworkRepository{
     else {
       throw response.body;
     }
+  }
+
+  updateGroupwork(Map<String,dynamic> data) async {
+    var headers = await fetchHeaders();
+    var response = await http.put(_baseUrl+"groupwork",
+      headers: headers,
+      body: jsonEncode(data)
+    );
+    if(response.statusCode == 200){
+  
+    } else {
+      throw("Opps Someting Error");
+    }
+
+
   }
 
   uploadProfileImage(File image,String groupId) async {
@@ -58,28 +60,6 @@ class GroupworkRepository{
     print(response.statusCode);
   }
 
-  //TODO: MORE RESEARCH GET/PUT
-  Future <List<GroupworkModel>> fetchActiveGroupsDetail(List<dynamic> data) async{
-    var token = accessToken();
-    Map body = {
-      'active_group':data
-    };
-    var response = await http.put(_baseUrl+"groupwork/detail",
-    headers: {HttpHeaders.authorizationHeader: "Bearer $token",
-              "Content-Type":"application/json"},
-    body: json.encode(body));
-    if(response.statusCode == 200){
-      List<dynamic> decoded = json.decode(response.body);
-      List<GroupworkModel> activeGroups = [];
-      for(Map<String,dynamic> temp in decoded){
-        activeGroups.add(GroupworkModel.fromJson(temp));
-      }
-      return activeGroups;
-    }  else {
-      throw("Opps Something Wrong");
-    }
-
-  }
   
   Future <List<dynamic>> fetchGroupworkStash(String groupId) async {
     var token = accessToken();
