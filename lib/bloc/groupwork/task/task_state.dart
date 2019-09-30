@@ -22,6 +22,22 @@ class DisplayMessageSnackbar extends TaskState{
   String toString() => "SucceedAddTaskState";
 }
 
+class LoadingTaskState extends TaskState{
+  @override
+  String toString() => "LoadingTaskState";
+}
+
+class LoadedTaskState extends TaskState{
+  final data;
+  LoadedTaskState({
+    @required this.data,
+  });
+  
+  @override
+  String toString() => "LoadedTaskState";
+}
+
+
 class DeletingTaskState extends TaskState{
   final taskId;
   DeletingTaskState({

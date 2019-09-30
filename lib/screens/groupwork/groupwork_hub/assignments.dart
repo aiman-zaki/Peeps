@@ -77,11 +77,14 @@ class _HubAssignmentsState extends State<HubAssignments> {
                           onTap: () {
                             Navigator.of(context).push(CupertinoPageRoute(
                               builder: (context) =>
-                                  BlocProvider<TaskBloc>.value(
+                                BlocProvider<TaskBloc>.value(
                                 value: _taskBloc,
-                                child: KanbanBoardView(
-                                  data: data[index],
-                                  groupId: widget.groupData.id,
+                                child: BlocProvider<MembersBloc>.value(
+                                  value: _membersBloc,
+                                  child: KanbanBoardView(
+                                    data: data[index],
+                                    groupId: widget.groupData.id,
+                                  ),
                                 ),
                               ),
                             ));

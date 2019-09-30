@@ -19,6 +19,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   Stream<TaskState> mapEventToState(
     TaskEvent event,
   ) async* {
+    if(event is LoadTaskEvent){
+      yield LoadingTaskState();
+      final data = await repository.fetchTasks(assignmentId: event.data);
+      yield LoadedTaskState(data: data);
+    }
     if(event is AddNewTaskEvent){
       try {
         await repository.createTask(todo: event.task.toJson(),assignmentId: event.assignmentId,groupId: event.groupId);

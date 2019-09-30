@@ -7,6 +7,16 @@ abstract class TaskEvent extends Equatable {
   TaskEvent([List props = const <dynamic>[]]) : super(props);
 }
 
+
+class LoadTaskEvent extends TaskEvent{
+  final data;
+  LoadTaskEvent({
+    @required this.data
+  });
+  
+  @override
+  String toString()=> "LoadTaskEvent";
+}
 class AddNewTaskEvent extends TaskEvent{
   final groupId;
   final assignmentId;
@@ -54,6 +64,8 @@ class DeleteTaskEvent extends TaskEvent{
   String toString() => "DeleteTaskEvent";
 
 }
+
+
 
 
 class RefreshAssignmentEvent extends TaskEvent{

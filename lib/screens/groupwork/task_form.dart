@@ -21,7 +21,7 @@ class _TaskFormState extends State<TaskForm> {
   final _assignedDate = TextEditingController();
   final _dueDate = TextEditingController();
   final  _key = new GlobalKey<FormState>();
-
+  var dropdownValue;
 
   @override
   void initState() {
@@ -38,6 +38,7 @@ class _TaskFormState extends State<TaskForm> {
   @override
   Widget build(BuildContext context) {
     final _taskBloc = BlocProvider.of<TaskBloc>(context);
+    final _membersBloc = BlocProvider.of<MembersBloc>(context);
     
     Widget _showConfirmationDialog(){
       return DialogWithAvatar(
@@ -55,7 +56,7 @@ class _TaskFormState extends State<TaskForm> {
             _descriptionController.clear();
             Navigator.of(context).pop();
           },
-          child: Text("Accept"),
+          child: Text("Cancel"),
         ),
         bottomRight: FlatButton(
           onPressed: (){
@@ -66,10 +67,10 @@ class _TaskFormState extends State<TaskForm> {
                   task: TaskModel(task: _taskController.text, description: _descriptionController.text, 
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
-                                  dueDate: dueDate, assignTo: email, lastUpdated: DateTime.now(), status: 0)));
+                                  dueDate: dueDate, assignTo: dropdownValue, lastUpdated: DateTime.now(), status: 0)));
             Navigator.of(context).pop();
           },
-          child: Text("Cancel"),
+          child: Text("Accept"),
         ),
       
       );
@@ -82,6 +83,36 @@ class _TaskFormState extends State<TaskForm> {
             color: Colors.white30
           ),
         );
+    }
+
+     _buildMembersDropdown() {
+      return BlocBuilder<MembersBloc, MembersState>(
+        bloc: _membersBloc,
+        builder: (context, state) {
+          if (state is LoadingMembersState) {
+            return DropdownButtonFormField(
+              value: "Loading ...",
+            );
+          }
+          if (state is LoadedMembersState) {
+            List<DropdownMenuItem> items =
+                state.data.map<DropdownMenuItem<String>>((var member) {
+              return DropdownMenuItem<String>(
+                value: member.email,
+                child: Text(member.email),
+              );
+            }).toList();
+            return DropdownButtonFormField(
+                onChanged: (value) {
+                  setState(() {
+                    dropdownValue = value;
+                  });
+                },
+                value: dropdownValue,
+                items: items);
+          }
+        },
+      );
     }
 
     return Scaffold(
@@ -148,6 +179,8 @@ class _TaskFormState extends State<TaskForm> {
                     }
                   },
                 ),
+                SizedBox(height: 15,),
+                _buildMembersDropdown(),
                 SizedBox(height: 15,),
                 _captions(text: "Correspond with the Assignment Due Date"),
                 DateTimeField(
