@@ -18,7 +18,6 @@ Route<dynamic> generateRoute(RouteSettings settings){
     case HomeViewRoute:
       return CupertinoPageRoute(builder: (context) => HomeView());
     case AccountViewRoute:
-      
       final NavigatorArguments args = settings.arguments;
 
       return CupertinoPageRoute(builder: (context) => 
@@ -32,7 +31,7 @@ Route<dynamic> generateRoute(RouteSettings settings){
       return CupertinoPageRoute<GroupworksView>(
                 builder: (context) {
                   return BlocProvider<GroupworkBloc>.value(
-                    value: GroupworkBloc(repository: GroupworkRepository()),
+                    value: GroupworkBloc(repository: GroupworkRepository(), usersRepository: const UsersRepository()),
                     child: GroupworksView(user: args.data),
                   );
                 }

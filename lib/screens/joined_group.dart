@@ -5,6 +5,7 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
+import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/groupwork_form.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
@@ -120,7 +121,6 @@ class _GroupworksViewState extends State<GroupworksView> {
           InkWell(
             onTap: (){
               setState(() {
-                _profileBloc.dispatch(LoadProfileEvent());
                 _bloc.dispatch(LoadGroupworkEvent(data: widget.user.activeGroup));
               });
             },
@@ -162,7 +162,7 @@ class _GroupworksViewState extends State<GroupworksView> {
               CupertinoPageRoute<GroupworkForm>(
                 builder: (context) {
                   return BlocProvider<GroupworkBloc>.value(
-                    value: GroupworkBloc(repository: _repository),
+                    value: GroupworkBloc(repository: _repository, usersRepository: const UsersRepository()),
                     child: GroupworkForm(),
                   );
                 }

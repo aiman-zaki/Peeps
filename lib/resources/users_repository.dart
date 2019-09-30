@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/inbox.dart';
 import 'package:peeps/models/user.dart';
 import 'common_repo.dart';
@@ -68,6 +69,25 @@ class UsersRepository{
     var response = await request.send();
     if(response.statusCode != 200){
       throw("Picture Failed to Upload");
+    }
+  }
+
+  fetchUserGroupworks() async {
+    var token = await accessToken();
+    var response = await http.get(
+      _baseUrl+"user/groupworks",
+      headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
+    );
+
+    if(response.statusCode == 200){
+      List<dynamic> decoded = json.decode(response.body);
+      List<GroupworkModel> activeGroups = [];
+      for(Map<String,dynamic> temp in decoded){
+        activeGroups.add(GroupworkModel.fromJson(temp));
+      }
+      return activeGroups;
+    }  else {
+      throw("Opps Something Wrong");
     }
   }
 
