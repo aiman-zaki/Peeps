@@ -48,25 +48,7 @@ class AssignmentModel{
 
   static AssignmentModel fromJson(Map<String,dynamic> json){
     //TODO : Refractor looks like dummy dumb dumb
-    List<TaskModel> _todo = [];
-    List<TaskModel> _ongoing = [];
-    List<TaskModel> _done = [];
-
-    if(json['tasks'] != null){
-      for(Map<String,dynamic> item in json['tasks']){
-        TaskModel task = TaskModel.fromJson(item);
-        if(task.status == 0){
-          _todo.add(task);
-        }
-        if(task.status == 1){
-          _ongoing.add(task);
-        }
-        if(task.status == 2){
-          _done.add(task);
-      
-        }
-      }
-    }
+   
 
     return AssignmentModel(
       id: json['_id']['\$oid'],
@@ -78,9 +60,7 @@ class AssignmentModel{
       status: json['status'] != null ? json['status'] : null,
       createdDate: json['created_date'] != null ? DateTime.parse(json['created_date']) : null,
       dueDate: json['due_date'] != null ? DateTime.parse(json['due_date']) : null,
-      todo: _todo,
-      ongoing: _ongoing,
-      done: _done,
+  
     
     );
   }

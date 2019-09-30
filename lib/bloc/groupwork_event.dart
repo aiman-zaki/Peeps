@@ -22,10 +22,8 @@ class NewGroupButtonPressedEvent extends GroupworkEvent{
 } 
 class LoadGroupworkEvent extends GroupworkEvent{
   final data;
-
   LoadGroupworkEvent({@required this.data}):super([data]);
-
-
   @override
   String toString() => "LoadGroupworkEvent";
 }
+

@@ -165,7 +165,7 @@ class _RegisterFormState extends State<RegisterForm> {
         child: RaisedButton(
           padding: EdgeInsets.all(15),
   
-          color: Colors.green[600],
+     
           onPressed: (){
             _passwordController.text == _confirmPasswordContorller.text ?
             _buildShowDialog() :
@@ -260,10 +260,8 @@ class _RegisterFormState extends State<RegisterForm> {
     }
 
     return Scaffold(
-      backgroundColor: Theme.of(context).backgroundColor,
       appBar: new AppBar(
         elevation: 0.00,
-        backgroundColor: Colors.blue[600],
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -278,21 +276,11 @@ class _RegisterFormState extends State<RegisterForm> {
                   child: Container(
                     width: width,
                     height: 90,
-                    color: Colors.blue[600],
+                    color: Theme.of(context).primaryColor,
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 0,
-                child: ClipOval(
-                  clipper: OvalTopBorderClipper(),
-                  child: Container(
-                    width: width,
-                    height: 120,
-                    color: Colors.blue[600],
-                  ),
-                ),
-              ),
+            
               Positioned(
                 top: 10,
                 left: 0,

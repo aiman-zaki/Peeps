@@ -2,23 +2,9 @@ import 'package:meta/meta.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/resources/common_repo.dart';
 
-class Note{
-  String note;
-  bool pinned;
+import 'note.dart';
 
-  Note({
-    @required this.note,
-    @required this.pinned
-  });
 
-  static Note fromJson (Map<String,dynamic> data){
-    return Note(
-      note: data['note'],
-      pinned: data['pinned']
-    );
-  }
-
-}
 
 class GroupworkModel{
   String id;
@@ -26,6 +12,7 @@ class GroupworkModel{
   String name;
   String description;
   String course;
+  List<dynamic> invitations;
   List<dynamic> members;
   List<AssignmentModel> assignments;
   List<Note> notes;
@@ -38,6 +25,7 @@ class GroupworkModel{
     @required this.name,
     @required this.description,
     @required this.course,
+    @required this.invitations,
     @required this.members,
     this.notes,
     this.profilePicturerUrl
@@ -62,6 +50,7 @@ class GroupworkModel{
       name: data['name'],
       description: data['description'],
       course: data['course'],
+      invitations: data['invitation_list'],
       members: data['members'],
       notes: item,
       profilePicturerUrl: url,

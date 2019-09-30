@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 //const String domain = "http://www.tryreboot.my:8080/";
@@ -12,4 +14,13 @@ final storage = new FlutterSecureStorage();
 Future<String> accessToken() async{
   var token = await storage.read(key: "access_token");
   return token;
+}
+
+fetchHeaders() async {
+  var token = await storage.read(key: "access_token");
+
+  return {HttpHeaders.authorizationHeader: "Bearer $token",
+                "Content-Type":"application/json"
+  };
+
 }
