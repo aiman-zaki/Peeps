@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
-import './bloc.dart';
+import '../bloc.dart';
 
 class GroupworkBloc extends Bloc<GroupworkEvent, GroupworkState> {
   final GroupworkRepository repository;

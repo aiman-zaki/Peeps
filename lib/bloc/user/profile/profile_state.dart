@@ -4,7 +4,9 @@ import 'package:peeps/models/user.dart';
 
 @immutable
 abstract class ProfileState extends Equatable {
-  ProfileState([List props = const []]) : super(props);
+  const ProfileState();
+  @override
+  List<Object> get props => [];
 }
 
 class InitialProfileState extends ProfileState {}
@@ -17,7 +19,7 @@ class ProfileLoading extends ProfileState {
 
 class ProfileLoaded extends ProfileState {
   final UserModel data;
-  ProfileLoaded({this.data}):super([data]);
+  ProfileLoaded({this.data});
 
   @override
   String toString() => "ProfileLoaded";

@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class LoginState extends Equatable {
-  LoginState([List props = const []]) : super(props);
+  const LoginState();
+  @override
+  List<Object> get props => [];
 }
 
 class LoginInitial extends LoginState {
@@ -18,7 +20,7 @@ class LoginLoading extends LoginState{
 
 class LoginFailure extends LoginState{
   final String error;
-  LoginFailure({@required this.error}):super([error]);
+  LoginFailure({@required this.error});
 
   @override
   String toString() => 'LoginFailure {error: $error}';

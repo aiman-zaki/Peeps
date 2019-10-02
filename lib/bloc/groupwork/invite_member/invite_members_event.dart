@@ -2,7 +2,9 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 @immutable
 abstract class InviteMembersEvent extends Equatable {
-  InviteMembersEvent([List props = const <dynamic>[]]) : super(props);
+  const InviteMembersEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class SearchButtonClickedEvent extends InviteMembersEvent{

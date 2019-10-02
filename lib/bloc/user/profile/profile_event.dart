@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class ProfileEvent extends Equatable {
-  ProfileEvent([List props = const []]) : super(props);
+  const ProfileEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class UpdateProfileButtonEvent extends ProfileEvent {

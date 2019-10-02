@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class KanbanBoardEvent extends Equatable {
-  KanbanBoardEvent([List props = const []]) : super(props);
+  const KanbanBoardEvent();
+  @override
+  List<Object> get props => [];
 }
 
 

@@ -3,13 +3,15 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class StashEvent extends Equatable {
-  StashEvent([List props = const <dynamic>[]]) : super(props);
+  const StashEvent();
+  @override
+  List<Object> get props => [];
 }
 
 
 class LoadStashEvent extends StashEvent{
   final String groupId;
-  LoadStashEvent({@required this.groupId}): super([groupId]);
+  LoadStashEvent({@required this.groupId});
   @override
   String toString() => "LoadStashEvent";
 }

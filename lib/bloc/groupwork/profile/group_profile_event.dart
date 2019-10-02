@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class GroupProfileEvent extends Equatable {
-  GroupProfileEvent([List props = const <dynamic>[]]) : super(props);
+  const GroupProfileEvent();
+   @override
+  List<Object> get props => [];
 }
 
 class UpdateGroupworkProfileEvent extends GroupProfileEvent{

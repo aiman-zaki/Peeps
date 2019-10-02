@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class LoginEvent extends Equatable {
-  LoginEvent([List props = const []]) : super(props);
+  const LoginEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class LoginButtonPressed extends LoginEvent{
@@ -13,7 +15,7 @@ class LoginButtonPressed extends LoginEvent{
   LoginButtonPressed({
     @required this.email,
     @required this.password,
-  }): super([email,password]);
+  });
 
   @override
   String toString() => 

@@ -2,6 +2,8 @@ import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 abstract class InviteMembersState extends Equatable {
   InviteMembersState();
+  @override
+  List<Object> get props => [];
 }
 
 class InitialInviteMembersState extends InviteMembersState {

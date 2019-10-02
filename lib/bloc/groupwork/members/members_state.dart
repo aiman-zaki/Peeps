@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class MembersState extends Equatable {
-  MembersState([List props = const <dynamic>[]]) : super(props);
+  const MembersState();
+  @override
+  List<Object> get props => [];
 }
 
 class InitialMembersState extends MembersState {}

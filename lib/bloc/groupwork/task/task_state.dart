@@ -4,7 +4,9 @@ import 'package:peeps/bloc/bloc.dart';
 
 @immutable
 abstract class TaskState extends Equatable {
-  TaskState([List props = const <dynamic>[]]) : super(props);
+  const TaskState();
+  @override
+  List<Object> get props => [];
 }
 
 class InitialTaskState extends TaskState {}

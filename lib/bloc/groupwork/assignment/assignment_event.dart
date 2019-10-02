@@ -1,9 +1,9 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 
-@immutable
+
 abstract class AssignmentEvent extends Equatable {
-  AssignmentEvent([List props = const <dynamic>[]]) : super(props);
+  AssignmentEvent();
 }
 
 class LoadAssignmentEvent extends AssignmentEvent{
@@ -13,6 +13,9 @@ class LoadAssignmentEvent extends AssignmentEvent{
     @required this.groupId,
     }
   );
+
+  @override
+  List<Object> get props => [];
 
   @override
   String toString() => "LoadAssignmentEvent";
@@ -25,6 +28,9 @@ class AddAssignmentEvent extends AssignmentEvent{
     @required this.assignment,
     @required this.groupId,
   });
+
+  @override
+  List<Object> get props => [];
   @override
   String toString() => "AddAssignmentEvent";
 }
@@ -37,6 +43,9 @@ class TaskRefreshButtonClicked extends AssignmentEvent{
     @required this.latestAssignment,
     @required this.assignments,
   });
+
+  @override
+  List<Object> get props => [];
 
   @override
   String toString() => "TaskRefreshButtonClicked";

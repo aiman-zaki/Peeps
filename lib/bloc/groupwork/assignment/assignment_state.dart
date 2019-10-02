@@ -4,10 +4,15 @@ import 'package:peeps/models/assignment.dart';
 
 @immutable
 abstract class AssignmentState extends Equatable {
-  AssignmentState([List props = const <dynamic>[]]) : super(props);
+
+  const AssignmentState();
+  @override
+  List<Object> get props => [];
 }
 
-class InitialAssignmentState extends AssignmentState {}
+class InitialAssignmentState extends AssignmentState {
+
+}
 
 class LoadingAssignmentState extends AssignmentState{
   @override

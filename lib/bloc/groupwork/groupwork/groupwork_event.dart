@@ -4,7 +4,9 @@ import 'package:peeps/models/groupwork.dart';
 
 @immutable
 abstract class GroupworkEvent extends Equatable {
-  GroupworkEvent([List props = const []]) : super(props);
+  const GroupworkEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class NewGroupButtonPressedEvent extends GroupworkEvent{
@@ -15,14 +17,14 @@ class NewGroupButtonPressedEvent extends GroupworkEvent{
   NewGroupButtonPressedEvent({@required this.name,
                         @required this.description,
                         @required this.course,
-                        @required this.members}):super([name,description,course,members]);
+                        @required this.members});
   
   @override
   String toString() => "NewGroupPressedEvent";
 } 
 class LoadGroupworkEvent extends GroupworkEvent{
   final data;
-  LoadGroupworkEvent({@required this.data}):super([data]);
+  LoadGroupworkEvent({@required this.data});
   @override
   String toString() => "LoadGroupworkEvent";
 }

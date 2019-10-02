@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class InboxEvent extends Equatable {
-  InboxEvent([List props = const []]) : super(props);
+  const InboxEvent();
+  @override
+  List<Object> get props => [];
 }
 
 
@@ -20,7 +22,7 @@ class LoadInvitationListEvent extends InboxEvent{
 class ReplyInvitationEvent extends InboxEvent{
   final reply;
   final groupId;
-  ReplyInvitationEvent({@required this.reply, @required this.groupId}):super([reply,groupId]);
+  ReplyInvitationEvent({@required this.reply, @required this.groupId});
 
   @override
   String toString() => "ReplyInvitationEvent";

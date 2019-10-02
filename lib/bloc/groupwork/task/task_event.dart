@@ -4,7 +4,10 @@ import 'package:peeps/models/changed_status.dart';
 
 @immutable
 abstract class TaskEvent extends Equatable {
-  TaskEvent([List props = const <dynamic>[]]) : super(props);
+  const TaskEvent();
+
+  @override
+  List<Object> get props => [];
 }
 
 

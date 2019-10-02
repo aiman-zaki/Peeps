@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class ProfileFormState extends Equatable {
-  ProfileFormState([List props = const <dynamic>[]]) : super(props);
+  const ProfileFormState();
+  @override
+  List<Object> get props => [];
 }
 
 class InitialProfileFormState extends ProfileFormState {

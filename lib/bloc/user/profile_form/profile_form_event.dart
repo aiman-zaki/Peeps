@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class ProfileFormEvent extends Equatable {
-  ProfileFormEvent([List props = const <dynamic>[]]) : super(props);
+  const ProfileFormEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class UpdateProfileEvent extends ProfileFormEvent{

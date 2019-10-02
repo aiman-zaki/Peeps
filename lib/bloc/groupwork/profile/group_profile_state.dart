@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class GroupProfileState extends Equatable {
-  GroupProfileState([List props = const <dynamic>[]]) : super(props);
+  const GroupProfileState();
+   @override
+  List<Object> get props => [];
 }
 class InitialGroupProfileState extends GroupProfileState {
   @override

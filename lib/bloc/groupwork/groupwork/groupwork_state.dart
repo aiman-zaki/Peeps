@@ -4,7 +4,9 @@ import 'package:peeps/models/groupwork.dart';
 
 @immutable
 abstract class GroupworkState extends Equatable {
-  GroupworkState([List props = const []]) : super(props);
+  const GroupworkState();
+  @override
+  List<Object> get props => [];
 }
 
 class InitialGroupworkState extends GroupworkState{
@@ -33,7 +35,7 @@ class LoadedGroupworkState extends GroupworkState {
 
   LoadedGroupworkState({
     @required this.data
-  }):super([data]);
+  });
 
   @override
   String toString() => "LoadedGroupworkState";

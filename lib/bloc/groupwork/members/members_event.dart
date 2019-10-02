@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class MembersEvent extends Equatable {
-  MembersEvent([List props = const <dynamic>[]]) : super(props);
+  const MembersEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class LoadMembersEvent extends MembersEvent{

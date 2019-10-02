@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class RegisterEvent extends Equatable {
-  RegisterEvent([List props = const <dynamic>[]]) : super(props);
+  const RegisterEvent();
+  @override
+  List<Object> get props => [];
 }
 
 class RegisterButtonClickedEvent extends RegisterEvent{

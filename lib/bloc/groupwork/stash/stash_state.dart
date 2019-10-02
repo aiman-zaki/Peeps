@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class StashState extends Equatable {
-  StashState([List props = const <dynamic>[]]) : super(props);
+  const StashState();
+   @override
+  List<Object> get props => [];
 }
 
 class InitialStashState extends StashState {}

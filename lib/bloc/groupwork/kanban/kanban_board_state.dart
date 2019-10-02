@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class KanbanBoardState extends Equatable {
-  KanbanBoardState([List props = const []]) : super(props);
+  const KanbanBoardState();
+  @override
+  List<Object> get props => [];
 }
 
 class InitialKanbanBoardState extends KanbanBoardState {}

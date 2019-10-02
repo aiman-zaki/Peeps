@@ -3,7 +3,9 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class InboxState extends Equatable {
-  InboxState([List props = const []]) : super(props);
+  const InboxState();
+  @override
+  List<Object> get props => [];
 }
 
 class InitialInboxState extends InboxState {}
@@ -15,7 +17,7 @@ class LoadingInboxState extends InboxState {
 
 class LoadedInboxState extends InboxState{
   final data;
-  LoadedInboxState({@required this.data}):super([data]);
+  LoadedInboxState({@required this.data});
 
   @override
   String toString() => "LoadedInboxState";

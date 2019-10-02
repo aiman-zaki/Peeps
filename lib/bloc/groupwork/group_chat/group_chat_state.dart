@@ -4,7 +4,9 @@ import 'package:peeps/resources/chat.dart';
 
 @immutable
 abstract class GroupChatState extends Equatable {
-  GroupChatState([List props = const []]) : super(props);
+const GroupChatState();
+   @override
+  List<Object> get props => [];
 }
 
 class InitialGroupChatState extends GroupChatState {}
@@ -17,7 +19,7 @@ class LoadingGroupChatState extends GroupChatState {
 class LoadedGroupChatState extends GroupChatState{
   final ChatResources chatResources;
 
-  LoadedGroupChatState({@required this.chatResources}):super([chatResources]);
+  LoadedGroupChatState({@required this.chatResources});
   @override
   String toString() => "LoadedGroupChatState";
 }
