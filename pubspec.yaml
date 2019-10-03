@@ -22,16 +22,16 @@ dependencies:
   http: ^0.12.0+2
   bloc: ^0.15.0
   flutter_bloc: ^0.21.0
-  equatable: 0.2.6
+  equatable: 0.6.1
   flutter_secure_storage: ^3.3.1+1
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
   image_picker: ^0.6.0+17
   curved_navigation_bar: ^0.3.0
-  flutter_socket_io: ^0.5.1
-  adhara_socket_io: 0.2.0
-  rxdart: ^0.22.1
+  flutter_socket_io: ^0.6.0
+  adhara_socket_io: ^0.4.0
+  rxdart: ^0.22.2
   vector_math: ^2.0.8
   datetime_picker_formfield: ^0.4.3
   flutter_image: 2.0.0
@@ -39,6 +39,7 @@ dependencies:
   flutter_custom_clippers: ^1.0.4
   intl: ^0.15.8
   font_awesome_flutter: ^8.5.0
+  shared_preferences: ^0.5.3+4
 
 dev_dependencies:
   flutter_test:
