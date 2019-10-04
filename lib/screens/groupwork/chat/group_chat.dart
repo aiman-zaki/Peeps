@@ -50,10 +50,9 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
       padding: EdgeInsets.only(bottom: 9.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
+      
         children: <Widget>[
-          Flexible(
-            child: Container(),
-          ),
+          
           Flexible(
             child: Card(
               color: Colors.blueAccent,
@@ -61,10 +60,9 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
               child: Padding(
                 padding: const EdgeInsets.all(9.0),
                 child: Column(
+       
                   children: <Widget>[
-                    Text(participantMessage.senderEmail,style: TextStyle(
-                      fontSize: 3.0
-                    ),),
+              
                     Text(participantMessage.message)
                   ],
                 ),
@@ -91,7 +89,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
                 if(chat.chats[index].senderEmail == widget.user.email){
                   return _buildSenderText(chat.chats[index]);
                 } else {
-                  _buildGroupsText(chat.chats[index]);
+                  return _buildGroupsText(chat.chats[index]);
                 }
             },
           );
@@ -160,6 +158,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
         title: Text("Group Chat"),
       ),
       body: Container(
+        width: double.infinity,
         child: BlocBuilder<GroupChatBloc,GroupChatState>(
           bloc:  BlocProvider.of<GroupChatBloc>(context),
           builder: (BuildContext context,GroupChatState state){
@@ -179,6 +178,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
             if(state is LoadedGroupChatState){
               chat = state.chatResources;
               return Column(
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
                   _buildGroupChat(),
                   _buildSender(),
