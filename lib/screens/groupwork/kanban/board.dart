@@ -7,9 +7,6 @@ import 'package:peeps/models/task.dart';
 import 'draggable_task.dart';
 import 'draggable_task_zone.dart';
 
-//TODO Notifiation when updated Kanban
-
-
 class Board extends StatefulWidget {
   final List<TaskModel> todo;
   final List<TaskModel> doing;

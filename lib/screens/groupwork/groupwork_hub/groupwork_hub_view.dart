@@ -1,29 +1,16 @@
-import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as prefix0;
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:peeps/bloc/bloc.dart';
-import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/groupwork.dart';
-import 'package:peeps/models/member.dart';
-import 'package:peeps/models/members.dart';
 import 'package:peeps/models/user.dart';
-import 'package:peeps/screens/common/common_profile_picture.dart';
-import 'package:peeps/screens/common/custom_milestone.dart';
-import 'package:peeps/screens/common/custom_stack_background.dart';
-import 'package:peeps/screens/common/custom_stack_front.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/assignments.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/collaborate.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/live_timeline.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/members.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/milestone.dart';
-import 'package:peeps/screens/groupwork/invite_members.dart';
 
-import '../assignment_form.dart';
-import '../chat/group_chat.dart';
-import '../profile/groupwork_profile.dart';
-import '../kanban/kanban.dart';
 import 'header.dart';
 
 enum Role{
@@ -54,8 +41,11 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
     return false;
   }
 
+
+
   @override
   void initState() {
+    BlocProvider.of<TimelineBloc>(context).dispatch(ConnectTimelineEvent(data: widget.groupData.id));
     _isAdmin = checkIsAdmin();
     super.initState();
   }
@@ -63,11 +53,44 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-
+    
     Widget _captions({@required text}) {
       return Text(
         "$text",
         style: TextStyle(color: Colors.white30),
+      );
+    }
+
+    _collaborate(){
+      return Card(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+        elevation: 8,
+        color: Colors.grey[900],
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            children: <Widget>[
+              Row(
+                children: <Widget>[
+                  Expanded(flex: 3, child: Text('Collaborate')),
+                  Expanded(
+                    flex: 1,
+                    child: FlatButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => CollaborateView()
+                          ),
+                        );
+                      },
+                      child: Icon(Icons.keyboard_arrow_right)
+                    ),
+                  )
+                ],
+              )
+            ],
+          ),
+        ),
       );
     }
 
@@ -151,7 +174,12 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                     SizedBox(
                       height: 10,
                     ),
+
+                    LiveTimelineView(groupData: widget.groupData,),
                     HubMilestone(),
+                    SizedBox(
+                      height: 10,
+                    ),
                     SizedBox(
                       height: 10,
                     ),
@@ -170,9 +198,15 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                       height: 10,
                     ),
                     _stashOverview(),
+                    SizedBox(
+                      height: 10,
+                    ),
+                    _collaborate(),
+                    SizedBox(height: 10,),
+                    
                   ],
                 ),
-              )
+              ),
             ],
           ),
         )

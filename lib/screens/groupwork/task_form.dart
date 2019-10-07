@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/task.dart';
+import 'package:peeps/models/timeline.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
 
@@ -43,6 +44,7 @@ class _TaskFormState extends State<TaskForm> {
   Widget build(BuildContext context) {
     final _taskBloc = BlocProvider.of<TaskBloc>(context);
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
+    final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
     
     Widget _showConfirmationDialog(){
       return DialogWithAvatar(
@@ -72,6 +74,7 @@ class _TaskFormState extends State<TaskForm> {
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
                                   dueDate: dueDate, assignTo: dropdownValue, lastUpdated: DateTime.now(), priority: priorityDropdown,status: 0)));
+            _timelineBloc.dispatch(SendDataTimelineEvent(data: TimelineModel(by: email,createdDate: DateTime.now(),description: "Add New Task",type: 0)));
             Navigator.of(context).pop();
           },
           child: Text("Accept"),

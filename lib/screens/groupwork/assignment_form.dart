@@ -5,13 +5,18 @@ import 'package:intl/intl.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/members.dart';
+import 'package:peeps/models/timeline.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 //TODO : Dynamic Role Assignation - Madam Faridah
 
 class AssignmentFormView extends StatefulWidget {
   final String groupId;
+  final userData;
 
-  const AssignmentFormView({Key key, this.groupId}) : super(key: key);
+  const AssignmentFormView({
+    Key key, 
+    this.groupId,
+    this.userData}) : super(key: key);
 
   _AssignmentFormState createState() => new _AssignmentFormState();
 }
@@ -28,6 +33,7 @@ class _AssignmentFormState extends State<AssignmentFormView> {
   Widget build(BuildContext context) {
     final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
+    final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
 
     Widget _captions({@required text}) {
       return Text(
@@ -60,6 +66,7 @@ class _AssignmentFormState extends State<AssignmentFormView> {
               bottomRight: FlatButton(
                 child: Text('Confirm'),
                 onPressed: () {
+                  _timelineBloc.dispatch(SendDataTimelineEvent(data: TimelineModel(by: widget.userData.email,createdDate: DateTime.now(),type: 1,description: "Created New Assignment",room: widget.groupId)));
                   _assignmentBloc.dispatch(AddAssignmentEvent(
                       assignment: AssignmentModel(
                           title: _titleController.text,
@@ -174,7 +181,7 @@ class _AssignmentFormState extends State<AssignmentFormView> {
           ),
         ),
         floatingActionButton: FloatingActionButton(
-          child: Icon(Icons.add),
+          child: Icon(Icons.check),
           onPressed: () {
             _buildDialog();
           },

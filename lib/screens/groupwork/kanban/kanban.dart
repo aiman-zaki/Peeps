@@ -43,6 +43,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
   List<TaskModel> _done = [];
   final _taskBloc = BlocProvider.of<TaskBloc>(context);
   final _membersBloc = BlocProvider.of<MembersBloc>(context);
+  final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
 
   _separate(data){  
     for(TaskModel task in data){
@@ -131,7 +132,9 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
                 value: _taskBloc,
                 child: BlocProvider.value(
                   value: _membersBloc,
-                  child: TaskForm(groupId: widget.groupId,assignmentId: widget.data.id,))),
+                  child: BlocProvider.value(
+                    value: _timelineBloc,
+                    child: TaskForm(groupId: widget.groupId,assignmentId: widget.data.id,)))),
               fullscreenDialog: true,
             )
           );

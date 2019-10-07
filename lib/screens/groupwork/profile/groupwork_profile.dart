@@ -9,11 +9,13 @@ import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/groupwork/profile/group_profile_bloc.dart';
 import 'package:peeps/models/groupwork.dart';
+import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/note_repository.dart';
 import 'package:peeps/screens/common/captions.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/profile/admin.dart';
 import 'package:peeps/screens/groupwork/profile/notes.dart';
+import 'package:peeps/screens/groupwork/profile/requests.dart';
 
 enum Role{
   admin,
@@ -152,6 +154,22 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                     builder: (context) => BlocProvider(
                       builder: (context) => NoteBloc(repository: const NoteRepository()),
                       child: GroupProfileNotes(groupId: widget.data.id,),
+                    ),
+                  ),
+                );
+              },
+            ),
+            ListTile(
+              title: Text("Requests"),
+              contentPadding: EdgeInsets.all(6),
+              trailing: Icon(Icons.keyboard_arrow_right),
+              leading: Icon(FontAwesomeIcons.inbox),
+              onTap: (){
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => BlocProvider(
+                      builder: (context) => RequestBloc(groupworkRepository: const GroupworkRepository()),
+                        child: GroupRequest(groupId: widget.data.id,),
                     )
                   )
                 );
@@ -273,7 +291,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
         "group_id":widget.data.id,
         "supervisor":_supervisorController.text,
         "description":_descriptionController.text,
-        "course":_courseController.text
+        "course":_courseController.text.toUpperCase()
       };
 
       _bloc.dispatch(UpdateGroupworkProfileEvent(data: data));

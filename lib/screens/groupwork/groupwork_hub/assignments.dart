@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/assignment.dart';
+import 'package:peeps/resources/assignment_repository.dart';
 import 'package:peeps/screens/groupwork/kanban/kanban.dart';
 
 import '../assignment_form.dart';
@@ -25,7 +26,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
   Widget build(BuildContext context) {
     final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
-    final _taskBloc = BlocProvider.of<TaskBloc>(context);
+    final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
     final size = MediaQuery.of(context).size;
 
     _buildLeaderTag(String leader){
@@ -76,14 +77,16 @@ class _HubAssignmentsState extends State<HubAssignments> {
                         ListTile(
                           onTap: () {
                             Navigator.of(context).push(CupertinoPageRoute(
-                              builder: (context) =>
-                                BlocProvider<TaskBloc>.value(
-                                value: _taskBloc,
+                                builder: (context) => BlocProvider<TaskBloc>(
+                                builder: (context) => TaskBloc(repository: const AssignmentRepository()),
                                 child: BlocProvider<MembersBloc>.value(
                                   value: _membersBloc,
-                                  child: KanbanBoardView(
-                                    data: data[index],
-                                    groupId: widget.groupData.id,
+                                  child: BlocProvider<TimelineBloc>.value(
+                                    value: _timelineBloc,
+                                    child: KanbanBoardView(
+                                      data: data[index],
+                                      groupId: widget.groupData.id,
+                                    ),
                                   ),
                                 ),
                               ),
@@ -167,8 +170,12 @@ class _HubAssignmentsState extends State<HubAssignments> {
                               value: _assignmentBloc,
                               child: BlocProvider.value(
                                 value: _membersBloc,
-                                child: AssignmentFormView(
-                                  groupId: widget.groupData.id,
+                                child: BlocProvider.value(
+                                  value: _timelineBloc,
+                                  child: AssignmentFormView(
+                                    userData: widget.userData,
+                                    groupId: widget.groupData.id,
+                                  ),
                                 ),
                               )),
                           fullscreenDialog: true,
