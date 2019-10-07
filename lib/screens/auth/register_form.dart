@@ -6,10 +6,9 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/user/register/register_bloc.dart';
-import 'package:peeps/screens/common/custom_colored_border_button.dart';
 import 'package:peeps/screens/common/custom_wave_clip.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
-import 'package:peeps/screens/profile.dart';
+
 
 class RegisterForm extends StatefulWidget {
   RegisterForm({Key key}) : super(key: key);
@@ -135,11 +134,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     bottomRight: FlatButton(
                       child: Text("Yes!"),
                       onPressed: (){
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) => ProfileView()
-                          ),
-                        );
+                   
                       },
                     ),
                   );

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/resources/auth_repository.dart';
 
 import 'package:peeps/bloc/bloc.dart';
-import 'package:peeps/screens/login_form.dart';
+import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {
   final AuthRepository userRepository;

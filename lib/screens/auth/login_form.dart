@@ -6,7 +6,7 @@ import 'package:peeps/bloc/user/login/login_bloc.dart';
 import 'package:peeps/bloc/user/login/login_state.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
-import 'package:peeps/screens/register_form.dart';
+import 'register_form.dart';
 
 class LoginForm extends StatefulWidget {
   @override

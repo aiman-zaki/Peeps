@@ -175,7 +175,6 @@ class AccountViewState extends State<AccountView> {
       );
     }
 
-    //TODO : Default Picture
     Widget _buildAvatar(){
       return CircleAvatar(
         backgroundColor: Colors.white,
