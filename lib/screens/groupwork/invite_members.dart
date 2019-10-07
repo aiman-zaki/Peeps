@@ -37,7 +37,6 @@ Widget build(BuildContext context) {
   datas = _dataFromState();
 
   _buildInvitationButton(user){
-    print(widget.groupData.invitations);
     List filter = widget.groupData.invitations.where((invite)
       => invite == user.email
     ).toList();

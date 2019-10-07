@@ -12,7 +12,6 @@ class InviteMembersBloc extends Bloc<InviteMembersEvent, InviteMembersState> {
     @required this.groupworkRepository
   });
   
-  
   @override
   InviteMembersState get initialState => InitialInviteMembersState();
 

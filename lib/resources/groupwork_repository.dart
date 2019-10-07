@@ -2,11 +2,12 @@ import 'dart:io';
 import 'package:http/http.dart' as http;
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/member.dart';
-import 'package:peeps/models/user.dart';
+import 'package:peeps/models/request.dart';
 import 'dart:convert';
 import 'common_repo.dart';
 import 'package:async/async.dart';
-import 'dart:convert';
+
+
 class GroupworkRepository{
   final String _baseUrl = domain+groupworkUrl;
 
@@ -60,7 +61,27 @@ class GroupworkRepository{
     print(response.statusCode);
   }
 
-  
+  fetchGroupworks(var data) async {
+    var headers = await fetchHeaders();
+    var body = {
+      "search":data,
+    };
+    var response = await http.put(_baseUrl,
+      headers: headers,
+      body: jsonEncode(body),
+    );
+    
+    var jsonData = jsonDecode(response.body);
+    List<GroupworkModel> groupworks = [];
+    if(response.statusCode == 200){
+      for(Map<String,dynamic> group in jsonData){
+     
+        groupworks.add(GroupworkModel.fromJson(group));
+      }
+    }
+    return groupworks;
+  }
+
   Future <List<dynamic>> fetchGroupworkStash(String groupId) async {
     var token = accessToken();
     Map body = {
@@ -78,6 +99,7 @@ class GroupworkRepository{
     }
   }
 
+
   Future <List<MemberModel>> fetchMembers(String groupId) async {
     var token = accessToken();
     var response = await http.get(_baseUrl+"$groupId/members",
@@ -94,8 +116,6 @@ class GroupworkRepository{
     }
     return members;
   }
-
-  
 
   Future updateRole(Map<String,dynamic> data) async{
     var token = await accessToken();
@@ -136,4 +156,37 @@ class GroupworkRepository{
       return 200;
     }
   }
+
+  Future fetchRequests(var data) async {
+    var headers = await fetchHeaders();
+    var response = await http.get(
+      _baseUrl+data['group_id']+"/requests",
+      headers: headers
+    );
+    List<RequestModel> requests = [];
+    var jsonData = jsonDecode(response.body);
+    if(response.statusCode == 200 && jsonData.containsKey('requests')){
+      for(Map<String,dynamic> request in jsonData['requests']){
+        requests.add(RequestModel.fromJson(request));
+      }
+    }
+    return requests;
+  }
+
+  updateRequests(var data,var groupId) async {
+    print(data);
+    var headers = await fetchHeaders();
+
+    var response = await http.put(
+      _baseUrl+groupId+"/requests",
+      headers: headers,
+      body: jsonEncode(data),
+    );
+    var jsonData = jsonDecode(response.body);
+
+    if(response.statusCode == 200){
+
+    }
+  }
+
 }

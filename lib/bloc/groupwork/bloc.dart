@@ -31,3 +31,6 @@ export 'timeline/timeline_state.dart';
 export 'groupwork/groupwork_bloc.dart';
 export 'groupwork/groupwork_event.dart';
 export 'groupwork/groupwork_state.dart';
+export 'request/request_bloc.dart';
+export 'request/request_event.dart';
+export 'request/request_state.dart';
