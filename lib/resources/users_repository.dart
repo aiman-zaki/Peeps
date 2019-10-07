@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/inbox.dart';
 import 'package:peeps/models/user.dart';
+import 'package:peeps/models/user_tasks.dart';
 import 'common_repo.dart';
 import 'package:async/async.dart';
 class UsersRepository{
@@ -117,7 +118,7 @@ class UsersRepository{
       headers: {HttpHeaders.authorizationHeader: "Bearer $token"},
     );
     if(response.statusCode == 200){
-      //TODO : Eliminate unnecessary hmm code
+ 
       List temp = jsonDecode(response.body);
       List<GroupInvitationMailModel> groupInvitation = [];
       for(Map<String,dynamic> group in temp){
@@ -171,5 +172,30 @@ class UsersRepository{
     return users;
   }
 
-  
+  Future requestGroupwork(var data) async {
+    var headers = await fetchHeaders();
+    var response = await http.put(
+      _baseUrl+"user/groupworks",headers: headers,body: jsonEncode(data),
+    );
+    if(response.statusCode == 200){
+      
+    }
+  }
+
+  Future fetchCurrentUserOnlyTask() async{
+    var headers = await fetchHeaders();
+    var response  = await http.get(
+      _baseUrl+"user/tasks",headers: headers
+    );
+    List<UserTasksModel> data = [];
+    var jsonData = jsonDecode(response.body);
+    if(response.statusCode == 200){
+      for(Map<String,dynamic> task in jsonData){
+        data.add(UserTasksModel.fromJson(task));
+      }
+    } else {
+      return [];
+    }
+    return data;
+  } 
 }

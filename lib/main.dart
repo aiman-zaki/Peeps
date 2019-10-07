@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/router.dart' as router;
 import 'package:bloc/bloc.dart';
@@ -9,21 +10,25 @@ import 'package:peeps/resources/auth_repository.dart';
 
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/routing_constant.dart';
-import 'package:peeps/screens/common.dart';
+
 import 'package:peeps/screens/splash_page.dart';
-import 'package:peeps/screens/login_page.dart';
-import 'package:peeps/screens/home.dart';
+import 'package:peeps/screens/auth/login_page.dart';
+import 'package:peeps/screens/home/drawer.dart';
 
 import 'bloc/simple_bloc_delegate.dart';
+import 'configs/theme.dart';
 
 StreamSubscription periodicSub;
-
-void main() {
+FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
+void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final authRepository = AuthRepository();
   final userRepository = UsersRepository();
+
+  var theme = await ThemeController.getTheme();
     //RefreshToken
   periodicSub = Stream.periodic(Duration(minutes: 15)).listen((_)=> authRepository.refreshToken());
+  flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   runApp(
     MultiBlocProvider(
       providers: [
@@ -36,39 +41,45 @@ void main() {
           builder: (context) {
             return ProfileBloc(repository: userRepository);
           },), 
+        BlocProvider<UserTaskBloc>(
+          builder: (context){
+            return UserTaskBloc(usersRepository: userRepository);
+          },
+        )
       ],
-      child: App(userRepository: authRepository,),
+      child: App(userRepository: authRepository,theme: theme,),
     )
   );
 }
 
 class App extends StatefulWidget{
   final AuthRepository userRepository;
-  App({Key key, @required this.userRepository}) : super(key: key);
+  final theme;
+  App({Key key, @required this.userRepository, this.theme}) : super(key: key);
   @override
   AppState createState() => AppState();
 }
 
 class AppState extends State<App> {
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    var initializationSettingsAndroid =
+        AndroidInitializationSettings('logo');
+ 
+    var initializationSettings = InitializationSettings(
+      initializationSettingsAndroid,null
+    );
+
+    flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme:  ThemeData(
-        brightness: Brightness.dark,
-        appBarTheme: AppBarTheme(
-          color: Color.fromARGB(255, 77,44, 145)
-        ),
-        scaffoldBackgroundColor: Colors.grey[900],
-        primaryColor: Color.fromARGB(255, 126, 87, 194),
-        cardColor: Color.fromARGB(50, 173, 102, 227),
-        accentColor: Colors.pink[400],
-        backgroundColor: Colors.grey[900],
-        focusColor: Colors.blueGrey[600],
-        buttonColor: Colors.pink[600],
-        floatingActionButtonTheme: FloatingActionButtonThemeData(
-          backgroundColor: Colors.pink[600],
-        )
-      ),
+      theme:  widget.theme,
       initialRoute: HomeViewRoute,
       onGenerateRoute: router.generateRoute,
       home: BlocBuilder<AuthenticationBloc, AuthenticationState>(
@@ -79,13 +90,13 @@ class AppState extends State<App> {
           }
           if (state is AuthenticationAuthenticated) {
             
-            return HomeView();
+            return DrawerView();
           }
           if (state is AuthenticationUnauthenticated) {
             return LoginPage(userRepository: widget.userRepository);
           }
           if (state is AuthenticationLoading) {
-            return LoadingIndicator();
+            return CircularProgressIndicator();
           }
         },
       ),
