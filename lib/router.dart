@@ -5,18 +5,16 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/router/navigator_args.dart';
-import 'package:peeps/screens/inbox/inbox_invitation.dart';
 import 'package:peeps/screens/inbox/inbox_bottombar.dart';
-import 'package:peeps/screens/joined_group.dart';
-import 'package:peeps/screens/account.dart';
-import 'package:peeps/screens/profile.dart';
-import 'package:peeps/screens/search.dart';
-import 'screens/home.dart';
+import 'package:peeps/screens/user/joined_group.dart';
+import 'package:peeps/screens/user/account.dart';
+import 'package:peeps/screens/user/search.dart';
+import 'screens/home/drawer.dart';
 import 'package:peeps/routing_constant.dart';
 Route<dynamic> generateRoute(RouteSettings settings){
   switch (settings.name){
     case HomeViewRoute:
-      return CupertinoPageRoute(builder: (context) => HomeView());
+      return CupertinoPageRoute(builder: (context) => DrawerView());
     case AccountViewRoute:
       final NavigatorArguments args = settings.arguments;
 
@@ -47,9 +45,11 @@ Route<dynamic> generateRoute(RouteSettings settings){
       
     case SearchViewRoute:
       return CupertinoPageRoute(builder: (context){
-        return SearchView();
+        return BlocProvider<SearchGroupsBloc>(
+          builder: (context) => SearchGroupsBloc(repository: const GroupworkRepository(), usersRepository: const UsersRepository()),
+          child: SearchView());
       });
     default:
-      return MaterialPageRoute(builder: (context) => HomeView());
+      return MaterialPageRoute(builder: (context) => DrawerView());
   }
 }
