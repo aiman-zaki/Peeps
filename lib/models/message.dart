@@ -13,7 +13,7 @@ class ChatModel{
     {
       @required this.senderEmail,
       @required this.message,
-      @required this.room,
+      this.room,
       @required this.date,
     }
   );
@@ -34,7 +34,7 @@ class ChatModel{
     return ChatModel(
       senderEmail: json['senderEmail'],
       message: json['message'],
-      room: json['room'],
+      room: json['room'] != null ? json['room'] : "",
       date: DateTime.parse(json['date']),
     );
 

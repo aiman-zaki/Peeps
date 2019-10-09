@@ -92,6 +92,7 @@ class AssignmentRepository{
   createTask({Map<String,dynamic> todo, String groupId, String assignmentId}) async{
     Map data = {
       "task":todo,
+      "group_id":groupId,
     };
 
     var body = json.encode(data);

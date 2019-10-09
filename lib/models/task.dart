@@ -12,6 +12,7 @@ class TaskModel{
   DateTime lastUpdated;
   int status;
   int priority;
+  int seq;
   TaskModel({
     this.id,
     @required this.creator,
@@ -24,6 +25,7 @@ class TaskModel{
     @required this.lastUpdated,
     @required this.status,
     this.priority,
+    this.seq,
   });
   static TaskModel fromJson(Map<String,dynamic> json){
     return TaskModel(
@@ -38,6 +40,7 @@ class TaskModel{
       lastUpdated: DateTime.parse(json['last_updated']),
       status: json['status'],
       priority: json['priority'],
+      seq: json['seq'],
     );
   }
   Map<String,dynamic> toJson(){

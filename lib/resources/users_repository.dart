@@ -198,4 +198,14 @@ class UsersRepository{
     }
     return data;
   } 
+
+  Future updateRole(var data) async {
+    var headers = await fetchHeaders();
+    var response = await http.put(
+      _baseUrl+"user/role",headers: headers,body: jsonEncode(data),
+    );
+    if(response.statusCode == 200){
+      
+    }
+  }
 }

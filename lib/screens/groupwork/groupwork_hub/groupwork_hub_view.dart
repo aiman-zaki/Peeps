@@ -5,8 +5,11 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
+import 'package:peeps/resources/collaborate.dart';
+import 'package:peeps/resources/forum_repository.dart';
+import 'package:peeps/screens/groupwork/collaborate/bottom_bar.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/assignments.dart';
-import 'package:peeps/screens/groupwork/groupwork_hub/collaborate.dart';
+import 'package:peeps/screens/groupwork/collaborate/user_joined.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/live_timeline.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/members.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/milestone.dart';
@@ -79,7 +82,12 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => CollaborateView()
+                            builder: (context) => BlocProvider(
+                              builder: (context) => CollaborateForumBloc(repository: ForumRepository(namespace: "api/forums",data: widget.groupData.course)),
+                              child: BlocProvider(
+                                builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course)),
+                                child: CollaborateBottomBarView(userData: widget.userData,course: widget.groupData.course,)),
+                            )
                           ),
                         );
                       },

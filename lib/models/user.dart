@@ -10,7 +10,7 @@ class UserModel {
   String programmeCode;
   List<dynamic> activeGroup;
   String picture;
-  
+  int role;
 
   UserModel({
     @required this.id,
@@ -19,8 +19,10 @@ class UserModel {
     @required this.email,
     @required this.contactNo,
     @required this.programmeCode,
-    @required this.activeGroup,
+    this.activeGroup,
     @required this.picture,
+    this.role,
+  
   });
 
   static UserModel defaultConst(){
@@ -32,7 +34,8 @@ class UserModel {
       contactNo: "",
       programmeCode: "",
       activeGroup: [],
-      picture: ""
+      picture: "",
+      role: 2,
     );
   }
 
@@ -47,7 +50,33 @@ class UserModel {
       programmeCode: json['profile']['programme_code'],
       activeGroup: json['active_group'],
       picture: url,
+      role: json['role']
     );
+  }
+
+  static UserModel fromJsonV2(Map<String,dynamic> json){
+    final String url = domain+'static/users/${json['id']}/profile/image';
+    return UserModel(
+      id: json['id'],
+      fname: json['fname'],
+      lname: json['lname'],
+      email: json['email'],
+      contactNo: json['contact_no'],
+      programmeCode: json['programme_code'], 
+      picture: url,
+    );
+  
+  }
+
+  Map<String,dynamic> toJson(){
+    return {
+      "id": this.id,
+      "fname": this.fname,
+      "lname":this.lname,
+      "email":this.email,
+      "contact_no":this.contactNo,
+      "programme_code":this.programmeCode,
+    };
   }
 
   

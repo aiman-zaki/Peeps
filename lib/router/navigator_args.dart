@@ -4,6 +4,6 @@ class NavigatorArguments{
   final bloc;
   NavigatorArguments({
     @required this.data,
-    @required this.bloc
+    this.bloc
   });
 }

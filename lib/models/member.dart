@@ -33,7 +33,7 @@ class MemberModel {
       contactNo: data['contactNo'],
       programmeCode: data['programmeCode'],
       profilePicture: url,
-      role: data['role'],
+      role: data['role'] != null ? data['role'] : 9,
     );
   }
 

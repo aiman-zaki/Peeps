@@ -81,7 +81,6 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
       child: StreamBuilder(
         stream: chat.chatsStream,
         builder: (context, snapshot){
-            print(chat.chats.length);
           if(snapshot.hasData){
             return ListView.builder(
               itemCount: chat.chats.length,
@@ -177,6 +176,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
             }
             if(state is LoadedGroupChatState){
               chat = state.chatResources;
+              //chat.receiveMessage();
               return Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: <Widget>[
