@@ -6,6 +6,7 @@ import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
+import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/groupwork_form.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
@@ -95,6 +96,7 @@ class _GroupworksViewState extends State<GroupworksView> {
     }
     Widget _buildGroupworkList(List<GroupworkModel> data){
       return GridView.builder(
+        physics: const AlwaysScrollableScrollPhysics(),
         gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
         ),
@@ -102,9 +104,13 @@ class _GroupworksViewState extends State<GroupworksView> {
         itemBuilder: (BuildContext context, int index){
           return GestureDetector(
             onTap: (){
-              Navigator.of(context).push(
-                CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:data[index],userData: widget.user,))
-              );
+              Map<String,dynamic> arg = {
+                "userData":widget.user,
+                "groupData":data[index],
+              };
+              final NavigatorArguments _navArgs = NavigatorArguments(data: arg);
+              Navigator.of(context).pushNamed('group',arguments: _navArgs);
+              
             },
             child: _groupCard(data[index]),
             
@@ -117,16 +123,6 @@ class _GroupworksViewState extends State<GroupworksView> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Groupwork"),
-        actions: <Widget>[
-          InkWell(
-            onTap: (){
-              setState(() {
-                _bloc.dispatch(LoadGroupworkEvent(data: widget.user.activeGroup));
-              });
-            },
-            child: Icon(Icons.refresh),
-          )
-        ],
       ),
       body: BlocBuilder<GroupworkBloc,GroupworkState>(
         bloc: _bloc,
@@ -141,7 +137,11 @@ class _GroupworksViewState extends State<GroupworksView> {
           if(state is LoadedGroupworkState){    
             return Padding(
               padding: const EdgeInsets.all(8.0),
-              child: _buildGroupworkList(state.data),
+              child: RefreshIndicator(
+                onRefresh: () async {
+                   _bloc.dispatch(LoadGroupworkEvent(data: widget.user.activeGroup));
+                },
+                child: _buildGroupworkList(state.data)),
             );
           }
           if(state is NoGroupworkState){
