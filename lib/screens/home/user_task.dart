@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
 import 'package:peeps/bloc/user/task/bloc.dart';
 import 'package:peeps/configs/notifications.dart';
@@ -32,46 +33,42 @@ class _UserTasksState extends State<UserTasks> {
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<UserTaskBloc>(context);
 
-    _checkButtonNotifyPressed() async {
-      SharedPreferences _pref = await SharedPreferences.getInstance();
-      var data = _pref.getBool("as");
-      return data;
+    _datePicker(task) async {
+      var data = await showDatePicker(
+          context: context,
+          firstDate: DateTime(1900),
+          initialDate: DateTime.now(),
+          lastDate: DateTime(2100));
+
+      if (data != null) {
+        await _localNotifications.scheduleNotification(
+            flutterLocalNotificationsPlugin, data, task);
+      }
     }
 
     _buildTasksList(tasks) {
-      return ListView.builder(
-        shrinkWrap: true,
-        itemCount: tasks.length,
-        itemBuilder: (context, index) {
-          return FutureBuilder(
-            future: _checkButtonNotifyPressed(),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done) {
-                print(snapshot.data);
-                return Column(children: <Widget>[
-                  Text(tasks[index].task),
-                  Text(tasks[index].dueDate.toString()),
-                  RaisedButton(
-                    child: Text("Notifications"),
-                    onPressed: () async {
-                      await _localNotifications.scheduleNotification(
-                          flutterLocalNotificationsPlugin,
-                          tasks[index].dueDate,
-                          tasks[index].id);
-                    },
-                  )
-                ]);
-              }
-              return Container();
-            },
-          );
-        },
+      return Card(
+        child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: tasks.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(tasks[index].task),
+                subtitle: Text(DateFormat.yMd().format(tasks[index].dueDate)),
+                trailing: InkWell(
+                  child: Icon(Icons.notifications),
+                  onTap: () {
+                    _datePicker(tasks[index]);
+                  },
+                ),
+              );
+            }),
       );
     }
 
     _buildData(data) {
       return SizedBox(
-        height: 200,
+        height: 250,
         child: GridView.builder(
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 1,
@@ -81,22 +78,36 @@ class _UserTasksState extends State<UserTasks> {
           itemCount: data.length,
           itemBuilder: (context, index) {
             if (!data.isEmpty) {
+              return Container(
+                padding: EdgeInsets.all(9),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(
+                      '${data[index].groupName}',
+                      style: TextStyle(
+                        fontSize: 21,
+                        color: Colors.indigo),
+                    ),
+                    Text(
+                      'Assignment: ${data[index].assignmentTitle}',
+                      style: TextStyle(fontSize: 18,),
+                    ),
+                    Container(
+                        height: 170,
+                        child: _buildTasksList(data[index].tasks)),
+                  ],
+                ),
+              );
+            } else {
               return Card(
-                child: Container(
-                  padding: EdgeInsets.all(9),
-                  height: 150,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: <Widget>[
-                      Text('From Group : ${data[index].groupName}'),
-                      Text('From Assignment: ${data[index].assignmentTitle}'),
-                      _buildTasksList(data[index].tasks),
-                    ],
-                  ),
+                child: Column(
+                  children: <Widget>[
+                    Text("No Tasks Assigned to"),
+                  ],
                 ),
               );
             }
-            return Container();
           },
         ),
       );
@@ -121,7 +132,11 @@ class _UserTasksState extends State<UserTasks> {
               crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Text("Keep Track on Your Latest Task!"),
+                SizedBox(height: 10,),
+                Text(
+                  "Keep Track on Your Ongoing Task!",
+                  style: TextStyle(fontSize: 18),
+                ),
                 SizedBox(
                   height: 15,
                 ),
