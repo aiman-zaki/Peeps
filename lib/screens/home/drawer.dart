@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/configs/theme.dart';
 import 'package:peeps/models/user.dart';
@@ -90,6 +91,21 @@ class _DrawerViewState extends State<DrawerView> {
         item(Icons.group, "Groups", GroupsViewRoute),
         item(Icons.search, "Groups Search", SearchViewRoute),
       ];
+
+
+      _supervisorDrawer(){
+        if(user.role == 1){
+          return Column(
+            children: <Widget>[
+              Divider(),
+              item((FontAwesomeIcons.markdown), "Marking", "routeName")
+            ],
+          );
+        }
+        return Container();
+      }
+
+
       Widget _footerDrawer() {
         return Container(
           child: Align(
@@ -116,11 +132,17 @@ class _DrawerViewState extends State<DrawerView> {
       }
 
       ListView listView = new ListView(children: drawerChildren);
+
       return new Drawer(
         child: new Column(
           children: <Widget>[
             Expanded(
+              flex: 3,
               child: listView,
+            ),
+            Expanded(
+              flex: 2,
+              child: _supervisorDrawer(),
             ),
             _footerDrawer(),
           ],

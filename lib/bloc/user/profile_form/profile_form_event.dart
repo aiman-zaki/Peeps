@@ -28,3 +28,10 @@ class UploadProfilePictureEvent extends ProfileFormEvent{
   @override
   String toString() => "UpdateProfilePictureEvent";
 }
+
+class UpdateRoleEvent extends ProfileFormEvent{
+  final data;
+  UpdateRoleEvent({
+    @required this.data
+  });
+}
