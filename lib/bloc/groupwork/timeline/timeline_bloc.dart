@@ -21,8 +21,7 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   ) async* {
     if(event is ConnectTimelineEvent){
       yield ConnectingTimelineState();
-      await liveTimeline.connect(namespace: "timeline",room: event.data);
-      liveTimeline.streamData();
+      await liveTimeline.connect();
       yield ConnectedTimelineState(repo: liveTimeline);
     }
     if(event is DisconnectTimelineEvent){

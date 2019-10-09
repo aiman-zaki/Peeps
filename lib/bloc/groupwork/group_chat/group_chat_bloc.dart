@@ -20,10 +20,9 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
   ) async* {
     if(event is LoadGroupChatEvent){
       yield LoadingGroupChatState();
-      await chat.connect(namespace: "group_chat",room: event.room);
-      chat.receiveMessage();
- 
+      await chat.connect();
       yield LoadedGroupChatState(chatResources: chat);
+
     }
 
   }

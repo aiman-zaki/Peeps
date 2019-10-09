@@ -4,14 +4,12 @@ import 'package:adhara_socket_io/adhara_socket_io.dart';
 import 'package:peeps/models/message.dart';
 import 'package:peeps/models/timeline.dart';
 import 'package:peeps/resources/common_repo.dart';
+import 'package:peeps/resources/socket_io.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:meta/meta.dart';
 
-class LiveTimeline{
-  SocketIOManager _manager;
-  SocketIO _socketIO;
-  String _room;
-  bool isProbablyConnected = false;
+class LiveTimeline extends BaseSocketIO{
+
   BehaviorSubject _timelinesController;
 
   List<TimelineModel> _timelines = [];
@@ -19,46 +17,38 @@ class LiveTimeline{
   Stream get timelineStream => _timelinesController.stream;
   List<TimelineModel> get timelines => _timelines;
 
-
-
-  Future connect({
+  @override
+  LiveTimeline({
     @required namespace,
-    @required String room,
-  }) async {
+    @required room,
+  }):super(namespace:namespace,room:room);
 
-    isProbablyConnected = true;
+
+  @override
+  connect() async{
+    await super.connect();
     _timelinesController = BehaviorSubject();
-    _manager = SocketIOManager();
-    _room = room;
-    _socketIO = await _manager.createInstance(SocketOptions(
-      domain+namespace,
-      enableLogging: true
-    ));
-    _socketIO.onConnect((data) async{
-      String token = await accessToken();
-      _socketIO.emit('join', [{'token':token,'room':_room}]);
-      print("connected");
-    });
-    _socketIO.connect();
+    this.streamData();
   }
 
+  
+  
   void sendData(TimelineModel timeline){
-    _socketIO.emit('send_data', [timeline.toJson()]);
+    socketIO.emit('send_data', [timeline.toJson()]);
   }
 
   void streamData(){
-    _socketIO.on('stream_data',(data){
-      print("from stream_data $data");
+    socketIO.on('stream_data',(data){
       _timelines.add(TimelineModel.fromJson(data));
-      print(_timelines.length);
       updateSink.add(data);
     });
   }
 
-  void disconnect() async {
-    isProbablyConnected = false;
+  @override
+  disconnect() async {
+    super.disconnect();
     _timelinesController.close();
-    await _manager.clearInstance(_socketIO);
+
   }
 
 

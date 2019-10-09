@@ -37,14 +37,14 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
   Widget build(BuildContext context) {
     return  MultiBlocProvider(
       providers: [
-        BlocProvider<GroupChatBloc>(builder: (context) => GroupChatBloc(chat: ChatResources(),)),
+        BlocProvider<GroupChatBloc>(builder: (context) => GroupChatBloc(chat: ChatResources(namespace: 'group_chat',room: widget.groupData.id),)),
         BlocProvider<KanbanBoardBloc>(builder: (context) => KanbanBoardBloc(),),
         BlocProvider<StashBloc>(builder: (context) => StashBloc()),
         BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: const AssignmentRepository(),)),
         BlocProvider<MembersBloc>(builder: (context) => MembersBloc(repository: const GroupworkRepository()),),
         BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: const GroupworkRepository()),),
         BlocProvider<InviteMembersBloc>(builder: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository: const GroupworkRepository()),),
-        BlocProvider<TimelineBloc>(builder: (context) => TimelineBloc(liveTimeline: LiveTimeline()),)
+        BlocProvider<TimelineBloc>(builder: (context) => TimelineBloc(liveTimeline: LiveTimeline(namespace: "timeline",room:widget.groupData.id)),)
         
       ],
       child: GroupworkHubView(groupData:widget.groupData,userData:widget.userData)

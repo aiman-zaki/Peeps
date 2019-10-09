@@ -1,69 +1,42 @@
 import 'dart:async';
-import 'dart:convert';
 import 'package:peeps/models/message.dart';
+import 'package:peeps/resources/socket_io.dart';
 import 'package:rxdart/rxdart.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:adhara_socket_io/adhara_socket_io.dart';
-import 'package:adhara_socket_io/manager.dart';
-import 'common_repo.dart';
 
-class ChatResources {
-  SocketIOManager _manager;
-  SocketIO _socket;
-  String _room;
-  List<ChatModel> _chats = [];
-  BehaviorSubject _chatsController;
-  bool isProbablyConnected = false;
-  Sink get updateChatsSink => _chatsController.sink;
-  Stream get chatsStream => _chatsController.stream;
-  List<ChatModel> get chats => _chats;
 
-  Future connect({
-   @required namespace,
-   @required String room
-  }) async {
-    String token = await accessToken();
-    isProbablyConnected = true;
-    _chatsController = BehaviorSubject();
-    _manager = SocketIOManager();
-    _room = room;
-    _socket = await _manager.createInstance(SocketOptions(
-      domain+namespace,
-      enableLogging: true
-    ));
-    _socket.onConnect((data){
-      _socket.emit('join', [{'token':token,'room':room}]);
-      print("connected");
-    });
-    _socket.connect();
+class ChatResources extends BaseSocketIO {
+  List<ChatModel> chats = [];
+  BehaviorSubject chatsController;
+  Sink get updateChatsSink => chatsController.sink;
+  Stream get chatsStream => chatsController.stream;
+
+  @override
+  ChatResources({
+    namespace,
+    room,
+  }) : super(namespace: namespace, room: room);
+
+  @override
+  Future connect() async {
+    chatsController = BehaviorSubject();
+    await super.connect();
+    receiveMessage();
   }
 
-  void sendMessage(ChatModel message){
-    _socket.emit('send_message', [message.toJson()]);
+  @override
+  disconnect() async {
+    super.disconnect();
+    chatsController.close();
   }
 
-  //List get chats => _chats;
+  void sendMessage(ChatModel message) {
+    super.socketIO.emit('send_message', [message.toJson()]);
+  }
 
-  receiveMessage() {
-    _socket.on('receive_message',(data){
-      ChatModel message = ChatModel.fromJson(data);
-      _chats.add(message);
+  void receiveMessage() {
+    super.socketIO.on('receive_message', (data) {
+      chats.add(ChatModel.fromJson(data));
       updateChatsSink.add(data);
     });
-    
   }
-
-  disconnect() async {
-    //updateChatsSink.close();
-    isProbablyConnected = false;
-    _chatsController.close();
-    await _manager.clearInstance(_socket);
-  }
-
-
-
-
-
-
-
 }
