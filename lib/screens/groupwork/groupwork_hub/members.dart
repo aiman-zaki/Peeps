@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/member.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
@@ -33,22 +34,32 @@ class _HubMembersState extends State<HubMembers> {
           shrinkWrap: true,
           itemCount: data.length,
           itemBuilder: (context, index) {
-            return Card(
-              child: Padding(
-                padding: const EdgeInsets.only(top:8.0,bottom: 8.0),
-                child: ListTile(
-                  leading: CircleAvatar(
-                    radius: 30.0,
-                    child: CustomNetworkProfilePicture(
-                      width: 120,
-                      heigth: 120,
-                      image: data[index].profilePicture,
+            return Slidable(
+              actionPane: SlidableDrawerActionPane(),
+              secondaryActions: <Widget>[
+                IconSlideAction(
+                  icon: Icons.message,
+                  color: Colors.blue,
+                  caption: 'Chat',
+                  onTap: (){
+
+                  },
+                )
+              ],
+              child: Card(
+                child: Padding(
+                  padding: const EdgeInsets.only(top:8.0,bottom: 8.0),
+                  child: ListTile(
+                    leading: CircleAvatar(
+                      radius: 30.0,
+                      child: CustomNetworkProfilePicture(
+                        width: 120,
+                        heigth: 120,
+                        image: data[index].profilePicture,
+                      ),
                     ),
-                  ),
-                  title: Text(data[index].email),
-                  trailing: InkWell(
-                    onTap: () {},
-                    child: Text("Chat"),
+                    title: Text(data[index].email),
+                   
                   ),
                 ),
               ),

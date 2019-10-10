@@ -4,11 +4,13 @@ class ReplyModel{
   final id;
   final reply;
   final createdDate;
+  final by;
 
   ReplyModel({
     @required this.id,
     @required this.reply,
     @required this.createdDate,
+    @required this.by,  
   });
 
 
@@ -17,6 +19,7 @@ class ReplyModel{
       id: json['_id']['\$oid'],
       reply: json['reply'],
       createdDate: DateTime.parse(json['created_date']),
+      by: json['by']
     );
   }
 
@@ -24,7 +27,8 @@ class ReplyModel{
     return {
       "_id":this.id,
       "reply":this.reply,
-      "created_date":this.reply,
+      "created_date":this.createdDate.toString(),
+      "by":this.by,
     };
   }
 }

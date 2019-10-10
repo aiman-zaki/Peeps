@@ -7,12 +7,16 @@ class DiscussionModel{
   final String id;
   final String title;
   final String description;
+  final String by;
+  final DateTime createdDate;
   final List replies;
 
   DiscussionModel({
     @required this.id,
     @required this.title,
     @required this.description,
+    @required this.by,
+    @required this.createdDate,
     @required this.replies
   });
 
@@ -25,7 +29,9 @@ class DiscussionModel{
       id: json['_id']['\$oid'],
       title: json['title'],
       description: json['description'],
-      replies: _replies,
+      by: json['by'],
+      replies: _replies, 
+      createdDate: DateTime.parse(json['created_date']),
     );
   }
 
@@ -34,6 +40,8 @@ class DiscussionModel{
       "_id":this.id,
       "title":this.title,
       "description":this.description,
+      "by":this.by,
+      "created_date":this.createdDate.toString(),
       "replies":[],
     };
   }

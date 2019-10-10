@@ -24,19 +24,21 @@ class _CollaborateForumViewState extends State<CollaborateForumView> {
       return ListView.builder(
         itemCount: data.length,
         itemBuilder: (context,index){
-          return ListTile(
-            title: Text(data[index].title),
-            subtitle: Text(data[index].description),
-            onTap: (){
-              Navigator.of(context).push(
-                CupertinoPageRoute(
-                  builder: (context) => BlocProvider(
-                    builder: (context) => CollaborateDiscussionBloc(repository: DiscussionRepository(namespace: 'api/forums',data: widget.course,data2: data[index].id)),
-                    child: DiscussionView(),
+          return Card(
+            child: ListTile(
+              title: Text(data[index].title),
+              subtitle: Text(data[index].by),
+              onTap: (){
+                Navigator.of(context).push(
+                  CupertinoPageRoute(
+                    builder: (context) => BlocProvider(
+                      builder: (context) => CollaborateDiscussionBloc(repository: DiscussionRepository(data: widget.course,data2: data[index].id)),
+                      child: DiscussionView(),
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           );
         },
       );
@@ -47,20 +49,25 @@ class _CollaborateForumViewState extends State<CollaborateForumView> {
        appBar: AppBar(
          title: Text("Forum"),
        ),
-       body: BlocBuilder(
-         bloc: _bloc,
-         builder: (context,state){
-           if(state is InitialCollaborateForumState){
-             return Container();
-           }
-           if(state is LoadingForumState){
-             return Center(child: CircularProgressIndicator(),);
-           }
-           if(state is LoadedForumState){
-             return _buildDiscussionsList(state.data);
-           }
+       body: RefreshIndicator(
+         onRefresh: ()  async {
+           _bloc.dispatch(LoadForumEvent());
          },
-         
+         child: BlocBuilder(
+           bloc: _bloc,
+           builder: (context,state){
+             if(state is InitialCollaborateForumState){
+               return Container();
+             }
+             if(state is LoadingForumState){
+               return Center(child: CircularProgressIndicator(),);
+             }
+             if(state is LoadedForumState){
+               return _buildDiscussionsList(state.data);
+             }
+           },
+           
+         ),
        ),
        floatingActionButton: FloatingActionButton(
          child: Icon(Icons.add),

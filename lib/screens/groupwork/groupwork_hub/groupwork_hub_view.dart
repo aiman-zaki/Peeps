@@ -83,7 +83,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                         Navigator.of(context).push(
                           MaterialPageRoute(
                             builder: (context) => BlocProvider(
-                              builder: (context) => CollaborateForumBloc(repository: ForumRepository(namespace: "api/forums",data: widget.groupData.course)),
+                              builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course)),
                               child: BlocProvider(
                                 builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course)),
                                 child: CollaborateBottomBarView(userData: widget.userData,course: widget.groupData.course,)),

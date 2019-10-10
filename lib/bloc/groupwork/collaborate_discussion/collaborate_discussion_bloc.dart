@@ -25,5 +25,11 @@ class CollaborateDiscussionBloc extends Bloc<CollaborateDiscussionEvent, Collabo
       var data = await repository.read();
       yield LoadedDiscussionState(data: data);
     }
+    if(event is CreateNewReplyEvent){
+      repository.create(event.data.toJson());
+    }
+    if(event is DeleteReplyEvent){
+      repository.update(event.data.toJson());
+    }
   }
 }
