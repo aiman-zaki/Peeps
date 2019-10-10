@@ -4,19 +4,18 @@ import 'package:meta/meta.dart';
 import 'common_repo.dart';
 
 
-class TimelineRepository extends BaseRepositry{
+class TimelineRepository extends BaseRepository{
 
 
 
   @override
   TimelineRepository({
-    @required namespace,
     @required data,
-  }):super(baseUrl:groupworkUrl,namespace:namespace,data:data);
+  }):super(baseUrl:groupworksUrl,data:data);
 
   @override
-  create(data) async {
-    await super.create(data.toJson());
+  create({@required data,namespace}) async {
+    await super.create(data:data.toJson());
   }
 
   @override

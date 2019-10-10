@@ -2,12 +2,12 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:peeps/models/user.dart';
-import 'package:peeps/resources/users_repository.dart';
+import 'package:peeps/resources/user_repository.dart';
 import '../bloc.dart';
 
 
 class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
-  final UsersRepository repository;
+  final UserRepository repository;
 
   ProfileBloc({
     @required this.repository,
@@ -24,7 +24,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   ) async* {
     if(event is LoadProfileEvent){
       yield ProfileLoading(); 
-      UserModel user = await repository.fetchProfile();
+      UserModel user = await repository.readProfile();
       if(user == null)
         yield NoProfileLoaded();  
       else

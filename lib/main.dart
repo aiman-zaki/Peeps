@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:peeps/resources/user_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/router.dart' as router;
 import 'package:bloc/bloc.dart';
@@ -23,7 +24,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 void main() async {
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final authRepository = AuthRepository();
-  final userRepository = UsersRepository();
+  final userRepository = UserRepository();
 
   var theme = await ThemeController.getTheme();
     //RefreshToken

@@ -22,7 +22,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     if(event is RegisterButtonClickedEvent){
       yield RegisteringUserState(message: "Registering User");
       try{
-        await repository.createUser(event.email,event.password);
+        await repository.create(data: {
+          "email":event.email,
+          "password":event.password,
+        });
       } catch (e){
         yield ErrorMessageState(message: e.toString());
       }

@@ -27,7 +27,7 @@ class CollaborateForumBloc extends Bloc<CollaborateForumEvent, CollaborateForumS
     }
     if(event is CreateNewDiscussionEvent){
 
-      await repository.create(event.data);
+      await repository.create(data:event.data);
       this.dispatch(LoadForumEvent());
     }
   }

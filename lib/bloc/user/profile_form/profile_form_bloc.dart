@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:peeps/resources/user_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import '../bloc.dart';
 
 class ProfileFormBloc extends Bloc<ProfileFormEvent, ProfileFormState> {
-  final UsersRepository repository;
+  final UserRepository repository;
   final ProfileBloc bloc;
 
   ProfileFormBloc({
@@ -30,13 +31,13 @@ class ProfileFormBloc extends Bloc<ProfileFormEvent, ProfileFormState> {
     }
     if(event is UpdateRoleEvent){
       yield UpdatingRoleState();
-      await repository.updateRole(event.data);
+      await repository.updateRole(data:event.data);
       bloc.dispatch(LoadProfileEvent());
       yield UpdatedRoleState();
     }
     if(event is UploadProfilePictureEvent){
       yield UploadingProfilePictureState();
-      await repository.updateProfilePicture(event.image,event.userId);
+      await repository.updatePicture(image:event.image,id:event.userId);
       yield UploadedProfilePictureState();
     }
   }

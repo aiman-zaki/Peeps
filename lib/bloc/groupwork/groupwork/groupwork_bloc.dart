@@ -3,12 +3,13 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
+import 'package:peeps/resources/user_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import '../bloc.dart';
 
 class GroupworkBloc extends Bloc<GroupworkEvent, GroupworkState> {
   final GroupworkRepository repository;
-  final UsersRepository usersRepository;
+  final UserRepository usersRepository;
   GroupworkBloc({
     @required this.repository,
     @required this.usersRepository,
@@ -39,7 +40,7 @@ class GroupworkBloc extends Bloc<GroupworkEvent, GroupworkState> {
       if(event.data.isEmpty){
           yield NoGroupworkState();
       } else {
-        List<GroupworkModel> activeGroups = await this.usersRepository.fetchUserGroupworks();
+        List<GroupworkModel> activeGroups = await usersRepository.readActiveGroupworks();
         yield LoadedGroupworkState(data:activeGroups);
       }
     }

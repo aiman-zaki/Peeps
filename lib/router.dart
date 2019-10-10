@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
+import 'package:peeps/resources/user_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
@@ -21,14 +22,14 @@ Route<dynamic> generateRoute(RouteSettings settings){
 
       return CupertinoPageRoute(builder: (context) => 
         BlocProvider(
-            builder: (context) => ProfileFormBloc(repository: const UsersRepository(), bloc: args.bloc),
+            builder: (context) => ProfileFormBloc(repository: const UserRepository(), bloc: args.bloc),
               child: AccountView(data: args.data,)));
     case GroupsViewRoute:
       final NavigatorArguments args = settings.arguments;
       return CupertinoPageRoute<GroupworksView>(
                 builder: (context) {
                   return BlocProvider<GroupworkBloc>.value(
-                    value: GroupworkBloc(repository: GroupworkRepository(), usersRepository: const UsersRepository()),
+                    value: GroupworkBloc(repository: GroupworkRepository(), usersRepository: const UserRepository()),
                     child: GroupworksView(user: args.data),
                   );
                 }
@@ -36,14 +37,14 @@ Route<dynamic> generateRoute(RouteSettings settings){
     case InboxBottomBarViewRoute:
       return CupertinoPageRoute(builder: (context) {
         return BlocProvider<InboxBloc>.value(
-          value: InboxBloc(repository: UsersRepository(),profileBloc: ProfileBloc(repository: const UsersRepository())),
+          value: InboxBloc(repository: UserRepository(),profileBloc: ProfileBloc(repository: const UserRepository())),
           child: InboxBottomBarView(),
         );
       });
     case SearchViewRoute:
       return CupertinoPageRoute(builder: (context){
         return BlocProvider<SearchGroupsBloc>(
-          builder: (context) => SearchGroupsBloc(repository: const GroupworkRepository(), usersRepository: const UsersRepository()),
+          builder: (context) => SearchGroupsBloc(repository: const GroupworkRepository(), usersRepository: const UserRepository()),
           child: SearchView());
       });
     case GroupViewRoute:

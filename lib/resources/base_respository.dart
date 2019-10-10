@@ -5,21 +5,20 @@ import 'package:meta/meta.dart';
 import 'package:peeps/resources/common_repo.dart';
 import 'package:http/http.dart' as http;
 
-abstract class BaseRepositry{
+abstract class BaseRepository{
   final baseUrl;
   final data;
   final data2;
-  final namespace;
-  BaseRepositry(
+  
+  const BaseRepository(
     {
       @required this.baseUrl,
-      this.namespace,
-      @required this.data,
+      this.data,
       this.data2,
     }
   );
 
-   url(){
+   _url(namespace){
     var url = "$domain$baseUrl";
     if(data != null)
       url = "$url/$data";
@@ -29,11 +28,13 @@ abstract class BaseRepositry{
       url = "$url/$namespace";
     return url;
   }
+
+  get url => _url(String);
   
 
-  create(dynamic data) async {
+  create({@required data,namespace}) async {
     var headers = await fetchHeaders();
-    var response = await http.post(url(),
+    var response = await http.post(_url(namespace),
       body: jsonEncode(data),
       headers: headers,
     );
@@ -46,9 +47,9 @@ abstract class BaseRepositry{
 
   } 
 
-  read() async {
+  read({namespace}) async {
     var headers = await fetchHeaders();
-    var response = await http.get(url(),headers: headers);
+    var response = await http.get(_url(namespace),headers: headers);
     var jsonDecoded = jsonDecode(response.body);
     if(response.statusCode == 200){
       return jsonDecoded;
@@ -56,9 +57,9 @@ abstract class BaseRepositry{
       throw jsonDecode;
     }
   }
-  update(data) async {
+  update({@required data,namespace}) async {
     var headers = await fetchHeaders();
-    var response = await http.put(url(),
+    var response = await http.put(_url(namespace),
       headers: headers,
       body: jsonEncode(data)
     );
@@ -69,7 +70,9 @@ abstract class BaseRepositry{
       throw jsonDecoded;
     }
   }
-  delete();
+  delete(){
+
+  }
 
 
 }

@@ -32,7 +32,7 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
     }
     if(event is SendDataTimelineEvent){
       liveTimeline.sendData(event.data);
-      await repository.create(event.data);
+      await repository.create(data:event.data);
     }
   }
 

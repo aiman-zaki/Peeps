@@ -2,7 +2,7 @@ import 'package:peeps/models/discussion.dart';
 import 'package:peeps/resources/base_respository.dart';
 import 'package:meta/meta.dart';
 import 'package:peeps/resources/common_repo.dart';
-class DiscussionRepository extends BaseRepositry{
+class DiscussionRepository extends BaseRepository{
 
   @override
   DiscussionRepository({
@@ -15,13 +15,13 @@ class DiscussionRepository extends BaseRepositry{
 
 
   @override
-  create(data)  async {
-    await super.create(data);
+  create({@required data,namespace})  async {
+    await super.create(data:data);
   }
 
   @override
-  read() async {
-    var data = await super.read();
+  read({namespace}) async {
+    var data = await super.read(namespace: namespace);
     return DiscussionModel.fromJson(data);
   }
   
@@ -32,8 +32,8 @@ class DiscussionRepository extends BaseRepositry{
   }
 
   @override
-  update(data) async{
-    await super.update(data);
+  update({@required data,namespace}) async{
+    await super.update(data:data);
   }
   
 }

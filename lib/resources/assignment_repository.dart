@@ -9,7 +9,7 @@ import 'dart:convert';
 import 'common_repo.dart';
 
 class AssignmentRepository{
-  final String _baseUrl = domain+groupworkUrl;
+  final String _baseUrl = domain+groupworksUrl;
   
   const AssignmentRepository();
 

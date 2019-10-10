@@ -5,7 +5,7 @@ import 'package:peeps/resources/common_repo.dart';
 import 'package:meta/meta.dart';
 
 
-class ForumRepository extends BaseRepositry{
+class ForumRepository extends BaseRepository{
 
 
   ForumRepository({
@@ -13,8 +13,8 @@ class ForumRepository extends BaseRepositry{
   }):super(baseUrl:forumUrl,data:data);
 
   @override
-  create(data) async {
-    await super.create(data.toJson());
+  create({@required data,namespace}) async {
+    await super.create(data:data.toJson());
   }
 
   @override
@@ -24,7 +24,7 @@ class ForumRepository extends BaseRepositry{
   }
 
   @override
-  read() async {
+  read({namespace}) async {
     List discussions = [];
     var data = await super.read();
     for(Map<String,dynamic> discussion in data['discussions']){
@@ -34,7 +34,7 @@ class ForumRepository extends BaseRepositry{
   }
 
   @override
-  update(data) async {
+  update({@required data,namespace}) async {
     // TODO: implement update
     return null;
   }

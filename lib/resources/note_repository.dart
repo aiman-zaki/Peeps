@@ -11,7 +11,7 @@ import 'package:http/http.dart' as http;
 class NoteRepository{
   const NoteRepository();
 
-  final _baseUrl = domain+groupworkUrl;
+  final _baseUrl = domain+groupworksUrl;
 
   Future fetchNotes(Map<String,dynamic> data) async{
    

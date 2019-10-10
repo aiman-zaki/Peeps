@@ -21,8 +21,8 @@ class InviteMembersBloc extends Bloc<InviteMembersEvent, InviteMembersState> {
   ) async* {
     if(event is SearchButtonClickedEvent){
       yield LoadingUsersState();
-      var data = await repository.searchUser(event.data);
-      yield LoadedUsersState(data: data);
+      //var data = await repository.searchUser(event.data);
+      //yield LoadedUsersState(data: data);
     }
     if(event is InviteMemberEvent){
       yield InvitingMemberState();

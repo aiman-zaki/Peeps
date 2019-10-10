@@ -3,10 +3,13 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'base_respository.dart';
 import 'common_repo.dart';
 
-class AuthRepository{
+class AuthRepository {
+  
   final String baseUrl = domain+authUrl;
+
 
   Future<String> authenticate({
     @required String email,
