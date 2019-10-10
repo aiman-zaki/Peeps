@@ -26,14 +26,14 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
 
   var _userJoinedView;
   var _forumView;
-  Widget _showPage = new UserJoinedCollaborateView();
+  Widget _showPage;
 
   pageChooser(int index){
     switch(index){
       case(0):
-        return _userJoinedView;
-      case(1):
         return _forumView;
+      case(1):
+        return _userJoinedView;
       default:
         return new Container(
           child: Center(child: Text("Not a valid Path"),),
@@ -47,6 +47,7 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
     BlocProvider.of<CollaborateForumBloc>(context).dispatch(LoadForumEvent());
     _forumView = new CollaborateForumView(course: widget.course);
     _userJoinedView = new UserJoinedCollaborateView();
+    _showPage = _forumView;
     super.initState();
   }
 

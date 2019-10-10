@@ -18,7 +18,7 @@ class NoteRepository{
     var token = accessToken();
 
     var response = await http.get(
-      _baseUrl+data['groupId']+"/notes",
+      "$_baseUrl/${data['groupId']}/notes",
       headers: {HttpHeaders.authorizationHeader: "Bearer $token"}
     );
 

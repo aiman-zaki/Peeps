@@ -1,19 +1,22 @@
 import 'package:peeps/models/discussion.dart';
 import 'package:peeps/resources/base_respository.dart';
 import 'package:meta/meta.dart';
+import 'package:peeps/resources/common_repo.dart';
 class DiscussionRepository extends BaseRepositry{
 
   @override
   DiscussionRepository({
-    @required namespace,
     @required data,
     @required data2,
-  }):super(namespace:namespace,data:data,data2:data2);
+  }):super(
+    baseUrl:forumUrl,
+    data:data,
+    data2:data2);
 
 
   @override
   create(data)  async {
-
+    await super.create(data);
   }
 
   @override
@@ -29,9 +32,8 @@ class DiscussionRepository extends BaseRepositry{
   }
 
   @override
-  update() {
-    // TODO: implement update
-    return null;
+  update(data) async{
+    await super.update(data);
   }
   
 }

@@ -9,6 +9,7 @@ import 'package:peeps/resources/assignment_repository.dart';
 import 'package:peeps/resources/chat.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/live_timeline.dart';
+import 'package:peeps/resources/timeline_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/screens/common/custom_milestone.dart';
 import 'package:peeps/screens/groupwork/assignment_form.dart';
@@ -44,7 +45,7 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
         BlocProvider<MembersBloc>(builder: (context) => MembersBloc(repository: const GroupworkRepository()),),
         BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: const GroupworkRepository()),),
         BlocProvider<InviteMembersBloc>(builder: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository: const GroupworkRepository()),),
-        BlocProvider<TimelineBloc>(builder: (context) => TimelineBloc(liveTimeline: LiveTimeline(namespace: "timeline",room:widget.groupData.id)),)
+        BlocProvider<TimelineBloc>(builder: (context) => TimelineBloc(liveTimeline: LiveTimeline(namespace: "timeline",room:widget.groupData.id), repository: TimelineRepository(namespace: 'api/groupworks',data: widget.groupData.id)),)
         
       ],
       child: GroupworkHubView(groupData:widget.groupData,userData:widget.userData)

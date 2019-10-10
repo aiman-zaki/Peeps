@@ -17,7 +17,7 @@ class AssignmentRepository{
     List<AssignmentModel> assigments = [];
 
     var token = await storage.read(key:"access_token");
-    var response = await http.get(_baseUrl+groupId+"/assignments",
+    var response = await http.get("$_baseUrl/$groupId/assignments",
     headers: {HttpHeaders.authorizationHeader: "Bearer $token", "Content-Type":"application/json",});
     var responseData = json.decode(response.body);
     print(responseData);
@@ -39,7 +39,7 @@ class AssignmentRepository{
     };
     var body = json.encode(data);
     var token = await storage.read(key: "access_token");
-    var response = await http.put(_baseUrl+"assignment",
+    var response = await http.put(_baseUrl+"/assignment",
     body: body,
       headers: {HttpHeaders.authorizationHeader: "Bearer $token", 
                 "Content-Type":"application/json",});
@@ -60,7 +60,7 @@ class AssignmentRepository{
 
     var body = json.encode(data);
     var token = await storage.read(key: "access_token");
-    var response = await http.post(_baseUrl+"groupwork/assignment",
+    var response = await http.post(_baseUrl+"/groupwork/assignment",
       body: body,
       headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"});
       if(response.statusCode == 200){
@@ -75,7 +75,7 @@ class AssignmentRepository{
     List<TaskModel> tasks = [];
     
     var token = await storage.read(key: "access_token");
-    var response =  await http.get(_baseUrl+"groupwork/$assignmentId/tasks",
+    var response =  await http.get(_baseUrl+"/groupwork/$assignmentId/tasks",
       headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"});
       Map<String,dynamic> responseData = json.decode(response.body);
       if(response.statusCode == 200 && responseData != null){
@@ -98,7 +98,7 @@ class AssignmentRepository{
     var body = json.encode(data);
     var token = await storage.read(key:"access_token");
 
-    var response = await http.post(_baseUrl+"groupwork/$assignmentId/tasks",
+    var response = await http.post(_baseUrl+"/groupwork/$assignmentId/tasks",
       body: body,
       headers: {HttpHeaders.authorizationHeader: "Bearer $token", "Content-Type":"application/json",});
       Map<String,dynamic> responseData = json.decode(response.body);
@@ -116,7 +116,7 @@ class AssignmentRepository{
       };
       var body = json.encode(data);
       var token = await storage.read(key: "access_token");
-      var response = await http.put(_baseUrl+"groupwork/$assignmentId/task/status",
+      var response = await http.put(_baseUrl+"/groupwork/$assignmentId/task/status",
         body: body,
         headers: {HttpHeaders.authorizationHeader: "Bearer $token", "Content-Type":"application/json"}
       );
@@ -129,7 +129,7 @@ class AssignmentRepository{
 
     void deleteTask({String assignmentId,String taskId}) async {      
       var token = await storage.read(key: "access_token");
-      var response = await http.delete(_baseUrl+"groupwork/$assignmentId/$taskId/task",
+      var response = await http.delete(_baseUrl+"/groupwork/$assignmentId/$taskId/task",
         headers: {HttpHeaders.authorizationHeader: "Bearer $token", "Content-Type":"application/json"}
       );
       if(response.statusCode == 200){

@@ -2,14 +2,17 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:peeps/resources/live_timeline.dart';
 import 'package:meta/meta.dart';
+import 'package:peeps/resources/timeline_repository.dart';
 import '../bloc.dart';
 
 class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
 
   final LiveTimeline liveTimeline;
+  final TimelineRepository repository;
 
   TimelineBloc({
-    @required this.liveTimeline
+    @required this.liveTimeline,
+    @required this.repository,
   });
 
   @override
@@ -29,6 +32,7 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
     }
     if(event is SendDataTimelineEvent){
       liveTimeline.sendData(event.data);
+      await repository.create(event.data);
     }
   }
 

@@ -16,7 +16,7 @@ class GroupworkRepository{
  
   createGroupwork(Map data) async{
     var token = await storage.read(key:"access_token");
-    var response = await http.post(_baseUrl+"groupwork",
+    var response = await http.post(_baseUrl+"/groupwork",
     headers: {HttpHeaders.authorizationHeader: "Bearer $token",
               "Content-Type":"application/json"},
     body: json.encode(data),
@@ -31,7 +31,7 @@ class GroupworkRepository{
 
   updateGroupwork(Map<String,dynamic> data) async {
     var headers = await fetchHeaders();
-    var response = await http.put(_baseUrl+"groupwork",
+    var response = await http.put(_baseUrl+"/groupwork",
       headers: headers,
       body: jsonEncode(data)
     );
@@ -47,7 +47,7 @@ class GroupworkRepository{
   uploadProfileImage(File image,String groupId) async {
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
-    final Uri uri = Uri.parse(_baseUrl+"profile/image");
+    final Uri uri = Uri.parse(_baseUrl+"/profile/image");
     var token = await accessToken();
 
     var request = new http.MultipartRequest("POST",
@@ -87,7 +87,7 @@ class GroupworkRepository{
     Map body = {
       'group_id':groupId,
     };
-    var response = await http.put(_baseUrl+"stash",
+    var response = await http.put(_baseUrl+"/stash",
     headers: {HttpHeaders.authorizationHeader: "Bearer $token",
             "Content-Type":"application/json"},
     body: json.encode(body));
@@ -102,7 +102,7 @@ class GroupworkRepository{
 
   Future <List<MemberModel>> fetchMembers(String groupId) async {
     var token = accessToken();
-    var response = await http.get(_baseUrl+"$groupId/members",
+    var response = await http.get(_baseUrl+"/$groupId/members",
       headers: {HttpHeaders.authorizationHeader: "Bearer $token"});
     var responeData = jsonDecode(response.body);
     List<MemberModel> members = [];
@@ -121,7 +121,7 @@ class GroupworkRepository{
     var token = await accessToken();
    
     var response = await http.put(
-      _baseUrl+data['groupId']+"/roles",
+      "$_baseUrl/${data['groupId']}/roles",
       headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"},
       body: jsonEncode(data)
     );
@@ -134,7 +134,7 @@ class GroupworkRepository{
   Future inviteMember(Map<String,dynamic> data) async{
     var token = await accessToken();
     var response = await http.post(
-      _baseUrl+data['groupId']+"/members",
+      "$_baseUrl/${data['groupId']}/members",
       body: jsonEncode(data),
       headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"}
     );
@@ -147,7 +147,7 @@ class GroupworkRepository{
   Future deleteMember(Map<String,dynamic> data) async {
     var token = await accessToken();
     var response = await http.put(
-      _baseUrl+data['groupId']+"/members",
+     "$_baseUrl/${data['groupId']}/members",
       body: jsonEncode(data),
       headers: {HttpHeaders.authorizationHeader: "Bearer $token","Content-Type":"application/json"}  
     );
@@ -160,7 +160,7 @@ class GroupworkRepository{
   Future fetchRequests(var data) async {
     var headers = await fetchHeaders();
     var response = await http.get(
-      _baseUrl+data['group_id']+"/requests",
+      "$_baseUrl/${data['group_id']}/requests",
       headers: headers
     );
     List<RequestModel> requests = [];
@@ -178,7 +178,7 @@ class GroupworkRepository{
     var headers = await fetchHeaders();
 
     var response = await http.put(
-      _baseUrl+groupId+"/requests",
+      "$_baseUrl/$groupId/requests",
       headers: headers,
       body: jsonEncode(data),
     );

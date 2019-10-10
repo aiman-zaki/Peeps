@@ -9,9 +9,8 @@ class ForumRepository extends BaseRepositry{
 
 
   ForumRepository({
-    @required namespace,
     @required data,
-  }):super(namespace:namespace,data:data);
+  }):super(baseUrl:forumUrl,data:data);
 
   @override
   create(data) async {
@@ -35,7 +34,7 @@ class ForumRepository extends BaseRepositry{
   }
 
   @override
-  update() {
+  update(data) async {
     // TODO: implement update
     return null;
   }

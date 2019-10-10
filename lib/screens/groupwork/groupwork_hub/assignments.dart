@@ -2,6 +2,7 @@ import 'package:expandable/expandable.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/resources/assignment_repository.dart';
@@ -29,19 +30,113 @@ class _HubAssignmentsState extends State<HubAssignments> {
     final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
     final size = MediaQuery.of(context).size;
 
-    _buildLeaderTag(String leader){
-      if(leader == widget.userData.email) 
+    _buildLeaderTag(String leader) {
+      if (leader == widget.userData.email)
         return Card(
-          elevation: 5.00,
-          color:Colors.pink, 
-          child: Padding(
-            padding: const EdgeInsets.all(2.0),
-            child: Text("Leader"),
-          ));
+            elevation: 5.00,
+            color: Colors.pink,
+            child: Padding(
+              padding: const EdgeInsets.all(2.0),
+              child: Text("Leader"),
+            ));
       else
-        return Text(""); 
+        return Text("");
     }
+
     _buildAssignmentList(List<AssignmentModel> data) {
+      return ListView.builder(
+        physics: NeverScrollableScrollPhysics(),
+        shrinkWrap: true,
+        itemCount: data.length,
+        itemBuilder: (context, index) {
+          if (data.isNotEmpty) {
+            return Slidable(
+              actionPane: SlidableDrawerActionPane(),
+              secondaryActions: <Widget>[
+                IconSlideAction(
+                  color: Colors.blue,
+                  icon: Icons.developer_board,
+                  caption: "KanbanBoard",
+                  onTap: () {
+                    Navigator.of(context).push(CupertinoPageRoute(
+                      builder: (context) => BlocProvider<TaskBloc>(
+                        builder: (context) => TaskBloc(
+                            repository: const AssignmentRepository()),
+                        child: BlocProvider<MembersBloc>.value(
+                          value: _membersBloc,
+                          child: BlocProvider<TimelineBloc>.value(
+                            value: _timelineBloc,
+                            child: KanbanBoardView(
+                              data: data[index],
+                              groupId: widget.groupData.id,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ));
+                  },
+                )
+              ],
+              child: Card(
+                color: Color.fromARGB(30, 0, 188, 212),
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ExpandablePanel(
+                      hasIcon: false,
+                      tapBodyToCollapse: true,
+                      header: Container(
+                        width: size.width,
+                        padding: EdgeInsets.all(9),
+                        child: Stack(
+                          children: <Widget>[
+                            Text(
+                              data[index].title,
+                              style: TextStyle(
+                                fontSize: 17,
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: _buildLeaderTag(data[index].leader),
+                            )
+                          ],
+                        ),
+                      ),
+                      expanded: Column(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: <Widget>[
+                          ListTile(
+                            leading: Icon(Icons.dashboard),
+                            title: Text("Description"),
+                            subtitle: Text(data[index].description),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.people),
+                            title: Text("Leader"),
+                            subtitle: Text(data[index].leader),
+                          ),
+                          ListTile(
+                            leading: Icon(Icons.calendar_today),
+                            title: Text("Due Date"),
+                            subtitle: Text(data[index].dueDate.toString()),
+                          ),
+                        ],
+                      )),
+                ),
+              ),
+            );
+          } else {
+            return Container(
+              width: size.width,
+              child: Text("No Assignments"),
+            );
+          }
+        },
+      );
+    }
+
+    _buildAssignmentList2(List<AssignmentModel> data) {
       return ListView.builder(
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
@@ -77,8 +172,9 @@ class _HubAssignmentsState extends State<HubAssignments> {
                         ListTile(
                           onTap: () {
                             Navigator.of(context).push(CupertinoPageRoute(
-                                builder: (context) => BlocProvider<TaskBloc>(
-                                builder: (context) => TaskBloc(repository: const AssignmentRepository()),
+                              builder: (context) => BlocProvider<TaskBloc>(
+                                builder: (context) => TaskBloc(
+                                    repository: const AssignmentRepository()),
                                 child: BlocProvider<MembersBloc>.value(
                                   value: _membersBloc,
                                   child: BlocProvider<TimelineBloc>.value(
