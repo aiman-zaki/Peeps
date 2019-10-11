@@ -26,12 +26,6 @@ class DiscussionRepository extends BaseRepository{
   }
   
   @override
-  delete() {
-    // TODO: implement delete
-    return null;
-  }
-
-  @override
   update({@required data,namespace}) async{
     await super.update(data:data);
   }

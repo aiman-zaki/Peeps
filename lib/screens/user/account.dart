@@ -9,7 +9,7 @@ import 'package:peeps/bloc/user/profile_form/profile_form_bloc.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/common/custom_stack_background.dart';
-import 'package:peeps/screens/common/custom_stack_front.dart';
+
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
 class AccountView extends StatefulWidget {

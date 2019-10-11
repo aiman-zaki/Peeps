@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:peeps/models/assignment.dart';
+
 import 'package:peeps/models/changed_status.dart';
-import 'package:peeps/resources/assignment_repository.dart';
+
+import 'package:peeps/resources/task_repository.dart';
 import '../bloc.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
-  final AssignmentRepository repository;
+  final TaskRepository repository;
   TaskBloc({
     @required this.repository
   });
@@ -21,12 +22,12 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   ) async* {
     if(event is LoadTaskEvent){
       yield LoadingTaskState();
-      final data = await repository.fetchTasks(assignmentId: event.data);
+      final data = await repository.readTasks();
       yield LoadedTaskState(data: data);
     }
     if(event is AddNewTaskEvent){
       try {
-        await repository.createTask(todo: event.task.toJson(),assignmentId: event.assignmentId,groupId: event.groupId);
+        await repository.createTask(data: event.task.toJson());
         yield DisplayMessageSnackbar(color: "green", message: "Succeed");
       }catch(e){
         yield DisplayMessageSnackbar(color: "red", message: e.toString());
@@ -39,7 +40,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       yield DeletingTaskState(taskId: event.taskId);
     }
     if(event is DeleteTaskEvent){
-      repository.deleteTask(assignmentId: event.assignmentId,taskId: event.taskId);
+      repository.deleteTask(id: event.taskId);
       yield InitialTaskState();
     }
     if(event is UpdateTaskStatus){
@@ -47,7 +48,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       for(ChangedStatus task in event.tasks){
         changedStatusTask.add(task.toJson());
       }
-      repository.updateTaskState(assignmentId: event.assignmentId,changedStatusTask: changedStatusTask);
+      repository.updateTaskStatus(data: changedStatusTask);
       yield DisplayMessageSnackbar(color: "green",message: "Saved");
       try{
         
@@ -56,10 +57,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       }
       yield InitialTaskState();
     }
-    if(event is RefreshAssignmentEvent){
-      AssignmentModel assignment = await repository.fetchAssignment(groupId: event.groupId,assignmentId: event.assignmentId);
-      yield RefreshedAssignmentState(assignment: assignment);
-      yield InitialTaskState();
-    }
+    
   }
 }

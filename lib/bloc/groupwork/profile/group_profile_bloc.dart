@@ -19,7 +19,7 @@ class GroupProfileBloc extends Bloc<GroupProfileEvent, GroupProfileState> {
   ) async* {
     if (event is UpdateGroupworkProfileEvent) {
       yield UpdatingGroupProfileState();
-      await repository.updateGroupwork(event.data);
+      await repository.updateGroupwork(data:event.data);
       yield UpdatedGroupProfileState();
 
     }
@@ -30,12 +30,12 @@ class GroupProfileBloc extends Bloc<GroupProfileEvent, GroupProfileState> {
     }
     if (event is UpdateAdminRoleEvent) {
       yield UpdatingAdminRoleState();
-      await repository.updateRole(event.data);
+      await repository.updateRoles(data: event.data);
       yield UpdatedAdminRoleState();
     }
     if (event is DeleteMemberEvent) {
       yield DeletingMemberState();
-      await repository.deleteMember(event.data);
+      await repository.updateMembers(data: event.data);
       yield DeletedMemberState();
     }
   }

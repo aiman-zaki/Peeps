@@ -2,13 +2,14 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:peeps/models/groupwork.dart';
-import 'package:peeps/resources/groupwork_repository.dart';
+
+import 'package:peeps/resources/groupworks_repository.dart';
 import 'package:peeps/resources/user_repository.dart';
-import 'package:peeps/resources/users_repository.dart';
+
 import '../bloc.dart';
 
 class GroupworkBloc extends Bloc<GroupworkEvent, GroupworkState> {
-  final GroupworkRepository repository;
+  final GroupworksRepository repository;
   final UserRepository usersRepository;
   GroupworkBloc({
     @required this.repository,
@@ -31,7 +32,7 @@ class GroupworkBloc extends Bloc<GroupworkEvent, GroupworkState> {
       data['description'] = event.description;
       data['course'] = event.course;
       data['members'] = event.members;
-      await repository.createGroupwork(data);  
+      await repository.createGroupwork(data:data);  
       yield InsertedGroupworkState();
     
     }

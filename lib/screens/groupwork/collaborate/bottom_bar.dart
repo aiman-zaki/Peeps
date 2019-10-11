@@ -53,7 +53,7 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
 
   @override
   Widget build(BuildContext context) {
-    final _bloc = BlocProvider.of<CollaborateBloc>(context);
+    
 
     return Scaffold(
       bottomNavigationBar: CurvedNavigationBar(

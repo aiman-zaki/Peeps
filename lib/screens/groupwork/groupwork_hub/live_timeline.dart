@@ -1,10 +1,10 @@
-import 'package:flutter/gestures.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:peeps/bloc/groupwork/bloc.dart';
 import 'package:peeps/bloc/groupwork/timeline/timeline_bloc.dart';
-import 'package:peeps/bloc/groupwork/timeline/timeline_event.dart';
+
 
 class LiveTimelineView extends StatefulWidget {
 

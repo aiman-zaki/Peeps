@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
-import 'package:peeps/main.dart';
+
 import 'package:peeps/models/message.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/chat.dart';

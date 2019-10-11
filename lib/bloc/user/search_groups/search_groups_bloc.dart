@@ -2,12 +2,13 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:meta/meta.dart';
+import 'package:peeps/resources/groupworks_repository.dart';
 import 'package:peeps/resources/user_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import '../bloc.dart';
 
 class SearchGroupsBloc extends Bloc<SearchGroupsEvent, SearchGroupsState> {
-  final GroupworkRepository repository;
+  final GroupworksRepository repository;
   final UserRepository usersRepository;
 
   SearchGroupsBloc({
@@ -24,7 +25,7 @@ class SearchGroupsBloc extends Bloc<SearchGroupsEvent, SearchGroupsState> {
   ) async* {
     if(event is SearchGroupsButtonClickedEvent){
       yield LoadingGroupsState();
-      var data = await repository.fetchGroupworks(event.data);
+      var data = await repository.read();
       yield LoadedGroupsState(data: data);
     }
     if(event is RequestGrouptEvent){

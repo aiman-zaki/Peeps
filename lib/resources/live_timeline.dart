@@ -1,9 +1,8 @@
 
 
-import 'package:adhara_socket_io/adhara_socket_io.dart';
-import 'package:peeps/models/message.dart';
+
 import 'package:peeps/models/timeline.dart';
-import 'package:peeps/resources/common_repo.dart';
+
 import 'package:peeps/resources/socket_io.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:meta/meta.dart';

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:peeps/main.dart';
+
 
 class DetailTaskView extends StatelessWidget {
   const DetailTaskView({Key key}) : super(key: key);

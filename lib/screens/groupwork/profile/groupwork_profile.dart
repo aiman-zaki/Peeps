@@ -168,7 +168,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                 Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => BlocProvider(
-                      builder: (context) => RequestBloc(groupworkRepository: const GroupworkRepository()),
+                      builder: (context) => RequestBloc(groupworkRepository: GroupworkRepository(data:  widget.data.id)),
                         child: GroupRequest(groupId: widget.data.id,),
                     )
                   )

@@ -4,7 +4,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:peeps/bloc/groupwork/bloc.dart';
 import 'package:peeps/bloc/user/bloc.dart';
 import 'package:peeps/models/groupwork.dart';
-import 'package:peeps/models/member.dart';
+
 import 'package:peeps/screens/common/common_profile_picture.dart';
 
 class GroupProfileAdmin extends StatefulWidget {

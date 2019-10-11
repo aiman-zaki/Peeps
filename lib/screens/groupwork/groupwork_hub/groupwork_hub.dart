@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
-import 'package:peeps/bloc/groupwork/timeline/bloc.dart';
+
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/assignment_repository.dart';
@@ -11,9 +11,7 @@ import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/live_timeline.dart';
 import 'package:peeps/resources/timeline_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
-import 'package:peeps/screens/common/custom_milestone.dart';
-import 'package:peeps/screens/groupwork/assignment_form.dart';
-import 'package:peeps/screens/groupwork/chat/group_chat.dart';
+
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub_view.dart';
 
 class GroupworkHub extends StatefulWidget {
@@ -41,10 +39,10 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
         BlocProvider<GroupChatBloc>(builder: (context) => GroupChatBloc(chat: ChatResources(namespace: 'group_chat',room: widget.groupData.id),)),
         BlocProvider<KanbanBoardBloc>(builder: (context) => KanbanBoardBloc(),),
         BlocProvider<StashBloc>(builder: (context) => StashBloc()),
-        BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: const AssignmentRepository(),)),
-        BlocProvider<MembersBloc>(builder: (context) => MembersBloc(repository: const GroupworkRepository()),),
-        BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: const GroupworkRepository()),),
-        BlocProvider<InviteMembersBloc>(builder: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository: const GroupworkRepository()),),
+        BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: AssignmentRepository(data: widget.groupData.id),)),
+        BlocProvider<MembersBloc>(builder: (context) => MembersBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
+        BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
+        BlocProvider<InviteMembersBloc>(builder: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository:  GroupworkRepository(data: widget.groupData.id)),),
         BlocProvider<TimelineBloc>(builder: (context) => TimelineBloc(liveTimeline: LiveTimeline(namespace: "timeline",room:widget.groupData.id), repository: TimelineRepository(data: widget.groupData.id)),)
         
       ],

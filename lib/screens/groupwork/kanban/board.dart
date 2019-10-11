@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/changed_status.dart';
 import 'package:peeps/models/task.dart';
 
@@ -100,7 +98,7 @@ class _BoardState extends State<Board> {
               draggable: draggableTodo,
               taskList: widget.todo,
               zoneTitle: "Todo",
-              onAccept: _addToChangedStatusList,
+              onAccept: _addToChangedStatusList, backgroundcolor: Theme.of(context).backgroundColor,
               
             )
           ),
@@ -110,6 +108,7 @@ class _BoardState extends State<Board> {
               taskList: widget.doing,
               zoneTitle: "Doing",
               onAccept: _addToChangedStatusList,
+              backgroundcolor: Theme.of(context).backgroundColor
             ),
           ),
           Expanded(
@@ -117,7 +116,8 @@ class _BoardState extends State<Board> {
               draggable: draggableDone,
               taskList: widget.done,
               zoneTitle: "Done",
-              onAccept: _addToChangedStatusList,            
+              onAccept: _addToChangedStatusList,   
+              backgroundcolor: Theme.of(context).backgroundColor         
             ),
           ),
         ],

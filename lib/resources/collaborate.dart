@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'dart:convert';
-import 'package:peeps/models/member.dart';
+
 import 'package:peeps/models/message.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/socket_io.dart';

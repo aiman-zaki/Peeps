@@ -4,13 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
-import 'package:peeps/resources/groupwork_repository.dart';
+
+import 'package:peeps/resources/groupworks_repository.dart';
 import 'package:peeps/resources/user_repository.dart';
-import 'package:peeps/resources/users_repository.dart';
+
 import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/groupwork_form.dart';
-import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
+
 import 'package:peeps/screens/splash_page.dart';
 
 
@@ -22,20 +23,20 @@ class GroupworksView extends StatefulWidget {
 }
 
 class _GroupworksViewState extends State<GroupworksView> {
-  final _repository = GroupworkRepository();
+
   GroupworkBloc _bloc;
-  ProfileBloc _profileBloc;
+  //ProfileBloc _profileBloc;
 
   @override
   void initState(){
     _bloc = BlocProvider.of<GroupworkBloc>(context);
-    _profileBloc = BlocProvider.of<ProfileBloc>(context);
+    //_profileBloc = BlocProvider.of<ProfileBloc>(context);
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
+    
     
     Widget _buildAvatar(GroupworkModel groupwork){
       return Container(
@@ -163,7 +164,7 @@ class _GroupworksViewState extends State<GroupworksView> {
               CupertinoPageRoute<GroupworkForm>(
                 builder: (context) {
                   return BlocProvider<GroupworkBloc>.value(
-                    value: GroupworkBloc(repository: _repository, usersRepository: const UserRepository()),
+                    value: GroupworkBloc(repository: const GroupworksRepository(), usersRepository: const UserRepository()),
                     child: GroupworkForm(),
                   );
                 }

@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:peeps/models/groupwork.dart';
+
 
 @immutable
 abstract class GroupworkEvent extends Equatable {

@@ -4,6 +4,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/user/login/login_bloc.dart';
 import 'package:peeps/bloc/user/login/login_state.dart';
+import 'package:peeps/resources/auth_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'register_form.dart';
@@ -76,7 +77,7 @@ class _LoginFormState extends State<LoginForm> {
                       builder: (context) => 
                       BlocProvider.value(value:_loginBloc,
                         child: BlocProvider(
-                          builder: (context) => RegisterBloc(loginBloc: _loginBloc,repository: const UsersRepository()),
+                          builder: (context) => RegisterBloc(loginBloc: _loginBloc,repository: AuthRepository()),
                           child: RegisterForm())),fullscreenDialog: true));
                   },
                   child: Text("Register new account")))

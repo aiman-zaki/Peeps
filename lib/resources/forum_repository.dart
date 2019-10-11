@@ -17,11 +17,6 @@ class ForumRepository extends BaseRepository{
     await super.create(data:data.toJson());
   }
 
-  @override
-  delete() {
-    // TODO: implement delete
-    return null;
-  }
 
   @override
   read({namespace}) async {

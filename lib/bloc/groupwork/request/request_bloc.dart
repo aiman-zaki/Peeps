@@ -19,11 +19,11 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
   ) async* {
     if(event is LoadRequestsEvent){
       yield LoadingRequestsState();
-      var data = await groupworkRepository.fetchRequests(event.data);
+      var data = await groupworkRepository.readRequests();
       yield LoadedRequestsState(data: data);
     }
     if(event is AnswerButtonClicked){
-      await groupworkRepository.updateRequests(event.data,event.groupId);
+    
       yield InitialRequestState();
     }
   }

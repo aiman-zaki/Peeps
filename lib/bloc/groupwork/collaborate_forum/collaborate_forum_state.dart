@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:peeps/bloc/bloc.dart';
+
 
 abstract class CollaborateForumState extends Equatable {
   const CollaborateForumState();

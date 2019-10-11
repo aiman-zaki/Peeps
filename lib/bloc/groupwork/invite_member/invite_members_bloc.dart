@@ -26,7 +26,7 @@ class InviteMembersBloc extends Bloc<InviteMembersEvent, InviteMembersState> {
     }
     if(event is InviteMemberEvent){
       yield InvitingMemberState();
-      await groupworkRepository.inviteMember(event.data);
+      await groupworkRepository.updateMembers(data:event.data);
       yield InvitedMemberState();
     }
   }

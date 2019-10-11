@@ -1,5 +1,5 @@
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
+
 abstract class TimelineState extends Equatable {
   const TimelineState();
   @override

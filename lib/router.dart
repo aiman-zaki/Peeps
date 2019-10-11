@@ -2,9 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
-import 'package:peeps/resources/groupwork_repository.dart';
+
+import 'package:peeps/resources/groupworks_repository.dart';
 import 'package:peeps/resources/user_repository.dart';
-import 'package:peeps/resources/users_repository.dart';
+
 import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
 import 'package:peeps/screens/inbox/inbox_bottombar.dart';
@@ -29,7 +30,7 @@ Route<dynamic> generateRoute(RouteSettings settings){
       return CupertinoPageRoute<GroupworksView>(
                 builder: (context) {
                   return BlocProvider<GroupworkBloc>.value(
-                    value: GroupworkBloc(repository: GroupworkRepository(), usersRepository: const UserRepository()),
+                    value: GroupworkBloc(repository: GroupworksRepository(), usersRepository: const UserRepository()),
                     child: GroupworksView(user: args.data),
                   );
                 }
@@ -44,7 +45,7 @@ Route<dynamic> generateRoute(RouteSettings settings){
     case SearchViewRoute:
       return CupertinoPageRoute(builder: (context){
         return BlocProvider<SearchGroupsBloc>(
-          builder: (context) => SearchGroupsBloc(repository: const GroupworkRepository(), usersRepository: const UserRepository()),
+          builder: (context) => SearchGroupsBloc(repository: GroupworksRepository(), usersRepository: const UserRepository()),
           child: SearchView());
       });
     case GroupViewRoute:

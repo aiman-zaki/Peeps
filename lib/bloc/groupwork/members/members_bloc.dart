@@ -1,9 +1,9 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
-import 'package:peeps/models/user.dart';
+
 import 'package:peeps/resources/groupwork_repository.dart';
-import 'package:peeps/resources/users_repository.dart';
+
 import '../bloc.dart';
 
 class MembersBloc extends Bloc<MembersEvent, MembersState> {
@@ -22,7 +22,7 @@ class MembersBloc extends Bloc<MembersEvent, MembersState> {
   ) async* {
     if(event is LoadMembersEvent){
       yield LoadingMembersState();
-      var members = await repository.fetchMembers(event.groupId);
+      var members = await repository.readMembers();
       yield LoadedMembersState(data: members);
     }
     

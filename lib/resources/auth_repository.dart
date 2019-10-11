@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'base_respository.dart';
+
 import 'common_repo.dart';
 
 class AuthRepository {
@@ -37,6 +37,11 @@ class AuthRepository {
       throw (responsejson['message']);
     }
     return "400";
+  }
+
+  Future createUser({data}) async{
+    var response = await http.post(baseUrl+"register",body:jsonEncode(data),headers: {"Content-Type":"application/json"});
+    return response;
   }
   
   Future<http.Response> refreshToken() async{

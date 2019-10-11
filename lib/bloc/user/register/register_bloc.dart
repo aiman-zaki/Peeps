@@ -1,11 +1,12 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/widgets.dart';
+import 'package:peeps/resources/auth_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import '../bloc.dart';
 
 class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
-  final UsersRepository repository;
+  final AuthRepository repository;
   final LoginBloc loginBloc;
   RegisterBloc({
     @required this.repository,
@@ -22,7 +23,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     if(event is RegisterButtonClickedEvent){
       yield RegisteringUserState(message: "Registering User");
       try{
-        await repository.create(data: {
+        await repository.createUser(data: {
           "email":event.email,
           "password":event.password,
         });

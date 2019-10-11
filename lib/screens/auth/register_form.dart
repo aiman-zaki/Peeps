@@ -6,7 +6,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/user/register/register_bloc.dart';
-import 'package:peeps/screens/common/custom_wave_clip.dart';
+
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
 
@@ -36,34 +36,6 @@ class _RegisterFormState extends State<RegisterForm> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
 
-    _buildFooterWave(){
-      return ClipPath(
-        clipper: CustomWaveClipper(),
-        child: Container(
-          height: 50,
-          width: double.infinity,
-          color: Colors.black,
-          child: Text("as"),
-        ),
-      );
-    }
-
-    _buildShowLoadingWithText(String message){
-      showDialog(
-      
-        context: context,
-        builder: (context){
-          return Container(
-            alignment: Alignment.center,
-            child: Column(
-              children: <Widget>[
-                CircularProgressIndicator(),
-              ],
-            ),
-          );
-        }
-      );
-    }
 
     _buildShowDialog(){
       showDialog(

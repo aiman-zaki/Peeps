@@ -18,10 +18,6 @@ class TimelineRepository extends BaseRepository{
     await super.create(data:data.toJson());
   }
 
-  @override
-  delete() {
-    // TODO: implement delete
-    return null;
-  }
+  
   
 }

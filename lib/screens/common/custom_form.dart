@@ -10,12 +10,7 @@ class CustomForm extends StatefulWidget {
 
 class _CustomFormState extends State<CustomForm> {
 
-  _buildMandatoryForm(){
-    return Container(
-      padding: EdgeInsets.all(10),
-   
-    );
-  }
+
 
 
   @override

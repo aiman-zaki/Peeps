@@ -1,6 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import 'package:peeps/bloc/bloc.dart';
+
 
 @immutable
 abstract class TaskState extends Equatable {

@@ -18,9 +18,11 @@ class GroupworkRepository extends BaseRepository{
 
   readMembers() async {
     var data = await super.read(namespace: "members");
-    List members = data.map((member){
-      return MemberModel.fromJson(member);
-    });
+    List<MemberModel> members = [];
+
+    for(Map<String,dynamic> member in data){
+      members.add(MemberModel.fromJson(member));
+    }
 
     return members;
   }

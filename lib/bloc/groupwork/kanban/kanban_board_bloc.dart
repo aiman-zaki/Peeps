@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import '../bloc.dart';
-import 'package:meta/meta.dart';
+
 class KanbanBoardBloc extends Bloc<KanbanBoardEvent, KanbanBoardState> {
   @override
   KanbanBoardState get initialState => InitialKanbanBoardState();

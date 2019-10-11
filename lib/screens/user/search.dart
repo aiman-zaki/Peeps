@@ -1,11 +1,11 @@
-import 'dart:math';
+
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
-import 'package:peeps/screens/common/circular_fab.dart';
+
 import 'package:peeps/screens/common/custom_search.dart';
-import 'package:vector_math/vector_math.dart' show radians, Vector3;
+
 
 class SearchView extends StatefulWidget {
   SearchView({Key key}) : super(key: key);

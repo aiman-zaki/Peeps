@@ -2,7 +2,7 @@ import 'package:peeps/resources/common_repo.dart';
 import 'dart:convert';
 
 import 'package:meta/meta.dart';
-import 'package:peeps/resources/common_repo.dart';
+
 import 'package:http/http.dart' as http;
 
 abstract class BaseRepository{
@@ -70,8 +70,19 @@ abstract class BaseRepository{
       throw jsonDecoded;
     }
   }
-  delete(){
 
+  delete({namespace}) async{
+    var headers = await fetchHeaders();
+    var response = await http.delete(_url(namespace),
+      headers: headers,
+    );
+
+    var jsonDecoded = jsonDecode((response.body));
+    if(response.statusCode == 200){
+      return jsonDecoded;
+    } else {
+      throw jsonDecoded;
+    }
   }
 
 
