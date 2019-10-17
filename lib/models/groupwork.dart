@@ -59,12 +59,14 @@ class GroupworkModel{
   }
 
   Map<String,dynamic> toJson(){
-    Map<String,dynamic> data;
-    data['id'] = this.id;
-    data['name'] = this.name;
-    data['description'] = this.description;
-    data['course'] = this.course;
-    data['members'] = this.members;
-    return data;
+    return {
+      "_id":this.id,
+      "creator":this.creator,
+      "name":this.name,
+      "description":this.description,
+      "course":this.course,
+      "members":this.members,
+      "invitation_list":this.invitations,
+    };
   }
 }

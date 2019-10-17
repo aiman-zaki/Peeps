@@ -182,7 +182,7 @@ class DialogTaskCard extends StatelessWidget {
               child: Text('Delete'),
               onPressed: (){
                 if(_key.currentState.validate()){
-                  _taskBloc.dispatch(DeleteTaskButtonClickedEvent(taskId: task.id));
+                  _taskBloc.add(DeleteTaskButtonClickedEvent(taskId: task.id));
                 }
               },
             ),

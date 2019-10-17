@@ -24,15 +24,10 @@ class GroupworkBloc extends Bloc<GroupworkEvent, GroupworkState> {
   Stream<GroupworkState> mapEventToState(
     GroupworkEvent event,
   ) async* {
-    if(event is NewGroupButtonPressedEvent){
+    if(event is CreateNewGroupworkEvent){
       yield InsertingGroupworkState();
-      //TODO : TEMPSOLUTION
-      Map data = new Map();
-      data['name'] = event.name;
-      data['description'] = event.description;
-      data['course'] = event.course;
-      data['members'] = event.members;
-      await repository.createGroupwork(data:data);  
+
+      await repository.createGroupwork(data:event.data.toJson());  
       yield InsertedGroupworkState();
     
     }

@@ -43,8 +43,8 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
 
   @override
   void initState() {
-    BlocProvider.of<CollaborateBloc>(context).dispatch(InitialCollaborateEvent(userData: widget.userData));
-    BlocProvider.of<CollaborateForumBloc>(context).dispatch(LoadForumEvent());
+    BlocProvider.of<CollaborateBloc>(context).add(InitialCollaborateEvent(userData: widget.userData));
+    BlocProvider.of<CollaborateForumBloc>(context).add(LoadForumEvent());
     _forumView = new CollaborateForumView(course: widget.course);
     _userJoinedView = new UserJoinedCollaborateView();
     _showPage = _forumView;

@@ -26,7 +26,7 @@ class _GroupRequestState extends State<GroupRequest> {
             child: Text("Confirm"),
             onPressed: (){
               request.answer = true;
-              _bloc.dispatch(AnswerButtonClicked(data: request.toJson(), groupId: widget.groupId));
+              _bloc.add(AnswerButtonClicked(data: request.toJson(), groupId: widget.groupId));
             },
           ),
         ),
@@ -53,7 +53,7 @@ class _GroupRequestState extends State<GroupRequest> {
         bloc: _bloc,
         builder: (context,state){
           if(state is InitialRequestState){
-            _bloc.dispatch(LoadRequestsEvent(data: {
+            _bloc.add(LoadRequestsEvent(data: {
               "group_id":widget.groupId,
             }));
             return Container();

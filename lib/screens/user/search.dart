@@ -20,7 +20,7 @@ class _SearchViewState extends State<SearchView> {
     List datas = [];
     
     _dataFromState(){
-      var currentState = _bloc.currentState;
+      var currentState = _bloc.state;
       if(currentState is LoadedGroupsState){
         return currentState.data;
       }

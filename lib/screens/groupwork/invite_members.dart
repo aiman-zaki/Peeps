@@ -26,7 +26,7 @@ Widget build(BuildContext context) {
   List datas = [];
 
   List _dataFromState(){
-    var currentState = _bloc.currentState;
+    var currentState = _bloc.state;
     if(currentState is LoadedUsersState){
         return currentState.data;
     } else {
@@ -47,7 +47,7 @@ Widget build(BuildContext context) {
               "email":user.email,
               "groupId":widget.groupData.id
             };
-            _bloc.dispatch(InviteMemberEvent(data: data));
+            _bloc.add(InviteMemberEvent(data: data));
           },
           child: Text("Invite"));
     }
@@ -76,7 +76,7 @@ Widget build(BuildContext context) {
   }
 
   _searchInput(String searchIn){
-    _bloc.dispatch(SearchButtonClickedEvent(data: searchIn));    
+    _bloc.add(SearchButtonClickedEvent(data: searchIn));    
   }
 
   _showLoadingDialog(){

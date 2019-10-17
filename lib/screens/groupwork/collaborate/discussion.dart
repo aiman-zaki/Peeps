@@ -137,7 +137,7 @@ class _DiscussionViewState extends State<DiscussionView> {
                                 color: Colors.red[700],
                                 icon: Icons.delete,
                                 onTap: () {
-                                  _bloc.dispatch(DeleteReplyEvent(
+                                  _bloc.add(DeleteReplyEvent(
                                       data: data.replies[index]));
                                   setState(() {
                                     data.replies.removeAt(index);
@@ -180,13 +180,13 @@ class _DiscussionViewState extends State<DiscussionView> {
       ),
       body: RefreshIndicator(
         onRefresh: () async {
-          _bloc.dispatch(LoadDiscussionEvent());
+          _bloc.add(LoadDiscussionEvent());
         },
         child: BlocBuilder(
           bloc: _bloc,
           builder: (context, state) {
             if (state is InitialCollaborateDiscussionState) {
-              _bloc.dispatch(LoadDiscussionEvent());
+              _bloc.add(LoadDiscussionEvent());
               return SplashScreen();
             }
             if (state is LoadingDiscussionState) {
@@ -204,14 +204,14 @@ class _DiscussionViewState extends State<DiscussionView> {
           child: Icon(Icons.reply),
           onPressed: () {
             if (bottomOpened) {
-              _bloc.dispatch(CreateNewReplyEvent(
+              _bloc.add(CreateNewReplyEvent(
                   data: ReplyModel(
                       id: "0",
                       createdDate: DateTime.now(),
                       by: "",
                       reply: _replyController.text)));
               Navigator.pop(context);
-              _bloc.dispatch(LoadDiscussionEvent());
+              _bloc.add(LoadDiscussionEvent());
             } else {
               _showBottomSheet(context);
             }

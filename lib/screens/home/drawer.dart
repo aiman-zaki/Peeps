@@ -21,7 +21,7 @@ class _DrawerViewState extends State<DrawerView> {
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ProfileBloc>(context).dispatch(LoadProfileEvent());
+    BlocProvider.of<ProfileBloc>(context).add(LoadProfileEvent());
     currentUser = UserModel.defaultConst();
   }
 
@@ -121,7 +121,7 @@ class _DrawerViewState extends State<DrawerView> {
                     title: Text('Logout'),
                     onTap: () {
                       Navigator.pop(context);
-                      _authBloc.dispatch(LoggedOut());
+                      _authBloc.add(LoggedOut());
                     },
                   )
                 ],

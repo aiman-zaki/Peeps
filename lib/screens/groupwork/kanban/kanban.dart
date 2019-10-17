@@ -67,7 +67,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
             _todo = [];
             _doing = [];
             _done = [];
-            _taskBloc.dispatch(LoadTaskEvent(data: widget.data.id));
+            _taskBloc.add(LoadTaskEvent(data: widget.data.id));
           },
           child: Icon(Icons.refresh),
       ),
@@ -76,7 +76,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
         child: Icon(Icons.save),
         onTap: (){
        
-          _taskBloc.dispatch(UpdateTaskStatus(tasks: changedStatus, assignmentId: widget.data.id));
+          _taskBloc.add(UpdateTaskStatus(tasks: changedStatus, assignmentId: widget.data.id));
         }, 
       ),
       SizedBox(width: 20,),
@@ -92,7 +92,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
         bloc: _taskBloc,
         listener: (context,state){
           if(state is DeletingTaskState){
-            _taskBloc.dispatch(DeleteTaskEvent(assignmentId: widget.data.id,taskId: state.taskId));
+            _taskBloc.add(DeleteTaskEvent(assignmentId: widget.data.id,taskId: state.taskId));
           }
           if(state is DisplayMessageSnackbar){
             Scaffold.of(context).showSnackBar(
@@ -108,7 +108,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
               _todo = [];
               _doing = [];
               _done = [];
-              _taskBloc.dispatch(LoadTaskEvent(data: widget.data.id));
+              _taskBloc.add(LoadTaskEvent(data: widget.data.id));
               return Container();
             }
             if(state is LoadingTaskState){

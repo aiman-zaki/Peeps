@@ -25,12 +25,12 @@ class SearchGroupsBloc extends Bloc<SearchGroupsEvent, SearchGroupsState> {
   ) async* {
     if(event is SearchGroupsButtonClickedEvent){
       yield LoadingGroupsState();
-      var data = await repository.read();
+      var data = await repository.findGroupwork(data: event.data);
       yield LoadedGroupsState(data: data);
     }
     if(event is RequestGrouptEvent){
       yield RequestingGroupState();
-      //await usersRepository.requestGroupwork(event.data);
+      await usersRepository.updateRequestGroupwork(data:event.data);
       yield RequestedGroupState();
     }
   }

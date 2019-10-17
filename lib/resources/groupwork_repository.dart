@@ -36,7 +36,7 @@ class GroupworkRepository extends BaseRepository{
   }
 
   updateGroupwork({@required data})async {
-    await super.update(data: data);
+    await super.update(data: data,namespace: "groupwork");
   }
 
   updateRoles({@required data}) async {

@@ -23,7 +23,7 @@ class _LoginFormState extends State<LoginForm> {
     final _loginBloc = BlocProvider.of<LoginBloc>(context);
     var size = MediaQuery.of(context).size;
     _onLoginButtonPressed() {
-      _loginBloc.dispatch(LoginButtonPressed(
+      _loginBloc.add(LoginButtonPressed(
         email: _usernameController.text,
         password: _passwordController.text,
       ));

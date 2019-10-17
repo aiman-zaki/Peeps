@@ -16,6 +16,11 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
   AssignmentState get initialState => InitialAssignmentState();
 
   @override
+  void close() {
+    super.close();
+  }
+
+  @override
   Stream<AssignmentState> mapEventToState(
     AssignmentEvent event,
   ) async* {
@@ -35,7 +40,9 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
         }
       }
       yield LoadedAssignmentState(data:event.assignments);
-
+    }
+    if(event is DeleteAssignmentEvent){
+      await repository.deleteAssignment(id: event.data);
     }
 
  

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/models/groupwork.dart';
 
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
@@ -12,7 +13,7 @@ class GroupworkForm extends StatefulWidget {
 }
 
 class _GroupworkFormState extends State<GroupworkForm> {
-  var _bloc;
+
   final  _key = new GlobalKey<FormState>();
   final _nameController = new TextEditingController();
   final _descriptionController = new TextEditingController();
@@ -22,7 +23,7 @@ class _GroupworkFormState extends State<GroupworkForm> {
   @override
   Widget build(BuildContext context) {
   final size = MediaQuery.of(context).size;
-
+  final _bloc = BlocProvider.of<GroupworkBloc>(context);
 
   Widget _captions({@required text}){
     return Text(
@@ -38,8 +39,18 @@ class _GroupworkFormState extends State<GroupworkForm> {
     for(var member in _membersController){
       membersEmail.add(member.text);
     }
-    BlocProvider.of<GroupworkBloc>(context).dispatch(NewGroupButtonPressedEvent(name: _nameController.text,
-    description: _descriptionController.text,course: _courseController.text,members: membersEmail));
+
+    _bloc.add(CreateNewGroupworkEvent(data: GroupworkModel(
+      id: "",
+      name: _nameController.text,
+      course: _nameController.text,
+      invitations: membersEmail,
+      creator: "",
+      description: _descriptionController.text,
+      members: []
+    
+    )));
+    
 
   }
 

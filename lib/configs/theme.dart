@@ -15,12 +15,12 @@ class ThemeController {
       return ThemeData(
         brightness: Brightness.dark,
         appBarTheme: AppBarTheme(
-          color: Color.fromARGB(255, 77,44, 145)
+          color: Color.fromARGB(255, 0,25, 112)
         ),
         scaffoldBackgroundColor: Colors.grey[900],
-        primaryColor: Color.fromARGB(255, 126, 87, 194),
-        cardColor: Color.fromARGB(50, 173, 102, 227),
-        accentColor: Colors.pink[400],
+        primaryColor: Color.fromARGB(255, 24, 118, 210),
+        cardColor: Color.fromARGB(70, 55, 71, 125),
+        accentColor: Colors.indigo[400],
         backgroundColor: Colors.grey[900],
         focusColor: Colors.blueGrey[600],
         buttonColor: Colors.pink[600],

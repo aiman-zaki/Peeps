@@ -28,8 +28,10 @@ class InboxBloc extends Bloc<InboxEvent, InboxState> {
       }
     }
     if(event is ReplyInvitationEvent){
-      //await repository.replyInvitationInbox(event.reply, event.groupId);
-      //TODO: Temp
+      await repository.updateGroupInvitationInbox(data: {
+        'answer':event.reply,
+        'group_id':event.groupId,
+      });
       profileBloc.dispatch(LoadProfileEvent());
     }
   }

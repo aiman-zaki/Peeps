@@ -17,6 +17,12 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   TaskState get initialState => InitialTaskState();
 
   @override
+  void close() {
+    // TODO: implement close
+    super.close();
+  }
+
+  @override
   Stream<TaskState> mapEventToState(
     TaskEvent event,
   ) async* {

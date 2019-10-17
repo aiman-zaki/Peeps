@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
+import 'package:peeps/models/assignment.dart';
 
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/inbox.dart';
@@ -55,7 +56,6 @@ class UserRepository extends BaseRepository{
   readActiveGroupworks()async {
     var data = await super.read(namespace: "groupworks");
     List<GroupworkModel> groupworks = [];
-    
     for(Map<String,dynamic> group in data){
       groupworks.add(GroupworkModel.fromJson(group));
     }
@@ -75,8 +75,9 @@ class UserRepository extends BaseRepository{
   }
 
   updateGroupInvitationInbox({@required data}) async{
-    await super.create(data: data,namespace: "inbox/reply_invitation");
+    await super.update(data: data,namespace: "inbox/reply_invitation");
   }
+
 
   updateRequestGroupwork({@required data}) async {
     await super.update(data: data,namespace: "groupworks");
@@ -92,8 +93,20 @@ class UserRepository extends BaseRepository{
     for(Map<String,dynamic> task in data){
       tasks.add(UserTasksModel.fromJson(task));
     }
-
     return tasks;
+  }
+
+  readUserAssignment() async {
+    var data = await super.read(namespace: "assignments");
+   
+    for(Map<String,dynamic> groupwork in data){
+      groupwork['assignments'] = groupwork['assignments'].map((assignment){
+        return AssignmentModel.fromJson(assignment);
+      }).toList();
+    }
+
+     print(data);
+    return data;
   }
 
 

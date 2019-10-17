@@ -28,12 +28,14 @@ class _TaskFormState extends State<TaskForm> {
   final  _key = new GlobalKey<FormState>();
   var dropdownValue;
     var priorityDropdown;
+
+    
   @override
   void initState() {
     super.initState();
     //TODO Finding the best soulution to access other bloc data
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
-    _profileBloc.state.listen((state){
+    _profileBloc.listen((state){
       if(state is ProfileLoaded){
         email = state.data.email;
       }
@@ -69,12 +71,12 @@ class _TaskFormState extends State<TaskForm> {
             //TODO using bloc or not?
             DateTime assignDate = DateTime.parse(_assignedDate.text);
             DateTime dueDate = DateTime.parse(_dueDate.text);
-            _taskBloc.dispatch(AddNewTaskEvent(assignmentId: widget.assignmentId,groupId: widget.groupId,
+            _taskBloc.add(AddNewTaskEvent(assignmentId: widget.assignmentId,groupId: widget.groupId,
                   task: TaskModel(task: _taskController.text, description: _descriptionController.text, 
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
                                   dueDate: dueDate, assignTo: dropdownValue, lastUpdated: DateTime.now(), priority: priorityDropdown,status: 0)));
-            _timelineBloc.dispatch(SendDataTimelineEvent(data: TimelineModel(by: email,createdDate: DateTime.now(),description: "Add New Task",type: 0)));
+            _timelineBloc.add(SendDataTimelineEvent(data: TimelineModel(by: email,createdDate: DateTime.now(),description: "Add New Task",type: 0)));
             Navigator.of(context).pop();
           },
           child: Text("Accept"),

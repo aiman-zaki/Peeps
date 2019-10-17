@@ -38,7 +38,7 @@ class _GroupProfileAdminState extends State<GroupProfileAdmin> {
                     "email":email,
                     "groupId":widget.groupData.id
                   };
-                  _bloc.dispatch(DeleteMemberEvent(data: data));
+                  _bloc.add(DeleteMemberEvent(data: data));
                 },
                 child: Text("Remove"),
               );
@@ -58,7 +58,7 @@ class _GroupProfileAdminState extends State<GroupProfileAdmin> {
         };
         return RaisedButton(
           onPressed: (){
-            _bloc.dispatch(UpdateAdminRoleEvent(data: data));
+            _bloc.add(UpdateAdminRoleEvent(data: data));
           },
           child: Text("Promote as Admin"),
         );

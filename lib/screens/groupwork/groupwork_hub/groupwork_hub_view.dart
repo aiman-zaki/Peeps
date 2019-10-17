@@ -48,7 +48,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
 
   @override
   void initState() {
-    BlocProvider.of<TimelineBloc>(context).dispatch(ConnectTimelineEvent(data: widget.groupData.id));
+    BlocProvider.of<TimelineBloc>(context).add(ConnectTimelineEvent(data: widget.groupData.id));
     _isAdmin = checkIsAdmin();
     super.initState();
   }
@@ -153,9 +153,9 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                         height: 100,
                         decoration: BoxDecoration(
                             gradient: LinearGradient(colors: [
-                          Colors.purple[700],
-                          Colors.purple[800],
-                          Colors.purple[900],
+                          Colors.blue[700],
+                          Colors.blue[800],
+                          Colors.blue[900],
                         ])),
                       ))),
               Positioned(
@@ -167,9 +167,9 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                         height: 100,
                         decoration: BoxDecoration(
                             gradient: LinearGradient(colors: [
-                          Colors.purple[700],
-                          Colors.purple[800],
-                          Colors.purple[900],
+                          Colors.blue[700],
+                          Colors.blue[800],
+                          Colors.blue[900],
                         ])),
                       ))),
               Positioned(
@@ -192,6 +192,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                       height: 10,
                     ),
                     HubAssignments(
+                      isAdmin: _isAdmin,
                       groupData: widget.groupData,
                       userData: widget.userData,
                     ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:meta/meta.dart';
@@ -36,9 +37,9 @@ class _UserTasksState extends State<UserTasks> {
     _datePicker(task) async {
       var data = await showDatePicker(
           context: context,
-          firstDate: DateTime(1900),
+          firstDate: DateTime.now(),
           initialDate: DateTime.now(),
-          lastDate: DateTime(2100));
+          lastDate: task.dueDate);
 
       if (data != null) {
         await _localNotifications.scheduleNotification(
@@ -47,7 +48,7 @@ class _UserTasksState extends State<UserTasks> {
     }
 
     _buildTasksList(tasks) {
-      return Card(
+      return Container(
         child: ListView.builder(
             shrinkWrap: true,
             itemCount: tasks.length,
@@ -79,23 +80,24 @@ class _UserTasksState extends State<UserTasks> {
           itemBuilder: (context, index) {
             if (!data.isEmpty) {
               return Container(
+                decoration: BoxDecoration(),
                 padding: EdgeInsets.all(9),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
                       '${data[index].groupName}',
-                      style: TextStyle(
-                        fontSize: 21,
-                        color: Colors.indigo),
+                      style: TextStyle(fontSize: 18, color: Colors.indigo[200]),
+                    ),
+                    SizedBox(
+                      height: 10,
                     ),
                     Text(
                       'Assignment: ${data[index].assignmentTitle}',
-                      style: TextStyle(fontSize: 18,),
+                      style: TextStyle(fontSize: 15, color: Colors.indigo[100]),
                     ),
                     Container(
-                        height: 170,
-                        child: _buildTasksList(data[index].tasks)),
+                        height: 170, child: _buildTasksList(data[index].tasks)),
                   ],
                 ),
               );
@@ -113,6 +115,8 @@ class _UserTasksState extends State<UserTasks> {
       );
     }
 
+    final size = MediaQuery.of(context).size;
+
     return BlocBuilder<UserTaskBloc, UserTaskState>(
       bloc: _bloc,
       builder: (context, state) {
@@ -126,22 +130,55 @@ class _UserTasksState extends State<UserTasks> {
           );
         }
         if (state is LoadedUserTaskState) {
-          return Container(
-            padding: EdgeInsets.all(9),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SizedBox(height: 10,),
-                Text(
-                  "Keep Track on Your Ongoing Task!",
-                  style: TextStyle(fontSize: 18),
+          return Padding(
+            padding: EdgeInsets.all(3.0),
+            child: Card(
+              elevation: 8.00,
+              color: Colors.grey[850],
+              child: Padding(
+                padding: EdgeInsets.all(9.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: <Widget>[
+                    SizedBox(
+                      height: 10,
+                    ),
+                    Text(
+                      "Keep Track With Your Tasks!",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                    Divider(
+                      thickness: 2.0,
+                      height: 15,
+                      color: Colors.lightBlue[700],
+                    ),
+                    Stack(
+                      children: <Widget>[
+                        Positioned(
+                          width: size.width,
+                          bottom: 0,
+                          child: ClipPath(
+                            clipper: WaveClipperOne(reverse: true),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                  gradient: LinearGradient(colors: [
+                                    Colors.lightBlue[700],
+                                    Colors.lightBlue[800],
+                                    Colors.lightBlue[900],
+                              ])),
+                              height: 80,
+                              child: Container(),
+                            ),
+                          ),
+                        ),
+                        _buildData(state.data),
+                      ],
+                    ),
+                    //_buildData(state.data),
+                  ],
                 ),
-                SizedBox(
-                  height: 15,
-                ),
-                _buildData(state.data),
-              ],
+              ),
             ),
           );
         }

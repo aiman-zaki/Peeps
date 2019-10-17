@@ -106,7 +106,7 @@ class _HubMembersState extends State<HubMembers> {
             builder: (context, state) {
               if (state is InitialMembersState) {
                 _membersBloc
-                    .dispatch(LoadMembersEvent(groupId: widget.groupData.id));
+                    .add(LoadMembersEvent(groupId: widget.groupData.id));
                 return Container();
               }
               if (state is LoadingMembersState) {

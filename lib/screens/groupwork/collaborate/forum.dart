@@ -51,7 +51,7 @@ class _CollaborateForumViewState extends State<CollaborateForumView> {
        ),
        body: RefreshIndicator(
          onRefresh: ()  async {
-           _bloc.dispatch(LoadForumEvent());
+           _bloc.add(LoadForumEvent());
          },
          child: BlocBuilder(
            bloc: _bloc,

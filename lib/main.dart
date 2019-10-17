@@ -36,7 +36,7 @@ void main() async {
         BlocProvider<AuthenticationBloc>(
           builder: (context) {
           return AuthenticationBloc(repositry: authRepository)
-            ..dispatch(AppStarted());
+            ..add(AppStarted());
           },),
         BlocProvider<ProfileBloc>(
           builder: (context) {
@@ -46,7 +46,10 @@ void main() async {
           builder: (context){
             return UserTaskBloc(usersRepository: userRepository);
           },
-        )
+        ),
+        BlocProvider<AssignmentsBloc>(
+          builder: (context) => AssignmentsBloc(repository: userRepository),
+        ),
       ],
       child: App(userRepository: authRepository,theme: theme,),
     )

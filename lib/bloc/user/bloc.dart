@@ -22,3 +22,6 @@ export 'search_groups/search_groups_state.dart';
 export 'task/user_task_bloc.dart';
 export 'task/user_task_event.dart';
 export 'task/user_task_state.dart';
+export 'assignment/assignments_bloc.dart';
+export 'assignment/assignments_event.dart';
+export 'assignment/assignments_state.dart';

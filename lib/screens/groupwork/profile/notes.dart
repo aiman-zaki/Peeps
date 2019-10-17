@@ -38,7 +38,7 @@ class _GroupProfileNotesState extends State<GroupProfileNotes> {
       body: BlocBuilder<NoteBloc,NoteState>(
         builder: (context,state){
           if(state is InitialNoteState){
-            _bloc.dispatch(LoadNotesEvent(data: {
+            _bloc.add(LoadNotesEvent(data: {
               "groupId":widget.groupId,
             }));
             return Container();

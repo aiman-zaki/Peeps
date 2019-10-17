@@ -66,8 +66,8 @@ class _AssignmentFormState extends State<AssignmentFormView> {
               bottomRight: FlatButton(
                 child: Text('Confirm'),
                 onPressed: () {
-                  _timelineBloc.dispatch(SendDataTimelineEvent(data: TimelineModel(by: widget.userData.email,createdDate: DateTime.now(),type: 1,description: "Created New Assignment",room: widget.groupId)));
-                  _assignmentBloc.dispatch(AddAssignmentEvent(
+                  _timelineBloc.add(SendDataTimelineEvent(data: TimelineModel(by: widget.userData.email,createdDate: DateTime.now(),type: 1,description: "Created New Assignment",room: widget.groupId)));
+                  _assignmentBloc.add(AddAssignmentEvent(
                       assignment: AssignmentModel(
                           title: _titleController.text,
                           description: _descriptionController.text,

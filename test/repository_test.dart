@@ -1,21 +1,27 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:peeps/models/groupwork.dart';
+import 'package:peeps/models/inbox.dart';
 
 import 'dart:convert';
+
+import 'package:peeps/models/user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
 
 
 void main(){
-  test('User Repository',() async {
+  test('asdy',() async {
+    UserModel user = UserModel(contactNo: null, email: null, fname: null, id: null, lname: null, picture: null, programmeCode: null);
 
-  
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+
+    String json = jsonEncode(user.toJson());
+
+    preferences.setString("user", json);
+
+
   });
 
-  test('Chat',() async{
-    String json =  '{"date":"2019-08-05 13:11:23.178026"}';
-    print(json);
-    Map<String,dynamic> jsonMap = jsonDecode(json);
-    print(jsonMap);
-  });
 }

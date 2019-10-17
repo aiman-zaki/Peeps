@@ -50,3 +50,15 @@ class TaskRefreshButtonClicked extends AssignmentEvent{
   @override
   String toString() => "TaskRefreshButtonClicked";
 }
+
+class DeleteAssignmentEvent extends AssignmentEvent{
+  final data;
+  
+  @override
+  DeleteAssignmentEvent({
+    @required this.data,
+  });
+  
+  @override
+  List<Object> get props => [];
+}

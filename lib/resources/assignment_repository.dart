@@ -24,4 +24,10 @@ class AssignmentRepository extends BaseRepository {
   createAssignment({@required data}) async {
     await super.create(data: data, namespace: "assignments");
   }
+
+  deleteAssignment({@required id}) async {
+    await super.update(namespace: "assignments/delete",data: {
+      'assignment_id':id
+    });
+  }
 }

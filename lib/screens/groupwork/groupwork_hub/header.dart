@@ -23,10 +23,10 @@ class HubHeader extends StatelessWidget {
       bloc: _groupProfileBloc,
       listener: (context,state){
         if(state is UpdatedAdminRoleState){
-          _membersBloc.dispatch(LoadMembersEvent(groupId: groupData.id));
+          _membersBloc.add(LoadMembersEvent(groupId: groupData.id));
         }
         if(state is DeletedMemberState){
-          _membersBloc.dispatch(LoadMembersEvent(groupId: groupData.id));
+          _membersBloc.add(LoadMembersEvent(groupId: groupData.id));
         }
       },
       child: Container(

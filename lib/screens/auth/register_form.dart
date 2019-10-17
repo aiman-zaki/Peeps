@@ -64,7 +64,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     ),
                     bottomRight: FlatButton(
                       onPressed: (){
-                        _bloc.dispatch(RegisterButtonClickedEvent(
+                        _bloc.add(RegisterButtonClickedEvent(
                           email: _emailController.text,
                           password: _passwordController.text,
                           image: _image));

@@ -12,10 +12,12 @@ import 'package:peeps/screens/groupwork/kanban/kanban.dart';
 import '../assignment_form.dart';
 
 class HubAssignments extends StatefulWidget {
+  final isAdmin;
   final groupData;
   final userData;
   HubAssignments({
     Key key,
+    @required this.isAdmin,
     @required this.groupData,
     @required this.userData,
   }) : super(key: key);
@@ -53,6 +55,17 @@ class _HubAssignmentsState extends State<HubAssignments> {
           if (data.isNotEmpty) {
             return Slidable(
               actionPane: SlidableDrawerActionPane(),
+              actions: <Widget>[
+                widget.isAdmin ?
+                  IconSlideAction(
+                    color: Colors.red,
+                    icon: Icons.delete,
+                    caption: "Delete",
+                    onTap: (){
+                      _assignmentBloc.add(DeleteAssignmentEvent(data: data[index].id));
+                    },
+                  ) : Container(),
+              ],
               secondaryActions: <Widget>[
                 IconSlideAction(
                   color: Colors.blue,
@@ -161,7 +174,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                       ),
                       InkWell(
                           onTap: () {
-                            _assignmentBloc.dispatch(LoadAssignmentEvent(
+                            _assignmentBloc.add(LoadAssignmentEvent(
                                 groupId: widget.groupData.id));
                           },
                           child: Icon(Icons.refresh)),
@@ -199,7 +212,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
           BlocBuilder<AssignmentBloc, AssignmentState>(
             builder: (BuildContext context, AssignmentState state) {
               if (state is InitialAssignmentState) {
-                _assignmentBloc.dispatch(
+                _assignmentBloc.add(
                     LoadAssignmentEvent(groupId: widget.groupData.id));
                 return Container();
               }

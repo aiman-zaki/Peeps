@@ -248,7 +248,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
         onPressed: !upload
             ? null
             : () {
-                _bloc.dispatch(UploadGroupworkProfileImage(
+                _bloc.add(UploadGroupworkProfileImage(
                     groupId: widget.data.id, image: _image));
               },
         child: Text("Upload"),
@@ -294,7 +294,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
         "course":_courseController.text.toUpperCase()
       };
 
-      _bloc.dispatch(UpdateGroupworkProfileEvent(data: data));
+      _bloc.add(UpdateGroupworkProfileEvent(data: data));
     }
 
     return Scaffold(

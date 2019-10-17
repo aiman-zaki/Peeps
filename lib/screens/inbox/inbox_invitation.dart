@@ -24,7 +24,7 @@ class _InboxInvitationViewState extends State<InboxInvitationView> {
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     final bloc = BlocProvider.of<InboxBloc>(context)
-      ..dispatch(LoadInboxEvent());
+      ..add(LoadInboxEvent());
 
     Widget _captions({@required text}) {
       return Text(
@@ -94,7 +94,7 @@ class _InboxInvitationViewState extends State<InboxInvitationView> {
                               color: Colors.green[800],
                               onPressed: () {
                                 setState(() {
-                                  bloc.dispatch(ReplyInvitationEvent(
+                                  bloc.add(ReplyInvitationEvent(
                                       reply: true, groupId: data.groupInviteId));
                                 });
                               },

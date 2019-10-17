@@ -54,7 +54,7 @@ class _DiscussionFormViewState extends State<DiscussionFormView> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.check),
         onPressed: (){
-          _bloc.dispatch(CreateNewDiscussionEvent(data: DiscussionModel(
+          _bloc.add(CreateNewDiscussionEvent(data: DiscussionModel(
             id: "0",
             title: _titleController.text,
             description: _descriptionController.text,
