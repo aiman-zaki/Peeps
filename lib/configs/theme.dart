@@ -15,18 +15,19 @@ class ThemeController {
       return ThemeData(
         brightness: Brightness.dark,
         appBarTheme: AppBarTheme(
-          color: Color.fromARGB(255, 0,25, 112)
+          color: Color.fromARGB(255, 24, 118, 210)
         ),
         scaffoldBackgroundColor: Colors.grey[900],
         primaryColor: Color.fromARGB(255, 24, 118, 210),
-        cardColor: Color.fromARGB(70, 55, 71, 125),
+        cardColor: Colors.grey[850],
         accentColor: Colors.indigo[400],
         backgroundColor: Colors.grey[900],
         focusColor: Colors.blueGrey[600],
         buttonColor: Colors.pink[600],
         floatingActionButtonTheme: FloatingActionButtonThemeData(
           backgroundColor: Colors.pink[600],
-        )
+        ),
+        
       );
     } else {
       return ThemeData(

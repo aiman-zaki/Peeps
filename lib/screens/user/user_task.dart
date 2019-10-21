@@ -121,7 +121,7 @@ class _UserTasksState extends State<UserTasks> {
       bloc: _bloc,
       builder: (context, state) {
         if (state is InitialUserTaskState) {
-          _bloc.dispatch(LoadUserTaskEvent());
+          _bloc.add(LoadUserTaskEvent());
           return Container();
         }
         if (state is LoadingUserTaskState) {
@@ -130,52 +130,51 @@ class _UserTasksState extends State<UserTasks> {
           );
         }
         if (state is LoadedUserTaskState) {
-          return Padding(
+          return Container(
+            height: 350,
             padding: EdgeInsets.all(3.0),
             child: Card(
               elevation: 8.00,
               color: Colors.grey[850],
               child: Padding(
                 padding: EdgeInsets.all(9.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
+                child: Stack(
                   children: <Widget>[
-                    SizedBox(
-                      height: 10,
-                    ),
-                    Text(
-                      "Keep Track With Your Tasks!",
-                      style: TextStyle(fontSize: 20),
-                    ),
-                    Divider(
-                      thickness: 2.0,
-                      height: 15,
-                      color: Colors.lightBlue[700],
-                    ),
-                    Stack(
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
-                        Positioned(
-                          width: size.width,
-                          bottom: 0,
-                          child: ClipPath(
-                            clipper: WaveClipperOne(reverse: true),
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  gradient: LinearGradient(colors: [
-                                    Colors.lightBlue[700],
-                                    Colors.lightBlue[800],
-                                    Colors.lightBlue[900],
-                              ])),
-                              height: 80,
-                              child: Container(),
-                            ),
-                          ),
+                        SizedBox(
+                          height: 10,
                         ),
-                        _buildData(state.data),
+                        Text(
+                          "Keep Track With Your Tasks!",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Divider(
+                          thickness: 2.0,
+                          height: 15,
+                          color: Colors.lightBlue[700],
+                        ),
                       ],
                     ),
-                    //_buildData(state.data),
+                    _buildData(state.data),
+                    Positioned(
+                      bottom: 0,
+                      child: ClipPath(
+                        clipper: WaveClipperOne(reverse: true),
+                        child: Container(
+                          width: size.width,
+                          height: 80,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                            Colors.lightBlue[700],
+                            Colors.lightBlue[800],
+                            Colors.lightBlue[900],
+                          ])),
+                        ),
+                      ),
+                    ),
                   ],
                 ),
               ),

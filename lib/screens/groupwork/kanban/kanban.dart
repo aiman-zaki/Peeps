@@ -7,11 +7,6 @@ import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/groupwork/task_form.dart';
 import 'board.dart';
 
-//TODO editmode
-enum Mode {
-  normal,
-  edit,
-}
 class KanbanBoardView extends StatefulWidget {
   final String groupId;
   final AssignmentModel data;
@@ -67,7 +62,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
             _todo = [];
             _doing = [];
             _done = [];
-            _taskBloc.add(LoadTaskEvent(data: widget.data.id));
+            _taskBloc.add(LoadTaskEvent());
           },
           child: Icon(Icons.refresh),
       ),
@@ -108,7 +103,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
               _todo = [];
               _doing = [];
               _done = [];
-              _taskBloc.add(LoadTaskEvent(data: widget.data.id));
+              _taskBloc.add(LoadTaskEvent());
               return Container();
             }
             if(state is LoadingTaskState){
@@ -134,7 +129,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
                   value: _membersBloc,
                   child: BlocProvider.value(
                     value: _timelineBloc,
-                    child: TaskForm(groupId: widget.groupId,assignmentId: widget.data.id,)))),
+                    child: TaskForm(edit:false,groupId: widget.groupId,assignmentId: widget.data.id,)))),
               fullscreenDialog: true,
             )
           );

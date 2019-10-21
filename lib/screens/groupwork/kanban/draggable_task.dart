@@ -7,30 +7,41 @@ import 'card_task.dart';
 
 class DraggableTask extends StatefulWidget {
   final TaskModel data;
-  final int mode;
-  //List not updated if passtrough
+
   final Function onDragCompleted;
-  DraggableTask({Key key,@required this.data,this.onDragCompleted,this.mode}) : super(key: key);
+  DraggableTask({Key key, @required this.data, this.onDragCompleted})
+      : super(key: key);
   _DraggableTaskState createState() => _DraggableTaskState();
 }
 
 class _DraggableTaskState extends State<DraggableTask> {
   @override
   Widget build(BuildContext context) {
-    final _taskBloc = BlocProvider.of<TaskBloc>(context);
-    return Draggable<TaskModel>(
-          maxSimultaneousDrags: widget.mode == null ? 1 : widget.mode ,
-          data: widget.data,
-          onDragCompleted: widget.onDragCompleted,
-          child: Container(
-            width: 100,
-            height: 80,
-            child: CardTask(task: widget.data,),
-          ), feedback: BlocProvider.value(
-            value: _taskBloc,
-            child: CardTask(task: widget.data,),
-          ),
-     
-      );
+    return BlocBuilder<ProfileBloc,ProfileState>(
+      builder: (context,state){
+        if(state is ProfileLoaded){
+          return Draggable<TaskModel>(
+            maxSimultaneousDrags: state.data.email == widget.data.assignTo ? 1 : 0,
+            data: widget.data,
+            onDragCompleted: widget.onDragCompleted,
+            child: Container(
+              width: 100,
+              height: 80,
+              child: CardTask(
+                task: widget.data,
+              ),
+            ),
+            feedback: Card(
+              child: Container(
+                width: 100,
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: <Widget>[Text(widget.data.task)],
+                ),
+              ),
+            ));
+        }
+      },
+    );
   }
 }

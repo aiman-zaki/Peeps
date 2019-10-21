@@ -29,8 +29,8 @@ class CollaborateBloc extends Bloc<CollaborateEvent, CollaborateState> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
+  void close() {
+    super.close();
     collaborate.disconnect();
   }
 }

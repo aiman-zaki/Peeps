@@ -47,52 +47,55 @@ class _HubAssignmentsState extends State<HubAssignments> {
     }
 
     _buildAssignmentList(List<AssignmentModel> data) {
-      return ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: data.length,
-        itemBuilder: (context, index) {
-          if (data.isNotEmpty) {
-            return Slidable(
-              actionPane: SlidableDrawerActionPane(),
-              actions: <Widget>[
-                widget.isAdmin ?
+      if (data.isNotEmpty) {
+        return ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: data.length,
+            itemBuilder: (context, index) {
+              return Slidable(
+                actionPane: SlidableDrawerActionPane(),
+                actions: <Widget>[
+                  widget.isAdmin
+                      ? IconSlideAction(
+                          color: Colors.red,
+                          icon: Icons.delete,
+                          caption: "Delete",
+                          onTap: () {
+                            _assignmentBloc.add(
+                                DeleteAssignmentEvent(data: data[index].id));
+                                setState(() {
+                                  data.removeAt(index);
+                                });
+                          },
+                        )
+                      : Container(),
+                ],
+                secondaryActions: <Widget>[
                   IconSlideAction(
-                    color: Colors.red,
-                    icon: Icons.delete,
-                    caption: "Delete",
-                    onTap: (){
-                      _assignmentBloc.add(DeleteAssignmentEvent(data: data[index].id));
-                    },
-                  ) : Container(),
-              ],
-              secondaryActions: <Widget>[
-                IconSlideAction(
-                  color: Colors.blue,
-                  icon: Icons.developer_board,
-                  caption: "KanbanBoard",
-                  onTap: () {
-                    Navigator.of(context).push(CupertinoPageRoute(
-                      builder: (context) => BlocProvider<TaskBloc>(
-                        builder: (context) => TaskBloc(
-                            repository:  TaskRepository(data: data[index].id)),
-                        child: BlocProvider<MembersBloc>.value(
-                          value: _membersBloc,
-                          child: BlocProvider<TimelineBloc>.value(
-                            value: _timelineBloc,
-                            child: KanbanBoardView(
-                              data: data[index],
-                              groupId: widget.groupData.id,
+                    color: Colors.blue,
+                    icon: Icons.developer_board,
+                    caption: "KanbanBoard",
+                    onTap: () {
+                      Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => BlocProvider<TaskBloc>(
+                          builder: (context) => TaskBloc(
+                              repository: TaskRepository(data: data[index].id), timelineBloc: _timelineBloc),
+                          child: BlocProvider<MembersBloc>.value(
+                            value: _membersBloc,
+                            child: BlocProvider<TimelineBloc>.value(
+                              value: _timelineBloc,
+                              child: KanbanBoardView(
+                                data: data[index],
+                                groupId: widget.groupData.id,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ));
-                  },
-                )
-              ],
-              child: Card(
-                color: Color.fromARGB(30, 0, 188, 212),
+                      ));
+                    },
+                  )
+                ],
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: ExpandablePanel(
@@ -138,26 +141,24 @@ class _HubAssignmentsState extends State<HubAssignments> {
                         ],
                       )),
                 ),
-              ),
-            );
-          } else {
-            return Container(
-              width: size.width,
-              child: Text("No Assignments"),
-            );
-          }
-        },
+              );
+            });
+      }
+      return Container(
+        padding: EdgeInsets.all(9),
+        height: 50,
+        child: Text("No Assignments"),
       );
     }
 
-    return Container(
-      padding: const EdgeInsets.all(8.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Container(
-            decoration: BoxDecoration(),
-            child: Row(
+    return Card(
+      elevation: 8.00,
+      child: Container(
+        padding: const EdgeInsets.all(8.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Row(
               children: <Widget>[
                 Expanded(
                   flex: 5,
@@ -208,23 +209,23 @@ class _HubAssignmentsState extends State<HubAssignments> {
                 ),
               ],
             ),
-          ),
-          BlocBuilder<AssignmentBloc, AssignmentState>(
-            builder: (BuildContext context, AssignmentState state) {
-              if (state is InitialAssignmentState) {
-                _assignmentBloc.add(
-                    LoadAssignmentEvent(groupId: widget.groupData.id));
-                return Container();
-              }
-              if (state is LoadingAssignmentState) {
-                return Center(child: CircularProgressIndicator());
-              }
-              if (state is LoadedAssignmentState) {
-                return _buildAssignmentList(state.data);
-              }
-            },
-          ),
-        ],
+            BlocBuilder<AssignmentBloc, AssignmentState>(
+              builder: (BuildContext context, AssignmentState state) {
+                if (state is InitialAssignmentState) {
+                  _assignmentBloc
+                      .add(LoadAssignmentEvent(groupId: widget.groupData.id));
+                  return Container();
+                }
+                if (state is LoadingAssignmentState) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (state is LoadedAssignmentState) {
+                  return _buildAssignmentList(state.data);
+                }
+              },
+            ),
+          ],
+        ),
       ),
     );
   }

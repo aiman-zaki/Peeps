@@ -1,6 +1,7 @@
 
 
 
+import 'package:peeps/models/contribution.dart';
 import 'package:peeps/models/timeline.dart';
 
 import 'package:peeps/resources/socket_io.dart';
@@ -11,10 +12,14 @@ class LiveTimeline extends BaseSocketIO{
 
   BehaviorSubject _timelinesController;
 
-  List<TimelineModel> _timelines = [];
+  List<ContributionModel> _timelines = [];
   Sink get updateSink =>  _timelinesController.sink;
   Stream get timelineStream => _timelinesController.stream;
-  List<TimelineModel> get timelines => _timelines;
+  List<ContributionModel> get timelines => _timelines;
+
+  void initialTimelineData(List<ContributionModel> data){
+    _timelines = data;
+  }
 
   @override
   LiveTimeline({
@@ -32,13 +37,13 @@ class LiveTimeline extends BaseSocketIO{
 
   
   
-  void sendData(TimelineModel timeline){
+  void sendData(ContributionModel timeline){
     socketIO.emit('send_data', [timeline.toJson()]);
   }
 
   void streamData(){
     socketIO.on('stream_data',(data){
-      _timelines.add(TimelineModel.fromJson(data));
+      _timelines.add(ContributionModel.fromJson(data));
       updateSink.add(data);
     });
   }

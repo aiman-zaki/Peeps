@@ -9,9 +9,16 @@ import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
 
 class TaskForm extends StatefulWidget {
+  final bool edit;
+  final TaskModel task;
   final String assignmentId;
   final String groupId;
-  TaskForm({Key key,this.assignmentId,this.groupId}) : super(key: key);
+  TaskForm({
+    Key key,
+    this.assignmentId,
+    this.groupId,
+    this.edit,
+    this.task}) : super(key: key);
   _TaskFormState createState() => _TaskFormState();
 }
 
@@ -19,27 +26,36 @@ class _TaskFormState extends State<TaskForm> {
   ProfileBloc _profileBloc;
   String email;
 
-
   final format = DateFormat("yyyy-MM-dd HH:mm");
   final _taskController = TextEditingController();
   final _descriptionController = TextEditingController();
   final _assignedDate = TextEditingController();
   final _dueDate = TextEditingController();
   final  _key = new GlobalKey<FormState>();
-  var dropdownValue;
-    var priorityDropdown;
+  var _assignedTo;
+  var _priority;
 
     
   @override
   void initState() {
     super.initState();
-    //TODO Finding the best soulution to access other bloc data
     _profileBloc = BlocProvider.of<ProfileBloc>(context);
     _profileBloc.listen((state){
       if(state is ProfileLoaded){
         email = state.data.email;
       }
     });
+
+    if(widget.edit){
+      _taskController.text = widget.task.task;
+      _descriptionController.text = widget.task.description;
+      _assignedDate.text = widget.task.assignDate.toString();
+      _dueDate.text = widget.task.dueDate.toString();
+      _assignedTo = widget.task.assignTo;
+      _priority = widget.task.priority;
+      print(widget.task.toJson());
+    
+    }
   }
 
   @override
@@ -68,15 +84,13 @@ class _TaskFormState extends State<TaskForm> {
         ),
         bottomRight: FlatButton(
           onPressed: (){
-            //TODO using bloc or not?
             DateTime assignDate = DateTime.parse(_assignedDate.text);
             DateTime dueDate = DateTime.parse(_dueDate.text);
             _taskBloc.add(AddNewTaskEvent(assignmentId: widget.assignmentId,groupId: widget.groupId,
                   task: TaskModel(task: _taskController.text, description: _descriptionController.text, 
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
-                                  dueDate: dueDate, assignTo: dropdownValue, lastUpdated: DateTime.now(), priority: priorityDropdown,status: 0)));
-            _timelineBloc.add(SendDataTimelineEvent(data: TimelineModel(by: email,createdDate: DateTime.now(),description: "Add New Task",type: 0)));
+                                  dueDate: dueDate, assignTo: _assignedTo, lastUpdated: DateTime.now(), priority: _priority,status: 0)));
             Navigator.of(context).pop();
           },
           child: Text("Accept"),
@@ -109,10 +123,10 @@ class _TaskFormState extends State<TaskForm> {
 
       return DropdownButtonFormField(
         items: items,
-        value: priorityDropdown,
+        value: _priority,
         onChanged: (value){
           setState(() {
-            priorityDropdown = value;
+            _priority = value;
           });
         }
       );
@@ -138,10 +152,10 @@ class _TaskFormState extends State<TaskForm> {
             return DropdownButtonFormField(
                 onChanged: (value) {
                   setState(() {
-                    dropdownValue = value;
+                    _assignedTo = value;
                   });
                 },
-                value: dropdownValue,
+                value: _assignedTo,
                 items: items);
           }
         },
@@ -151,7 +165,7 @@ class _TaskFormState extends State<TaskForm> {
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
-        title: Text("New Task"),
+        title: Text("Task Form"),
       ),
       body: BlocListener(
         bloc: _taskBloc,
@@ -183,6 +197,7 @@ class _TaskFormState extends State<TaskForm> {
                 SizedBox(height: 15,),
                 _captions(text: "Ellaborate What the task is"),
                 TextFormField(
+                  controller: _descriptionController,
                   decoration: InputDecoration(
                     labelText: "Description"
                   ),
@@ -252,13 +267,30 @@ class _TaskFormState extends State<TaskForm> {
         child: Icon(Icons.check),
         heroTag: "confirm",
         onPressed: (){
-          showDialog(
-            context: context,
-            builder: (context){
-              return _showConfirmationDialog();
-              
-            }
-          );
+          if(!widget.edit){
+            showDialog(
+              context: context,
+              builder: (context){
+                return _showConfirmationDialog();
+                
+              }
+            );
+          }
+          else{
+            _taskBloc.add(UpdateTaskEvent(data: TaskModel(
+              id: widget.task.id, 
+              creator: widget.task.creator, 
+              description: widget.task.description, 
+              createdDate: widget.task.createdDate,
+              dueDate: DateTime.parse(_dueDate.text), 
+              task: _taskController.text, 
+              assignDate: widget.task.assignDate, 
+              assignTo: _assignedTo, 
+              status: widget.task.status, 
+              lastUpdated: DateTime.now(),
+              seq: widget.task.seq
+            )));
+          }
         }
       ),
       

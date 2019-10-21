@@ -13,6 +13,7 @@ import 'package:peeps/screens/groupwork/collaborate/user_joined.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/live_timeline.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/members.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/milestone.dart';
+import 'package:peeps/screens/groupwork/stash/stash.dart';
 
 import 'header.dart';
 
@@ -49,12 +50,14 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
   @override
   void initState() {
     BlocProvider.of<TimelineBloc>(context).add(ConnectTimelineEvent(data: widget.groupData.id));
+    BlocProvider.of<GroupChatBloc>(context).add(LoadGroupChatEvent(room: widget.groupData.id));
     _isAdmin = checkIsAdmin();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final _referencesBloc = BlocProvider.of<ReferenceBloc>(context);
     final size = MediaQuery.of(context).size;
     
     Widget _captions({@required text}) {
@@ -68,7 +71,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
       return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
         elevation: 8,
-        color: Colors.grey[900],
+     
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
@@ -81,7 +84,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                     child: FlatButton(
                       onPressed: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                             builder: (context) => BlocProvider(
                               builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course)),
                               child: BlocProvider(
@@ -106,7 +109,6 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
       return Card(
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
         elevation: 8,
-        color: Colors.grey[900],
         child: Padding(
           padding: const EdgeInsets.all(8),
           child: Column(
@@ -117,11 +119,16 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                   Expanded(
                     flex: 1,
                     child: FlatButton(
-                      onPressed: () {},
-                      child: Text(
-                        'Add',
-                        textAlign: TextAlign.center,
-                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          CupertinoPageRoute(
+                            builder: (context) => BlocProvider.value(
+                              value: _referencesBloc,
+                              child: StashView())
+                          )
+                        );
+                      },
+                      child: Icon(Icons.keyboard_arrow_right)
                     ),
                   )
                 ],
@@ -182,12 +189,12 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                     SizedBox(
                       height: 10,
                     ),
-
-                    LiveTimelineView(groupData: widget.groupData,),
                     HubMilestone(),
                     SizedBox(
                       height: 10,
                     ),
+                    LiveTimelineView(groupData: widget.groupData,),
+                    
                     SizedBox(
                       height: 10,
                     ),
@@ -206,12 +213,20 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                     SizedBox(
                       height: 10,
                     ),
-                    _stashOverview(),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    _collaborate(),
-                    SizedBox(height: 10,),
+
+                    Row(
+                      children: <Widget>[
+                        Expanded(
+                          flex: 2,
+                          child: _stashOverview(),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: _collaborate(),
+                        )
+                      ],
+                    )
+                   
                     
                   ],
                 ),

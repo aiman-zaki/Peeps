@@ -2,14 +2,18 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:peeps/models/assignment.dart';
+import 'package:peeps/models/contribution.dart';
+import 'package:peeps/models/timeline.dart';
 import 'package:peeps/resources/assignment_repository.dart';
 import '../bloc.dart';
 
 class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
   final AssignmentRepository repository;
+  final TimelineBloc timelineBloc;
 
   AssignmentBloc({
-    @required this.repository
+    @required this.repository,
+    @required this.timelineBloc,
   });
 
   @override
@@ -31,6 +35,12 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
     }
     if(event is AddAssignmentEvent){
       await repository.createAssignment(data: event.assignment.toJson());
+      timelineBloc.add(SendDataTimelineEvent(data: ContributionModel(
+        who: event.assignment.leader,
+        what: "create",
+        when: DateTime.now()
+      , how: "new", where: "assignment", why: "",
+        room: repository.data)));
     }
     if(event is TaskRefreshButtonClicked){
       yield LoadingAssignmentState();
@@ -43,6 +53,12 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
     }
     if(event is DeleteAssignmentEvent){
       await repository.deleteAssignment(id: event.data);
+       timelineBloc.add(SendDataTimelineEvent(data: ContributionModel(
+        who: "Someone",
+        what: "delete",
+        when: DateTime.now()
+      , how: "", where: "assignment", why: "",
+        room: repository.data)));
     }
 
  

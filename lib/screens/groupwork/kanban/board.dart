@@ -38,12 +38,12 @@ class _BoardState extends State<Board> {
     super.initState();
   }
 
-  _addToChangedStatusList(String taskId,int status){
+  _addToChangedStatusList({String taskId,int newStatus,String task,int prevStatus}){
       int index = changedStatus.indexWhere((item) => item.taskId == taskId);
       if(index == -1){
-        changedStatus.add(ChangedStatus(status: status,taskId: taskId));
+        changedStatus.add(ChangedStatus(status: newStatus,taskId: taskId, by: "Someone", previousStatus: prevStatus, task: task));
       }else{
-        changedStatus[index].status = status;
+        changedStatus[index].status = newStatus;
       }
       widget.callback(changedStatus);
     }

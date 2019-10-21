@@ -66,7 +66,7 @@ Widget build(BuildContext context) {
         child: ListTile(
           leading: CustomNetworkProfilePicture(
             width: 60,
-            image: user.picture,
+            image: user.profilePicture,
           ),
           trailing: _buildInvitationButton(user),
           title: Text(user.email),

@@ -46,27 +46,25 @@ class _HubMembersState extends State<HubMembers> {
                   },
                 )
               ],
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.only(top:8.0,bottom: 8.0),
-                  child: ListTile(
-                    leading: CircleAvatar(
-                      radius: 30.0,
-                      child: CustomNetworkProfilePicture(
-                        width: 120,
-                        heigth: 120,
-                        image: data[index].profilePicture,
-                      ),
+              child: Padding(
+                padding: const EdgeInsets.only(top:8.0,bottom: 8.0),
+                child: ListTile(
+                  leading: CircleAvatar(
+                    radius: 30.0,
+                    child: CustomNetworkProfilePicture(
+                      width: 120,
+                      heigth: 120,
+                      image: data[index].profilePicture,
                     ),
-                    title: Text(data[index].email),
-                   
                   ),
+                  title: Text(data[index].email),
+                 
                 ),
               ),
             );
           });
     }
-    return Container(
+    return Card(
        child: Column(
         children: <Widget>[
           Row(

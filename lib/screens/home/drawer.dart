@@ -40,8 +40,10 @@ class _DrawerViewState extends State<DrawerView> {
         future: _theme(),
         builder: (context, theme) {
           if (theme.connectionState == ConnectionState.done) {
-            return Container(
-              child: Switch(
+            return ListTile(
+              title: Text("Dark Mode"),
+              trailing: Switch(
+                activeColor: Theme.of(context).accentColor,
                 value: theme.data,
                 onChanged: (val) {
                   setState(() {
@@ -61,7 +63,7 @@ class _DrawerViewState extends State<DrawerView> {
         child: Column(
           children: <Widget>[
             Text(user.email),
-            _themeSwitch(),
+      
           ],
         ),
       );
@@ -85,11 +87,12 @@ class _DrawerViewState extends State<DrawerView> {
         );
       }
 
-      List<StatelessWidget> drawerChildren = [
+      List<Widget> drawerChildren = [
         header,
         item(Icons.mail, "Inbox", InboxBottomBarViewRoute),
         item(Icons.group, "Groups", GroupsViewRoute),
         item(Icons.search, "Groups Search", SearchViewRoute),
+        _themeSwitch(),
       ];
 
 

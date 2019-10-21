@@ -23,10 +23,8 @@ class LoadAssignmentEvent extends AssignmentEvent{
 
 class AddAssignmentEvent extends AssignmentEvent{
   final assignment;
-  final String groupId;
   AddAssignmentEvent({
     @required this.assignment,
-    @required this.groupId,
   });
 
   @override

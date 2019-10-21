@@ -193,7 +193,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
 
   @override
   void initState() { 
-    BlocProvider.of<GroupChatBloc>(context).add(LoadGroupChatEvent(room: widget.room));
+   
     WidgetsBinding.instance.addObserver(this);
     super.initState();
     
@@ -201,7 +201,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
 
   @override
   void dispose() {
-    chat.disconnect();
+
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }

@@ -24,11 +24,13 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   ) async* {
     if(event is ConnectTimelineEvent){
       yield ConnectingTimelineState();
+      var data = await repository.read10Only(namespace: 'timelines');
       await liveTimeline.connect();
+      liveTimeline.initialTimelineData(data);
       yield ConnectedTimelineState(repo: liveTimeline);
     }
     if(event is DisconnectTimelineEvent){
-      liveTimeline.disconnect();
+      //liveTimeline.disconnect();
     }
     if(event is SendDataTimelineEvent){
       liveTimeline.sendData(event.data);
@@ -37,8 +39,8 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   }
 
   @override
-  void dispose(){
-    super.dispose();
+  void close(){
+    super.close();
     liveTimeline.disconnect();
   }
 }

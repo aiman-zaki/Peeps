@@ -12,11 +12,7 @@ abstract class TaskEvent extends Equatable {
 
 
 class LoadTaskEvent extends TaskEvent{
-  final data;
-  LoadTaskEvent({
-    @required this.data
-  });
-  
+
   @override
   String toString()=> "LoadTaskEvent";
 }
@@ -37,6 +33,7 @@ class AddNewTaskEvent extends TaskEvent{
 class UpdateTaskStatus extends TaskEvent{
   final assignmentId;
   final List<ChangedStatus> tasks;
+
   UpdateTaskStatus({
     @required this.tasks,
     @required this.assignmentId,
@@ -44,6 +41,16 @@ class UpdateTaskStatus extends TaskEvent{
 
   @override
   String toString() => "UpdateTaskStatus";
+}
+
+class UpdateTaskEvent extends TaskEvent{
+  final data;
+  UpdateTaskEvent({
+    @required this.data
+  });
+
+  @override
+  String toString() => "UpdateTaskEvent";
 }
 
 class DeleteTaskButtonClickedEvent extends TaskEvent{
@@ -67,9 +74,6 @@ class DeleteTaskEvent extends TaskEvent{
   String toString() => "DeleteTaskEvent";
 
 }
-
-
-
 
 class RefreshAssignmentEvent extends TaskEvent{
   final groupId;

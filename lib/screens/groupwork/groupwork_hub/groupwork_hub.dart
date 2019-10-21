@@ -9,6 +9,7 @@ import 'package:peeps/resources/assignment_repository.dart';
 import 'package:peeps/resources/chat.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/live_timeline.dart';
+import 'package:peeps/resources/stash.dart';
 import 'package:peeps/resources/timeline_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 
@@ -34,17 +35,18 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
 
   @override
   Widget build(BuildContext context) {
+    final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
+    
     return  MultiBlocProvider(
       providers: [
         BlocProvider<GroupChatBloc>(builder: (context) => GroupChatBloc(chat: ChatResources(namespace: 'group_chat',room: widget.groupData.id),)),
         BlocProvider<KanbanBoardBloc>(builder: (context) => KanbanBoardBloc(),),
-        BlocProvider<StashBloc>(builder: (context) => StashBloc()),
-        BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: AssignmentRepository(data: widget.groupData.id),)),
+        BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: AssignmentRepository(data: widget.groupData.id), timelineBloc: _timelineBloc),),
         BlocProvider<MembersBloc>(builder: (context) => MembersBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
         BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
         BlocProvider<InviteMembersBloc>(builder: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository:  GroupworkRepository(data: widget.groupData.id)),),
-        BlocProvider<TimelineBloc>(builder: (context) => TimelineBloc(liveTimeline: LiveTimeline(namespace: "timeline",room:widget.groupData.id), repository: TimelineRepository(data: widget.groupData.id)),)
-        
+        BlocProvider<ReferenceBloc>(builder: (context) => ReferenceBloc(stashRepository: StashRepository(data:widget.groupData.id), timelineBloc: _timelineBloc),),
+        BlocProvider.value(value: _timelineBloc,)
       ],
       child: GroupworkHubView(groupData:widget.groupData,userData:widget.userData)
     );

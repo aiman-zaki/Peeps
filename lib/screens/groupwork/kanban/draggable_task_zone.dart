@@ -8,7 +8,7 @@ enum TaskStatus{
   doing,
   done,
 }
-typedef AddToChangeStatusList = void Function(String,int); 
+typedef AddToChangeStatusList = void Function({String taskId,int newStatus,String task,int prevStatus}); 
 class DraggableTaskZone extends StatefulWidget {
   
   final List<DraggableTask> draggable;
@@ -73,7 +73,7 @@ class _DraggableTaskZoneState extends State<DraggableTaskZone> {
       },
         onAccept: (TaskModel data){
           setState(() {
-            _addToChangeStatusList(data.id,status);
+            _addToChangeStatusList(taskId:data.id,newStatus:status,task:data.task,prevStatus:data.status);
             widget.draggable.add(
               DraggableTask(data: data,
                 onDragCompleted: (){

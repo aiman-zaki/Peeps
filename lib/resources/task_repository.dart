@@ -26,6 +26,10 @@ class TaskRepository extends BaseRepository{
     await super.create(data: data,namespace: "tasks");
   }
 
+  updateTask({@required data}) async {
+    await super.update(data: data,namespace: "${data['_id']}/task");
+  }
+
   deleteTask({@required id}) async {
     await super.delete(namespace: "$id/task");
   }

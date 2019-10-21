@@ -22,9 +22,12 @@ class ForumRepository extends BaseRepository{
   read({namespace}) async {
     List discussions = [];
     var data = await super.read();
-    for(Map<String,dynamic> discussion in data['discussions']){
+    if(data != null){
+      for(Map<String,dynamic> discussion in data['discussions']){
       discussions.add(DiscussionModel.fromJson(discussion));
     }
+    }
+      
     return discussions;
   }
 

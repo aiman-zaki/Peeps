@@ -74,7 +74,8 @@ class _GroupworkFormState extends State<GroupworkForm> {
             child: Text("Confirm"),
             onPressed: (){
                 _submitButton();
-                Navigator.of(context).popUntil(ModalRoute.withName("/"));
+                Navigator.of(context).pop();
+                
             },
           ),
         );

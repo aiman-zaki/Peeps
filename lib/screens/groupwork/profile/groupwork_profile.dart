@@ -323,20 +323,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
         child: SingleChildScrollView(
           child: Stack(
             children: <Widget>[
-              Positioned(
-                  top: 0,
-                  child: ClipPath(
-                      clipper: WaveClipperTwo(),
-                      child: Container(
-                        width: size.width,
-                        height: 100,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                              Colors.purple[900],
-                              Colors.purple[800],
-                              Colors.purple[700], 
-                        ])),
-                      ))),
+              
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

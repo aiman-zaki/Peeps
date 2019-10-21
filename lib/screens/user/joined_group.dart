@@ -6,11 +6,15 @@ import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 
 import 'package:peeps/resources/groupworks_repository.dart';
+import 'package:peeps/resources/live_timeline.dart';
+import 'package:peeps/resources/timeline_repository.dart';
 import 'package:peeps/resources/user_repository.dart';
 
 import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/groupwork_form.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub_view.dart';
 
 import 'package:peeps/screens/splash_page.dart';
 
@@ -110,8 +114,19 @@ class _GroupworksViewState extends State<GroupworksView> {
                 "userData":widget.user,
                 "groupData":data[index],
               };
-              final NavigatorArguments _navArgs = NavigatorArguments(data: arg);
-              Navigator.of(context).pushNamed('group',arguments: _navArgs);
+              //final NavigatorArguments _navArgs = NavigatorArguments(data: arg);
+              //Navigator.of(context).pushNamed('group',arguments: _navArgs);
+              Navigator.of(context).push(
+                CupertinoPageRoute(
+                  builder: (context) => 
+                  BlocProvider(
+                    child: GroupworkHub(userData: widget.user,groupData: data[index],),
+                    builder: (context) => 
+                    TimelineBloc(
+                      liveTimeline: LiveTimeline(namespace: "timeline",room: data[index].id), 
+                      repository: TimelineRepository(data: data[index].id)),)
+                ),
+              );
               
             },
             child: _groupCard(data[index]),
@@ -130,7 +145,7 @@ class _GroupworksViewState extends State<GroupworksView> {
         bloc: _bloc,
         builder: (BuildContext context, GroupworkState state){
           if(state is InitialGroupworkState){
-            _bloc.dispatch(LoadGroupworkEvent(data: widget.user.activeGroup));
+            _bloc.add(LoadGroupworkEvent(data: widget.user.activeGroup));
             return SplashScreen();
           }
           if(state is LoadingGroupworkState){
@@ -141,7 +156,7 @@ class _GroupworksViewState extends State<GroupworksView> {
               padding: const EdgeInsets.all(8.0),
               child: RefreshIndicator(
                 onRefresh: () async {
-                   _bloc.dispatch(LoadGroupworkEvent(data: widget.user.activeGroup));
+                   _bloc.add(LoadGroupworkEvent(data: widget.user.activeGroup));
                 },
                 child: _buildGroupworkList(state.data)),
             );

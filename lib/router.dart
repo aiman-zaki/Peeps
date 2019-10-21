@@ -50,7 +50,6 @@ Route<dynamic> generateRoute(RouteSettings settings){
       });
     case GroupViewRoute:
       final NavigatorArguments args = settings.arguments;
-      print(args.data);
       return CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:args.data['groupData'],userData: args.data['userData'],));
     default:
       return MaterialPageRoute(builder: (context) => DrawerView());
