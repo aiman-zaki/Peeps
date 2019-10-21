@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
@@ -45,7 +46,7 @@ class HubHeader extends StatelessWidget {
                     child: InkWell(
                       onTap: () {
                         Navigator.of(context).push(
-                          MaterialPageRoute(
+                          CupertinoPageRoute(
                               builder: (context) => BlocProvider.value(
                                   value: _groupProfileBloc,
                                   child: BlocProvider.value(
@@ -55,7 +56,7 @@ class HubHeader extends StatelessWidget {
                                       data: groupData,
                                     ),
                                   )),
-                              fullscreenDialog: true),
+                            ),
                         );
                       },
                       child: Hero(

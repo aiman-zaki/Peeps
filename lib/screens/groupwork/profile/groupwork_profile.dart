@@ -17,20 +17,19 @@ import 'package:peeps/screens/groupwork/profile/admin.dart';
 import 'package:peeps/screens/groupwork/profile/notes.dart';
 import 'package:peeps/screens/groupwork/profile/requests.dart';
 
-enum Role{
+enum Role {
   admin,
   normal,
 }
-
 
 class GroupworkProfile extends StatefulWidget {
   final GroupworkModel data;
   final isAdmin;
   GroupworkProfile({
-    Key key, 
+    Key key,
     this.data,
     this.isAdmin,
-    }) : super(key: key);
+  }) : super(key: key);
 
   _GroupworkProfileState createState() => _GroupworkProfileState();
 }
@@ -38,8 +37,8 @@ class GroupworkProfile extends StatefulWidget {
 class _GroupworkProfileState extends State<GroupworkProfile> {
   File _image;
   bool upload = false;
-  bool  readOnly = true;
-  
+  bool readOnly = true;
+
   final _creatorController = TextEditingController();
   final _supervisorController = TextEditingController();
   final _descriptionController = TextEditingController();
@@ -53,28 +52,28 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
     _courseController.text = widget.data.course;
   }
 
-  Future _getImage() async {
-    var image = await ImagePicker.pickImage(source: ImageSource.gallery);
-    setState(() {
-      _image = image;
-      upload = true;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<GroupProfileBloc>(context);
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
-    
+
     final size = MediaQuery.of(context).size;
 
-    _buildAdminFeatures(){
-      if(widget.isAdmin){
-        return Expanded(flex: 1,child: FlatButton(child: Text("Assign"),
-          onPressed: (){
-            }
-          )
-        );
+    Future _getImage() async {
+      var image = await ImagePicker.pickImage(source: ImageSource.gallery);
+      setState(() {
+        _image = image;
+        upload = true;
+      });
+      _bloc.add(
+          UploadGroupworkProfileImage(groupId: widget.data.id, image: _image));
+    }
+
+    _buildAdminFeatures() {
+      if (widget.isAdmin) {
+        return Expanded(
+            flex: 1,
+            child: FlatButton(child: Text("Assign"), onPressed: () {}));
       }
       return Container();
     }
@@ -100,14 +99,19 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Expanded(flex:3,child: Text('Administrator',style: TextStyle(fontSize: 16),)),
+                Expanded(
+                    flex: 3,
+                    child: Text(
+                      'Administrator',
+                      style: TextStyle(fontSize: 16),
+                    )),
               ],
             ),
             ListView.builder(
               shrinkWrap: true,
               itemCount: widget.data.members.length,
-              itemBuilder: (context,index){
-                if(widget.data.members[index]['role'] == Role.admin.index){
+              itemBuilder: (context, index) {
+                if (widget.data.members[index]['role'] == Role.admin.index) {
                   return ListTile(
                     contentPadding: EdgeInsets.all(9),
                     title: Text(widget.data.members[index]['email']),
@@ -120,62 +124,69 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
       );
     }
 
-    _buildAdminOnlySettings(){
-      if(widget.isAdmin){
-        return ListView(
-          shrinkWrap: true,
-          children: <Widget>[
-            ListTile(
-              contentPadding: EdgeInsets.all(6),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              leading: Icon(FontAwesomeIcons.criticalRole),
-              onTap: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(
+    _buildAdminOnlySettings() {
+      if (widget.isAdmin) {
+        return Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            shrinkWrap: true,
+            children: <Widget>[
+              ListTile(
+                contentPadding: EdgeInsets.all(6),
+                trailing: Icon(Icons.keyboard_arrow_right),
+                leading: Icon(FontAwesomeIcons.criticalRole),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
                     builder: (context) => BlocProvider.value(
                       value: _bloc,
                       child: BlocProvider.value(
-                        value: _membersBloc,
-                        child: GroupProfileAdmin(groupData: widget.data,)),
+                          value: _membersBloc,
+                          child: GroupProfileAdmin(
+                            groupData: widget.data,
+                          )),
                     ),
-                  )
-                );
-              },
-              title: Text("Team"),
-            ),
-            ListTile(
-              title: Text("Notes | Announcements"),
-              contentPadding: EdgeInsets.all(6),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              leading: Icon(FontAwesomeIcons.stickyNote),
-              onTap: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BlocProvider(
-                      builder: (context) => NoteBloc(repository: const NoteRepository()),
-                      child: GroupProfileNotes(groupId: widget.data.id,),
+                  ));
+                },
+                title: Text("Team"),
+              ),
+              ListTile(
+                title: Text("Notes | Announcements"),
+                contentPadding: EdgeInsets.all(6),
+                trailing: Icon(Icons.keyboard_arrow_right),
+                leading: Icon(FontAwesomeIcons.stickyNote),
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                        builder: (context) =>
+                            NoteBloc(repository: const NoteRepository()),
+                        child: GroupProfileNotes(
+                          groupId: widget.data.id,
+                        ),
+                      ),
                     ),
-                  ),
-                );
-              },
-            ),
-            ListTile(
-              title: Text("Requests"),
-              contentPadding: EdgeInsets.all(6),
-              trailing: Icon(Icons.keyboard_arrow_right),
-              leading: Icon(FontAwesomeIcons.inbox),
-              onTap: (){
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => BlocProvider(
-                      builder: (context) => RequestBloc(groupworkRepository: GroupworkRepository(data:  widget.data.id)),
-                        child: GroupRequest(groupId: widget.data.id,),
-                    )
-                  )
-                );
-              },
-            )
-          ],
+                  );
+                },
+              ),
+              ListTile(
+                title: Text("Requests"),
+                contentPadding: EdgeInsets.all(6),
+                trailing: Icon(Icons.keyboard_arrow_right),
+                leading: Icon(FontAwesomeIcons.inbox),
+                onTap: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => BlocProvider(
+                            builder: (context) => RequestBloc(
+                                groupworkRepository:
+                                    GroupworkRepository(data: widget.data.id)),
+                            child: GroupRequest(
+                              groupId: widget.data.id,
+                            ),
+                          )));
+                },
+              )
+            ],
+          ),
         );
       }
       return Container();
@@ -183,10 +194,12 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
 
     _buildProfileDetail() {
       return Container(
-        margin: EdgeInsets.only(top: 10),
         child: Column(
           children: <Widget>[
-            CustomCaptions(text: widget.data.id,),
+            CustomCaptions(
+              text: "id: ${widget.data.id}",
+              color: Theme.of(context).accentColor,
+            ),
             Text(
               widget.data.name,
               style: TextStyle(fontSize: 21),
@@ -208,8 +221,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                 Expanded(
                     flex: 2,
                     child: _readOnlyFormField(
-                        labelText: "Supervisor",
-                        data: widget.data.creator)),
+                        labelText: "Supervisor", data: widget.data.creator)),
               ],
             ),
             SizedBox(
@@ -227,16 +239,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                 data: widget.data.course,
                 controller: _courseController),
             SizedBox(
-              height: 10,
-            ),
-            SizedBox(
-              width: size.width,
-              child: FlatButton(onPressed: () {
-                setState(() {
-                  readOnly = false;
-                });
-
-              }, child: Text('Update')),
+              height: 70,
             ),
           ],
         ),
@@ -244,7 +247,8 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
     }
 
     Widget _uploadButton() {
-      return FlatButton(
+      return RaisedButton(
+        color: Theme.of(context).buttonColor,
         onPressed: !upload
             ? null
             : () {
@@ -258,40 +262,44 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
     Widget _buildAvatar() {
       return Center(
         child: CircleAvatar(
-          backgroundColor: Colors.white,
+          backgroundColor: Theme.of(context).primaryColor,
           radius: 70,
-          child: _image == null
-              ? CustomNetworkProfilePicture(
-                  image: widget.data.profilePicturerUrl,
-                  onTap: _getImage,
-                  child: Container(
-                    alignment: FractionalOffset.bottomCenter,
-                    child: Text(""),
+          child: Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: _image == null
+                ? CustomNetworkProfilePicture(
+                    image: widget.data.profilePicturerUrl,
+                    onTap: _getImage,
+                    child: Container(
+                      alignment: FractionalOffset.bottomCenter,
+                      child: Text(""),
+                    ),
+                  )
+                : InkWell(
+                    onTap: _getImage,
+                    child: Container(
+                        width: 190,
+                        height: 190,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(120),
+                            image: DecorationImage(
+                                image: new FileImage(_image),
+                                fit: BoxFit.cover)),
+                        child: Container(
+                            alignment: FractionalOffset.bottomCenter,
+                            child: Text(""))),
                   ),
-                )
-              : InkWell(
-                  onTap: _getImage,
-                  child: Container(
-                      width: 190,
-                      height: 190,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(120),
-                          image: DecorationImage(
-                              image: new FileImage(_image), fit: BoxFit.cover)),
-                      child: Container(
-                          alignment: FractionalOffset.bottomCenter,
-                          child: Text(""))),
-                ),
+          ),
         ),
       );
     }
 
-    _fabOnPressed(){
-      Map<String,dynamic> data = {
-        "group_id":widget.data.id,
-        "supervisor":_supervisorController.text,
-        "description":_descriptionController.text,
-        "course":_courseController.text.toUpperCase()
+    _fabOnPressed() {
+      Map<String, dynamic> data = {
+        "group_id": widget.data.id,
+        "supervisor": _supervisorController.text,
+        "description": _descriptionController.text,
+        "course": _courseController.text.toUpperCase()
       };
 
       _bloc.add(UpdateGroupworkProfileEvent(data: data));
@@ -299,19 +307,20 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
 
     return Scaffold(
       appBar: AppBar(
-        elevation: 0.00,
+        title: Text("Groupwork Profile"),
+        elevation: 8.00,
       ),
       body: BlocListener(
         bloc: _bloc,
-        listener: (context,state){
-          if(state is UploadingProfileImageState){
+        listener: (context, state) {
+          if (state is UploadingProfileImageState) {
             Scaffold.of(context).showSnackBar(
               SnackBar(
                 content: Text("Image is Uploading"),
               ),
             );
           }
-          if(state is UploadedProfileImageState){
+          if (state is UploadedProfileImageState) {
             Scaffold.of(context).removeCurrentSnackBar();
             Scaffold.of(context).showSnackBar(
               SnackBar(
@@ -321,33 +330,79 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
           }
         },
         child: SingleChildScrollView(
-          child: Stack(
-            children: <Widget>[
-              
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          child: Padding(
+            padding: const EdgeInsets.all(3.0),
+            child: Stack(
+              children: <Widget>[
+                Column(
                   children: <Widget>[
-                    _buildAvatar(),
-                    Center(child: _uploadButton()),
-                    _buildProfileDetail(),
                     SizedBox(
-                      height: 10,
+                      height: 80,
+                    ),
+                    Card(
+                      elevation: 8.00,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          children: <Widget>[
+                            SizedBox(
+                              height: 90,
+                            ),
+                            _buildProfileDetail(),
+                            SizedBox(
+                              height: 10,
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
                     _buildAdminOnlySettings(),
                   ],
                 ),
-              ),
-            ],
+                Positioned(
+                  bottom: 210,
+                  child: ClipPath(
+                    clipper: OvalTopBorderClipper(),
+                    child: Container(
+                      child: SizedBox(
+                        width: size.width,
+                        child: FlatButton(
+                            onPressed: () {
+                              setState(() {
+                                if (readOnly) {
+                                  readOnly = false;
+                                } else {
+                                  readOnly = true;
+                                }
+                              });
+                            },
+                            child: Text('Update')),
+                      ),
+                      width: size.width,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        gradient: LinearGradient(colors: [
+                          Colors.blue[700],
+                          Colors.blue[800],
+                          Colors.blue[900],
+                        ]),
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                    margin: EdgeInsets.only(top: 20), child: _buildAvatar()),
+              ],
+            ),
           ),
         ),
       ),
-      floatingActionButton: readOnly? null : FloatingActionButton(
-        onPressed: _fabOnPressed,
-        child: Icon(Icons.check),
-      ),
+      floatingActionButton: readOnly
+          ? null
+          : FloatingActionButton(
+              onPressed: _fabOnPressed,
+              child: Icon(Icons.check),
+            ),
     );
   }
 }
