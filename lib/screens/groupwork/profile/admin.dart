@@ -62,8 +62,20 @@ class _GroupProfileAdminState extends State<GroupProfileAdmin> {
           },
           child: Text("Promote as Admin"),
         );
+      } else {
+        Map<String,dynamic> data = {
+          "email":email,
+          "role":1,
+          "groupId":widget.groupData.id,
+        };
+
+        return RaisedButton(
+          onPressed: (){
+            _bloc.add(UpdateAdminRoleEvent(data:data));
+          },child: Text("Demoted"),
+        );
       }
-      return Container();
+
     }
 
 

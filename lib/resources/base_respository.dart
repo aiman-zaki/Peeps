@@ -29,7 +29,7 @@ abstract class BaseRepository{
     return url;
   }
 
-  get url => _url(String);
+  String url(namespace) => _url(namespace);
   
 
   create({@required data,namespace}) async {

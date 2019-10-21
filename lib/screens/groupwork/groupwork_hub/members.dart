@@ -15,7 +15,7 @@ class HubMembers extends StatefulWidget {
     Key key,
     @required this.groupData,
     @required this.userData,
-    }) : super(key: key);
+  }) : super(key: key);
 
   _HubMembersState createState() => _HubMembersState();
 }
@@ -23,7 +23,6 @@ class HubMembers extends StatefulWidget {
 class _HubMembersState extends State<HubMembers> {
   @override
   Widget build(BuildContext context) {
-
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
     final _groupChatBloc = BlocProvider.of<GroupChatBloc>(context);
     final _inviteMembersBloc = BlocProvider.of<InviteMembersBloc>(context);
@@ -41,13 +40,11 @@ class _HubMembersState extends State<HubMembers> {
                   icon: Icons.message,
                   color: Colors.blue,
                   caption: 'Chat',
-                  onTap: (){
-
-                  },
+                  onTap: () {},
                 )
               ],
               child: Padding(
-                padding: const EdgeInsets.only(top:8.0,bottom: 8.0),
+                padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
                 child: ListTile(
                   leading: CircleAvatar(
                     radius: 30.0,
@@ -58,14 +55,14 @@ class _HubMembersState extends State<HubMembers> {
                     ),
                   ),
                   title: Text(data[index].email),
-                 
                 ),
               ),
             );
           });
     }
+
     return Card(
-       child: Column(
+      child: Column(
         children: <Widget>[
           Row(
             children: <Widget>[
@@ -87,7 +84,9 @@ class _HubMembersState extends State<HubMembers> {
                           builder: (context) =>
                               BlocProvider<InviteMembersBloc>.value(
                                   value: _inviteMembersBloc,
-                                  child: InviteMembersView(groupData: widget.groupData,)),
+                                  child: InviteMembersView(
+                                    groupData: widget.groupData,
+                                  )),
                           fullscreenDialog: true),
                     );
                   },

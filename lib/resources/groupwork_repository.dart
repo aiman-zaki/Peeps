@@ -50,7 +50,7 @@ class GroupworkRepository extends BaseRepository{
   uploadProfileImage(File image,String groupId) async {
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
     var length = await image.length();
-    final Uri uri = Uri.parse(url("picture"));
+    final Uri uri = Uri.parse(super.url("picture"));
     var token = await accessToken();
 
     var request = new http.MultipartRequest("POST",
