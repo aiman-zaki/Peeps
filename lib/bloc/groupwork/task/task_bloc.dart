@@ -82,9 +82,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
                 who: task.by,
                 what: "Update",
                 when: DateTime.now(),
-                how: "to ${newStatus}",
+                how: "${newStatus}",
                 where: "task: ${task.task}",
-                why: "from ${currentStatus}")));
+                why: "${currentStatus}")));
       }
       repository.updateTaskStatus(data: changedStatusTask);
       yield DisplayMessageSnackbar(color: "green", message: "Saved");

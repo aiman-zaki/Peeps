@@ -134,13 +134,12 @@ class _UserTasksState extends State<UserTasks> {
             height: 350,
             padding: EdgeInsets.all(3.0),
             child: Card(
-              elevation: 8.00,
               color: Colors.grey[850],
-              child: Padding(
-                padding: EdgeInsets.all(9.0),
-                child: Stack(
-                  children: <Widget>[
-                    Column(
+              child: Stack(
+                children: <Widget>[
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: <Widget>[
@@ -156,27 +155,29 @@ class _UserTasksState extends State<UserTasks> {
                           height: 15,
                           color: Colors.lightBlue[700],
                         ),
+                          _buildData(state.data),
                       ],
+                      
                     ),
-                    _buildData(state.data),
-                    Positioned(
-                      bottom: 0,
-                      child: ClipPath(
-                        clipper: WaveClipperOne(reverse: true),
-                        child: Container(
-                          width: size.width,
-                          height: 80,
-                          decoration: BoxDecoration(
-                              gradient: LinearGradient(colors: [
-                            Colors.lightBlue[700],
-                            Colors.lightBlue[800],
-                            Colors.lightBlue[900],
-                          ])),
-                        ),
+                  ),
+                
+                  Positioned(
+                    bottom: 0,
+                    child: ClipPath(
+                      clipper: WaveClipperOne(reverse: true),
+                      child: Container(
+                        width: size.width,
+                        height: 80,
+                        decoration: BoxDecoration(
+                            gradient: LinearGradient(colors: [
+                          Colors.lightBlue[700],
+                          Colors.lightBlue[800],
+                          Colors.lightBlue[900],
+                        ])),
                       ),
                     ),
-                  ],
-                ),
+                  ),
+                ],
               ),
             ),
           );

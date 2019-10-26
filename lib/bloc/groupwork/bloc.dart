@@ -43,3 +43,6 @@ export 'collaborate_discussion/collaborate_discussion_state.dart';
 export 'reference/reference_bloc.dart';
 export 'reference/reference_event.dart';
 export 'reference/reference_state.dart';
+export 'collaborate_map/collaborate_map_bloc.dart';
+export 'collaborate_map/collaborate_map_event.dart';
+export 'collaborate_map/collaborate_map_state.dart';

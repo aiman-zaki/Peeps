@@ -108,7 +108,7 @@ class _AssignmentsCountdownState extends State<AssignmentsCountdown> {
     return BlocBuilder<AssignmentsBloc, AssignmentsState>(
       builder: (context, state) {
         if (state is InitialAssignmentsState) {
-          _bloc.dispatch(LoadUserAssignmentsEvent());
+          _bloc.add(LoadUserAssignmentsEvent());
           return Container();
         }
         if (state is LoadingUserAssignmentsState) {

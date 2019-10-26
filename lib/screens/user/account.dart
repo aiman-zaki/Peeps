@@ -58,7 +58,7 @@ class AccountViewState extends State<AccountView> {
     double height = MediaQuery.of(context).size.height;
 
     _upload() {
-      _bloc.dispatch(
+      _bloc.add(
           UploadProfilePictureEvent(image: _image, userId: widget.data.id));
     }
 
@@ -80,7 +80,7 @@ class AccountViewState extends State<AccountView> {
             title: Text('Enable Supervisor Functions'),
             onTap: () {
               setState(() {
-                _bloc.dispatch(UpdateRoleEvent(data: {"role":1}));
+                _bloc.add(UpdateRoleEvent(data: {"role":1}));
               });
             });
       }
@@ -89,7 +89,7 @@ class AccountViewState extends State<AccountView> {
             title: Text('Disable Supervisor Functions'),
             onTap: () {
               setState(() {
-                _bloc.dispatch(UpdateRoleEvent(data: {"role":2}));
+                _bloc.add(UpdateRoleEvent(data: {"role":2}));
               });
             });
     }
@@ -105,7 +105,7 @@ class AccountViewState extends State<AccountView> {
           };
 
           setState(() {
-            _bloc.dispatch(UpdateProfileEvent(data: data));
+            _bloc.add(UpdateProfileEvent(data: data));
             edit = true;
           });
         };

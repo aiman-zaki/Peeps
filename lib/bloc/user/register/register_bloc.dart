@@ -41,7 +41,7 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
         yield UploadedInitProfilePictureState();
       }
       yield CompletedRegisterState();
-      loginBloc.dispatch(LoginButtonPressed(email: event.email,password: event.password));
+      loginBloc.add(LoginButtonPressed(email: event.email,password: event.password));
 
     }
   }

@@ -35,7 +35,7 @@ class _SearchViewState extends State<SearchView> {
             "group_id":groupwork.id,
             "request_date":DateTime.now().toString(),
           };
-          _bloc.dispatch(RequestGrouptEvent(data: data));
+          _bloc.add(RequestGrouptEvent(data: data));
         },
         child: Text("Request"),
       );
@@ -54,7 +54,7 @@ class _SearchViewState extends State<SearchView> {
     }
 
     _searchInput(String searchIn){
-      _bloc.dispatch(SearchGroupsButtonClickedEvent(data: searchIn.toUpperCase()));
+      _bloc.add(SearchGroupsButtonClickedEvent(data: searchIn.toUpperCase()));
     }
 
     _showLoadingDialog(){

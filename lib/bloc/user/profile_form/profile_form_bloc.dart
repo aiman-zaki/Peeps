@@ -25,14 +25,14 @@ class ProfileFormBloc extends Bloc<ProfileFormEvent, ProfileFormState> {
       yield UpdatingProfileState();
       await repository.updateProfile(data: event.data);
       yield PopState();
-      bloc.dispatch(LoadProfileEvent());
+      bloc.add(LoadProfileEvent());
       yield UpdatedProfileState(); 
       yield InitialProfileFormState();   
     }
     if(event is UpdateRoleEvent){
       yield UpdatingRoleState();
       await repository.updateRole(data:event.data);
-      bloc.dispatch(LoadProfileEvent());
+      bloc.add(LoadProfileEvent());
       yield UpdatedRoleState();
     }
     if(event is UploadProfilePictureEvent){

@@ -32,7 +32,7 @@ class InboxBloc extends Bloc<InboxEvent, InboxState> {
         'answer':event.reply,
         'group_id':event.groupId,
       });
-      profileBloc.dispatch(LoadProfileEvent());
+      profileBloc.add(LoadProfileEvent());
     }
   }
 }

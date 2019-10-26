@@ -194,52 +194,91 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
 
     _buildProfileDetail() {
       return Container(
-        child: Column(
+        child: Stack(
           children: <Widget>[
-            CustomCaptions(
-              text: "id: ${widget.data.id}",
-              color: Theme.of(context).accentColor,
-            ),
-            Text(
-              widget.data.name,
-              style: TextStyle(fontSize: 21),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                    flex: 2,
-                    child: _readOnlyFormField(
-                        labelText: "Creator",
-                        data: widget.data.creator,
-                        controller: _creatorController)),
-                SizedBox(
-                  width: 10,
+            Positioned(
+              bottom: 0,
+              child: ClipPath(
+                clipper: OvalTopBorderClipper(),
+                child: Container(
+                  child: SizedBox(
+                    width: size.width,
+                    child: FlatButton(
+                        onPressed: () {
+                          setState(() {
+                            if (readOnly) {
+                              readOnly = false;
+                            } else {
+                              readOnly = true;
+                            }
+                          });
+                        },
+                        child: Text('Update')),
+                  ),
+                  width: size.width,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(colors: [
+                      Colors.blue[700],
+                      Colors.blue[800],
+                      Colors.blue[900],
+                    ]),
+                  ),
                 ),
-                Expanded(
-                    flex: 2,
-                    child: _readOnlyFormField(
-                        labelText: "Supervisor", data: widget.data.creator)),
-              ],
+              ),
             ),
-            SizedBox(
-              height: 10,
-            ),
-            _readOnlyFormField(
-                labelText: "Description",
-                data: widget.data.description,
-                controller: _descriptionController),
-            SizedBox(
-              height: 10,
-            ),
-            _readOnlyFormField(
-                labelText: "Course",
-                data: widget.data.course,
-                controller: _courseController),
-            SizedBox(
-              height: 70,
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                children: <Widget>[
+                  CustomCaptions(
+                    text: "id: ${widget.data.id}",
+                    color: Theme.of(context).accentColor,
+                  ),
+                  Text(
+                    widget.data.name,
+                    style: TextStyle(fontSize: 21),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                          flex: 2,
+                          child: _readOnlyFormField(
+                              labelText: "Creator",
+                              data: widget.data.creator,
+                              controller: _creatorController)),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                          flex: 2,
+                          child: _readOnlyFormField(
+                              labelText: "Supervisor",
+                              data: widget.data.creator)),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  _readOnlyFormField(
+                      labelText: "Description",
+                      data: widget.data.description,
+                      controller: _descriptionController),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  _readOnlyFormField(
+                      labelText: "Course",
+                      data: widget.data.course,
+                      controller: _courseController),
+                  SizedBox(
+                    height: 80,
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -341,54 +380,18 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                     ),
                     Card(
                       elevation: 8.00,
-                      child: Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Column(
-                          children: <Widget>[
-                            SizedBox(
-                              height: 90,
-                            ),
-                            _buildProfileDetail(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                          ],
-                        ),
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(
+                            height: 90,
+                          ),
+                          _buildProfileDetail(),
+                        
+                        ],
                       ),
                     ),
                     _buildAdminOnlySettings(),
                   ],
-                ),
-                Positioned(
-                  bottom: 210,
-                  child: ClipPath(
-                    clipper: OvalTopBorderClipper(),
-                    child: Container(
-                      child: SizedBox(
-                        width: size.width,
-                        child: FlatButton(
-                            onPressed: () {
-                              setState(() {
-                                if (readOnly) {
-                                  readOnly = false;
-                                } else {
-                                  readOnly = true;
-                                }
-                              });
-                            },
-                            child: Text('Update')),
-                      ),
-                      width: size.width,
-                      height: 80,
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(colors: [
-                          Colors.blue[700],
-                          Colors.blue[800],
-                          Colors.blue[900],
-                        ]),
-                      ),
-                    ),
-                  ),
                 ),
                 Container(
                     margin: EdgeInsets.only(top: 20), child: _buildAvatar()),

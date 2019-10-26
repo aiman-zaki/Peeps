@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
+import 'package:peeps/screens/groupwork/kanban/task_review.dart';
 import 'package:peeps/screens/groupwork/task_form.dart';
 
 class CardTask extends StatelessWidget {
@@ -108,7 +109,7 @@ class DialogTaskCard extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 15
             ),
             Row(
               children: <Widget>[
@@ -120,7 +121,7 @@ class DialogTaskCard extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
             Row(
               children: <Widget>[
@@ -132,7 +133,7 @@ class DialogTaskCard extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: 20,
+              height: 15,
             ),
             Row(
               children: <Widget>[
@@ -143,8 +144,17 @@ class DialogTaskCard extends StatelessWidget {
                 Text(task.dueDate.toString()),
               ],
             ),
-            SizedBox(
-              height: 20,
+           
+            RaisedButton(
+              child: Text("Review | Submit"),
+              onPressed: (){
+                Navigator.of(context).pop();
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => TaskReviewView()
+                  ),
+                );
+              },
             )
           ],
         ),
