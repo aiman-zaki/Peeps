@@ -20,8 +20,8 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
   AssignmentState get initialState => InitialAssignmentState();
 
   @override
-  void close() {
-    super.close();
+  Future<void> close() {
+    return super.close();
   }
 
   @override

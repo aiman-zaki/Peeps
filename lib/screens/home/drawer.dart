@@ -143,10 +143,7 @@ class _DrawerViewState extends State<DrawerView> {
               flex: 3,
               child: listView,
             ),
-            Expanded(
-              flex: 2,
-              child: _supervisorDrawer(),
-            ),
+
             _footerDrawer(),
           ],
         ),

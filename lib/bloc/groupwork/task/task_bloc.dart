@@ -20,9 +20,9 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
   TaskState get initialState => InitialTaskState();
 
   @override
-  void close() {
+  Future<void> close() {
     // TODO: implement close
-    super.close();
+    return super.close();
   }
 
   @override

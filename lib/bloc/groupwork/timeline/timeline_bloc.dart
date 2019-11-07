@@ -39,8 +39,9 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
   }
 
   @override
-  void close(){
-    super.close();
+  Future<void> close(){
     liveTimeline.disconnect();
+    return super.close();
+    
   }
 }

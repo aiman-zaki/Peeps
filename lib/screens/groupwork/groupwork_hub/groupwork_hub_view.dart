@@ -7,6 +7,7 @@ import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/collaborate.dart';
 import 'package:peeps/resources/forum_repository.dart';
+import 'package:peeps/resources/marker_repository.dart';
 import 'package:peeps/screens/groupwork/collaborate/bottom_bar.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/assignments.dart';
 import 'package:peeps/screens/groupwork/collaborate/user_joined.dart';
@@ -86,10 +87,13 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                         Navigator.of(context).push(
                           CupertinoPageRoute(
                             builder: (context) => BlocProvider(
-                              builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course)),
+                              builder: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course)),
                               child: BlocProvider(
-                                builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course)),
-                                child: CollaborateBottomBarView(userData: widget.userData,course: widget.groupData.course,)),
+                                builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course)),
+                                child: BlocProvider(
+                                  builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course)),
+                                  child: CollaborateBottomBarView(userData: widget.userData,course: widget.groupData.course,)),
+                              ),
                             )
                           ),
                         );

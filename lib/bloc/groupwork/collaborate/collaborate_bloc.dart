@@ -29,8 +29,8 @@ class CollaborateBloc extends Bloc<CollaborateEvent, CollaborateState> {
   }
 
   @override
-  void close() {
-    super.close();
+  Future<void> close() {
     collaborate.disconnect();
+    return super.close();
   }
 }

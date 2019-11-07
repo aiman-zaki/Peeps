@@ -28,8 +28,9 @@ class GroupChatBloc extends Bloc<GroupChatEvent, GroupChatState> {
   }
 
   @override
-  void close(){
-    super.close();
-    chat.disconnect();
+  Future<void>close(){
+     chat.disconnect();
+    return super.close();
+   
   }
 }
