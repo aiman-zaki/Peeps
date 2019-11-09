@@ -48,6 +48,17 @@ class _DrawerViewState extends State<DrawerView> {
                 onChanged: (val) {
                   setState(() {
                     ThemeController.setTheme(val);
+                    showDialog(
+                      context: context,
+                      builder: (context){
+                        return SimpleDialog(
+                          title: Text("Alert!"),
+                          children: <Widget>[
+                            Center(child: Text("Restart the app to apply changes"))
+                          ],
+                        );
+                      }
+                    );
                   });
                 },
               ),

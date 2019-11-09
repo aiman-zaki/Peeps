@@ -23,7 +23,6 @@ class _AssignmentsCountdownState extends State<AssignmentsCountdown> {
         padding: EdgeInsets.all(3.0),
         child: Card(
           elevation: 8.00,
-          color: Colors.grey[850],
           child: Stack(
             children: <Widget>[
               Positioned(

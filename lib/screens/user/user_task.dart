@@ -134,7 +134,7 @@ class _UserTasksState extends State<UserTasks> {
             height: 350,
             padding: EdgeInsets.all(3.0),
             child: Card(
-              color: Colors.grey[850],
+         
               child: Stack(
                 children: <Widget>[
                   Padding(

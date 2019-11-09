@@ -31,7 +31,21 @@ class ThemeController {
       );
     } else {
       return ThemeData(
-        brightness: Brightness.light
+        brightness: Brightness.light,
+        appBarTheme: AppBarTheme(
+          color: Color.fromARGB(255, 24, 118, 210)
+        ),
+        scaffoldBackgroundColor: Colors.grey[300],
+        primaryColor: Color.fromARGB(255, 24, 118, 210),
+        cardColor: Colors.grey[300],
+        accentColor: Colors.indigo[400],
+        backgroundColor: Colors.grey[100],
+        focusColor: Colors.blueGrey[600],
+        buttonColor: Colors.pink[600],
+        floatingActionButtonTheme: FloatingActionButtonThemeData(
+          backgroundColor: Colors.pink[600],
+        ),
+        
       );
     }
   }

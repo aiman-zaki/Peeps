@@ -49,6 +49,7 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
   void initState() {
     BlocProvider.of<CollaborateBloc>(context).add(InitialCollaborateEvent(userData: widget.userData));
     BlocProvider.of<CollaborateForumBloc>(context).add(LoadForumEvent());
+    BlocProvider.of<CollaborateMapBloc>(context).add(ReadMapMarkerEvent());
     _forumView = new CollaborateForumView(course: widget.course);
     _userJoinedView = new UserJoinedCollaborateView();
     _map = new CollaborateMapView();
