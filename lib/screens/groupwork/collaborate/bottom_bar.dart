@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:peeps/bloc/groupwork/bloc.dart';
 import 'package:peeps/screens/groupwork/collaborate/forum.dart';
+import 'package:peeps/screens/groupwork/collaborate/groupworks.dart';
 import 'package:peeps/screens/groupwork/collaborate/map.dart';
 
 import 'user_joined.dart';
@@ -28,6 +29,7 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
   var _userJoinedView;
   var _forumView;
   var _map;
+  var _groupworks;
   Widget _showPage;
 
   pageChooser(int index){
@@ -38,6 +40,8 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
         return _userJoinedView;
       case(2):
         return _map;
+      case(3):
+        return _groupworks;
       default:
         return new Container(
           child: Center(child: Text("Not a valid Path"),),
@@ -50,9 +54,11 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
     BlocProvider.of<CollaborateBloc>(context).add(InitialCollaborateEvent(userData: widget.userData));
     BlocProvider.of<CollaborateForumBloc>(context).add(LoadForumEvent());
     BlocProvider.of<CollaborateMapBloc>(context).add(ReadMapMarkerEvent());
+    BlocProvider.of<CollaborateGroupworkBloc>(context).add(ReadCollaborateGroupworksEvent(data: widget.course));
     _forumView = new CollaborateForumView(course: widget.course);
     _userJoinedView = new UserJoinedCollaborateView();
     _map = new CollaborateMapView();
+    _groupworks = new CollaborateGroupworksView();
     _showPage = _forumView;
     super.initState();
   }
@@ -71,6 +77,7 @@ class _CollaborateBottomBarViewState extends State<CollaborateBottomBarView> {
           Icon(FontAwesomeIcons.solidObjectGroup),
           Icon(FontAwesomeIcons.forumbee),
           Icon(Icons.local_airport),
+          Icon(Icons.group_work)
         ],
         onTap: (index){
           setState(() {

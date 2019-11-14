@@ -6,9 +6,17 @@ abstract class ReferenceEvent extends Equatable {
   const ReferenceEvent();
 }
 
-class LoadReferencesEvent extends ReferenceEvent{
+class ReadReferencesEvent extends ReferenceEvent{
   @override
   String toString() => "LoadReferenecEvent";
+
+  @override
+  List<Object> get props => [];
+}
+
+class ReadPublicReferencesEvent extends ReferenceEvent{
+  @override
+  String toString() => "ReadPublicReferencesEvent";
 
   @override
   List<Object> get props => [];

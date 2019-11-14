@@ -1,5 +1,5 @@
 import 'package:meta/meta.dart';
-
+import 'package:peeps/enum/publicity_enum.dart';
 class StashModel{
   
 
@@ -11,6 +11,7 @@ class ReferenceModel{
   String reference;
   String creator;
   DateTime createdDate;
+  Publicity publicity;
 
 
   ReferenceModel({
@@ -19,6 +20,7 @@ class ReferenceModel{
     @required this.reference,
     @required this.creator,
     @required this.createdDate,
+    @required this.publicity,
   });
 
   static ReferenceModel fromJson(Map<String,dynamic> json){
@@ -28,6 +30,7 @@ class ReferenceModel{
       reference: json['reference'],
       creator:json['creator'],
       createdDate: DateTime.parse(json['created_date']),
+      publicity: Publicity.values.elementAt(json['publicity'])
     );
   }
 
@@ -37,7 +40,8 @@ class ReferenceModel{
       "title":this.title,
       "reference":this.reference,
       "creator":this.creator,
-      "created_date":this.createdDate.toString()
+      "created_date":this.createdDate.toString(),
+      "publicity":this.publicity.index
     };
   }
 

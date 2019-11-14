@@ -25,7 +25,7 @@ class _StashViewState extends State<StashView> {
         ),
         body: TabBarView(
           children: <Widget>[
-            ReferencesView(),
+            ReferencesView(isPublic: false,),
             Icon(Icons.directions_bike),
           ],
         ),

@@ -12,6 +12,9 @@ const String groupworkUrl = "api/groupworks/groupwork";
 const String assignmentUrl = "api/assignments/";
 const String inboxUrl = "api/inbox";
 const String forumUrl = "api/forums";
+const String questionsUrl = "api/questions";
+
+
 final storage = new FlutterSecureStorage();
 
 Future<String> accessToken() async{

@@ -89,7 +89,6 @@ class _CollaborateMapViewState extends State<CollaborateMapView> {
                   );
                 }));
           }
-          print(markers);
           return Scaffold(
             appBar: AppBar(
               title: Text("Meet us"),

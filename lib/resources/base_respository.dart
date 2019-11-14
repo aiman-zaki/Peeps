@@ -31,6 +31,16 @@ abstract class BaseRepository{
 
   String url(namespace) => _url(namespace);
   
+  requestHandler({response}){
+    var jsonDecoded = jsonDecode(response.body);
+    if(response.statusCode == 200){
+      return jsonDecoded;
+    } else {
+      if(jsonDecoded['message'] != null)
+        throw jsonDecoded['message'];
+      throw "Something went Wrong";
+    }
+  }
 
   create({@required data,namespace}) async {
     var headers = await fetchHeaders();
@@ -38,24 +48,17 @@ abstract class BaseRepository{
       body: jsonEncode(data),
       headers: headers,
     );
-    var jsonDecoded = jsonDecode(response.body);
-    if(response.statusCode == 200){
-      return jsonDecoded;
-    } else {
-      throw jsonDecode;
-    }
+    return requestHandler(response: response);
+    
+       
+    
 
   } 
 
   read({namespace}) async {
     var headers = await fetchHeaders();
     var response = await http.get(_url(namespace),headers: headers);
-    var jsonDecoded = jsonDecode(response.body);
-    if(response.statusCode == 200){
-      return jsonDecoded;
-    } else {
-      throw jsonDecode;
-    }
+    return requestHandler(response: response);
   }
   update({@required data,namespace}) async {
     var headers = await fetchHeaders();
@@ -63,12 +66,7 @@ abstract class BaseRepository{
       headers: headers,
       body: jsonEncode(data)
     );
-    var jsonDecoded = jsonDecode(response.body);
-    if(response.statusCode == 200){
-      return jsonDecoded;
-    } else {
-      throw jsonDecoded;
-    }
+    return requestHandler(response: response);
   }
 
   delete({namespace}) async{
@@ -76,13 +74,7 @@ abstract class BaseRepository{
     var response = await http.delete(_url(namespace),
       headers: headers,
     );
-
-    var jsonDecoded = jsonDecode((response.body));
-    if(response.statusCode == 200){
-      return jsonDecoded;
-    } else {
-      throw jsonDecoded;
-    }
+    return requestHandler(response: response);
   }
 
 

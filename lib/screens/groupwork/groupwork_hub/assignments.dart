@@ -5,9 +5,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/models/assignment.dart';
+import 'package:peeps/resources/assignment_repository.dart';
 
 import 'package:peeps/resources/task_repository.dart';
 import 'package:peeps/screens/groupwork/kanban/kanban.dart';
+import 'package:peeps/screens/groupwork/review/peer_review.dart';
 
 import '../assignment_form.dart';
 
@@ -92,6 +94,28 @@ class _HubAssignmentsState extends State<HubAssignments> {
                             ),
                           ),
                         ),
+                      ));
+                    },
+                  ),
+                  IconSlideAction(
+                    color: Colors.indigo,
+                    icon: Icons.perm_device_information,
+                    caption: "Peers Review",
+                    onTap: (){
+                      Navigator.of(context).push(CupertinoPageRoute(
+                        builder: (context) => 
+                        MultiBlocProvider(
+                          providers: [
+                            BlocProvider<PeerReviewBloc>(
+                              builder: (context) => PeerReviewBloc(repository: AssignmentRepository(data: data[index].id))
+                              ..add(LoadPeerReviewEvent()),
+                           
+                            ),
+                            BlocProvider<MembersBloc>.value(
+                              value: _membersBloc,
+                            )
+                          ],
+                          child: PeersReviewView(assignment: data[index],)),
                       ));
                     },
                   )

@@ -48,7 +48,10 @@ class DialogWithAvatar extends StatelessWidget {
         children: children,
       )
     );
+  } else {
+    body.add(Expanded(child: Container(),));
   }
+
 
   if(bottomLeft != null || bottomRight != null){
     body.add(

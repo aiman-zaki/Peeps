@@ -11,7 +11,7 @@ class ReferenceBloc extends Bloc<ReferenceEvent, ReferenceState> {
 
   ReferenceBloc({
     @required this.stashRepository,
-    @required this.timelineBloc,
+    this.timelineBloc,
   });
 
   @override
@@ -21,9 +21,14 @@ class ReferenceBloc extends Bloc<ReferenceEvent, ReferenceState> {
   Stream<ReferenceState> mapEventToState(
     ReferenceEvent event,
   ) async* {
-    if(event is LoadReferencesEvent){
+    if(event is ReadReferencesEvent){
       yield LoadingReferenceState();
       var data = await stashRepository.readReferences();
+      yield LoadedReferenceState(data: data);
+    }
+    if(event is ReadPublicReferencesEvent){
+      yield LoadingReferenceState();
+      var data = await stashRepository.readPublicReferences();
       yield LoadedReferenceState(data: data);
     }
     if(event is CreateNewReferenceEvent){
@@ -34,7 +39,7 @@ class ReferenceBloc extends Bloc<ReferenceEvent, ReferenceState> {
         when: DateTime.now()
       , how: "new", where: "Reference", why: "",
         room: stashRepository.data)));
-      this.add(LoadReferencesEvent());
+      this.add(ReadReferencesEvent());
     }
   }
 }

@@ -1,12 +1,20 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/groupwork/bloc.dart';
+import 'package:peeps/enum/publicity_enum.dart';
 import 'package:peeps/screens/common/webviewexporer.dart';
 import 'package:peeps/screens/groupwork/stash/reference_form.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class ReferencesView extends StatelessWidget {
-  const ReferencesView({Key key}) : super(key: key);
+  final bool isPublic;
+  const ReferencesView(
+    { 
+      Key key,
+      @required this.isPublic,
+    }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +27,16 @@ class ReferencesView extends StatelessWidget {
           itemBuilder: (context,index){
             return ListTile(
               title: Text(data[index].title),
+              trailing: Text(getPublicityEnumString(data[index].publicity)),
               subtitle: data[index].reference.contains(new RegExp(r'(http.)'))
               ? InkWell(
                 child: Text(data[index].reference),
                 onTap: (){
                   Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => WebViewExplorer(url: data[index].reference,),
-                  )
+                      builder: (context) => WebViewExplorer(url: data[index].reference,),
+                      fullscreenDialog: true,
+                    )
                   );
                 },
               )
@@ -44,7 +54,7 @@ class ReferencesView extends StatelessWidget {
 
 
     return Scaffold(
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: !isPublic ? FloatingActionButton(
         onPressed: (){
           Navigator.of(context).push(
             MaterialPageRoute(
@@ -56,16 +66,19 @@ class ReferencesView extends StatelessWidget {
           );
         },
         child: Icon(Icons.add),
-      ),
+      ) : Container(),
       body: RefreshIndicator(
         onRefresh: () async {
-          _bloc.add(LoadReferencesEvent());
+          !isPublic ? _bloc.add(ReadReferencesEvent()) : _bloc.add(ReadPublicReferencesEvent());
         },
         child: BlocBuilder<ReferenceBloc,ReferenceState>(
           bloc: _bloc,
           builder: (context,state){
             if(state is InitialReferenceState){
-              _bloc.add(LoadReferencesEvent());
+              if(!isPublic)
+                _bloc.add(ReadReferencesEvent());
+              else
+                _bloc.add(ReadPublicReferencesEvent());
               return Container();
             }
             if(state is LoadingReferenceState){

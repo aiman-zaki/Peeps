@@ -7,6 +7,7 @@ import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/resources/collaborate.dart';
 import 'package:peeps/resources/forum_repository.dart';
+import 'package:peeps/resources/groupworks_repository.dart';
 import 'package:peeps/resources/marker_repository.dart';
 import 'package:peeps/screens/groupwork/collaborate/bottom_bar.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/assignments.dart';
@@ -69,82 +70,118 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
     }
 
     _collaborate(){
-      return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-        elevation: 8,
-     
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(flex: 3, child: Text('Collaborate')),
-                  Expanded(
-                    flex: 1,
-                    child: FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (context) => BlocProvider(
-                              builder: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course)),
-                              child: BlocProvider(
-                                builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course)),
-                                child: BlocProvider(
-                                  builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course)),
-                                  child: CollaborateBottomBarView(userData: widget.userData,course: widget.groupData.course,)),
-                              ),
-                            )
-                          ),
-                        );
-                      },
-                      child: Icon(Icons.keyboard_arrow_right)
-                    ),
+      return InkWell(
+        onTap: (){
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => MultiBlocProvider(
+                providers: [
+                  BlocProvider<CollaborateMapBloc>(
+                    builder: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course))),
+                  BlocProvider<CollaborateForumBloc>(
+                    builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course))),
+                  BlocProvider<CollaborateBloc>(
+                    builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course))),
+                  BlocProvider<CollaborateGroupworkBloc>(
+                    builder: (context) => CollaborateGroupworkBloc(repository: GroupworksRepository()),
                   )
+                  
+                
                 ],
-              )
-            ],
+                child: CollaborateBottomBarView(userData: widget.userData,course: widget.groupData.course,)),
+            ),
+          );
+        },
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+          elevation: 8,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(flex: 3, child: Text('Collaborate')),
+                    Expanded(
+                      flex: 1,
+                      child: FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider<CollaborateMapBloc>(
+                                    builder: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course))),
+                                  BlocProvider<CollaborateForumBloc>(
+                                    builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course))),
+                                  BlocProvider<CollaborateBloc>(
+                                    builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course))),
+                                  BlocProvider<CollaborateGroupworkBloc>(
+                                    builder: (context) => CollaborateGroupworkBloc(repository: GroupworksRepository()),
+                                  )
+                                  
+                                
+                                ],
+                                child: CollaborateBottomBarView(userData: widget.userData,course: widget.groupData.course,)),
+                            ),
+                          );
+                        },
+                        child: Icon(Icons.keyboard_arrow_right)
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );
     }
 
     _stashOverview() {
-      return Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
-        elevation: 8,
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: Column(
-            children: <Widget>[
-              Row(
-                children: <Widget>[
-                  Expanded(flex: 3, child: Text('Stash')),
-                  Expanded(
-                    flex: 1,
-                    child: FlatButton(
-                      onPressed: () {
-                        Navigator.of(context).push(
-                          CupertinoPageRoute(
-                            builder: (context) => BlocProvider.value(
-                              value: _referencesBloc,
-                              child: StashView())
-                          )
-                        );
-                      },
-                      child: Icon(Icons.keyboard_arrow_right)
-                    ),
-                  )
-                ],
-              )
-            ],
+      return InkWell(
+        onTap: (){
+          Navigator.of(context).push(
+            CupertinoPageRoute(
+              builder: (context) => BlocProvider.value(
+                value: _referencesBloc,
+                child: StashView())
+            )
+          );
+        },
+        child: Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(9)),
+          elevation: 8,
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Expanded(flex: 3, child: Text('Stash')),
+                    Expanded(
+                      flex: 1,
+                      child: FlatButton(
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            CupertinoPageRoute(
+                              builder: (context) => BlocProvider.value(
+                                value: _referencesBloc,
+                                child: StashView())
+                            )
+                          );
+                        },
+                        child: Icon(Icons.keyboard_arrow_right)
+                      ),
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       );
     }
-
-    //TODO : Brainstorm Feature
-    _brainstorm() {}
 
     return Scaffold(
         appBar: AppBar(

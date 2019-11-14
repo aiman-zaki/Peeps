@@ -1,8 +1,12 @@
 import 'package:flutter/foundation.dart';
 
 import 'package:peeps/models/assignment.dart';
+import 'package:peeps/models/peer_review.dart';
+import 'package:peeps/models/peer_reviews.dart';
+import 'package:peeps/models/question.dart';
 
 import 'package:peeps/resources/base_respository.dart';
+import 'package:peeps/screens/groupwork/review/peer_review.dart';
 
 import 'common_repo.dart';
 
@@ -30,4 +34,17 @@ class AssignmentRepository extends BaseRepository {
       'assignment_id':id
     });
   }
+
+  createPeerReview({@required data}) async {
+    await super.create(data: data,namespace: "peer-review");
+  }
+
+  readPeerReview() async {
+    var data = await super.read(namespace: "peer-review");
+    if (data.isNotEmpty)
+      return PeerReviewsModel.fromJson(data);
+  
+  }
+
+
 }

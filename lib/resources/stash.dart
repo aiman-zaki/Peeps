@@ -9,12 +9,21 @@ class StashRepository extends BaseRepository {
   }) : super(baseUrl: groupworksUrl, data: data);
   readReferences() async {
     var data = await super.read(namespace: "references");
-    List<ReferenceModel> references = [];
     if (data != null)
-      for (Map<String, dynamic> reference in data) {
-        references.add(ReferenceModel.fromJson(reference));
-      }
-    return references;
+      return data.map((value){
+        return ReferenceModel.fromJson(value);
+      }).toList().cast<ReferenceModel>();
+    return [];
+  }
+
+  readPublicReferences() async {
+    var data = await super.read(namespace: "references/public");
+    if(data != null){
+      return data.map((value){
+        return ReferenceModel.fromJson(value);
+      }).toList().cast<ReferenceModel>();
+    }
+    return [];
   }
 
   createReference({data}) async {
