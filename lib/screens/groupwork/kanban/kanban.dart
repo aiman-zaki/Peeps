@@ -39,6 +39,9 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
   final _taskBloc = BlocProvider.of<TaskBloc>(context);
   final _membersBloc = BlocProvider.of<MembersBloc>(context);
   final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
+  final _profileBloc = BlocProvider.of<ProfileBloc>(context);
+
+  String currentUser = (_profileBloc.state as ProfileLoaded).data.email;
 
   _separate(data){  
     for(TaskModel task in data){
@@ -118,7 +121,8 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.data.leader == currentUser ?
+      FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: (){
           Navigator.of(context).push(
@@ -134,7 +138,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
             )
           );
         },
-      ),
+      ) : null,
     );
   }
 }

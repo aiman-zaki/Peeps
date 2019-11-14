@@ -33,9 +33,9 @@ class UserRepository extends BaseRepository{
     },namespace: 'profile');
   }
 
-  updatePicture({@required File image,@required String id,namespace}) async {
+  updatePicture({@required File image,@required String id}) async {
     var stream = new http.ByteStream(DelegatingStream.typed(image.openRead()));
-    final Uri uri = Uri.parse(url(namespace));
+    final Uri uri = Uri.parse(url('upload'));
     var token = await accessToken();
     var length = await image.length();
     var request = new http.MultipartRequest("POST",

@@ -11,4 +11,5 @@ String getRoleStringEnum(Role role){
     Role.supervisor:"Supervisor",
     Role.student:"Student,"
   };
+  return roles[role];
 }

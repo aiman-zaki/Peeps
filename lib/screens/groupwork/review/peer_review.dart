@@ -44,6 +44,7 @@ class _PeersReviewViewState extends State<PeersReviewView> {
           reviewed = true;
           reviewedAnswer = review;
       }
+      print(reviewed);
       
       return ListTile(
         title: Text(member.email),

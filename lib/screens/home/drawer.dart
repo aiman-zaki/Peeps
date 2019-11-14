@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/configs/theme.dart';
+import 'package:peeps/enum/role_enum.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/routing_constant.dart';
@@ -91,7 +92,8 @@ class _DrawerViewState extends State<DrawerView> {
               Navigator.pushNamed(context, routeName,
                   arguments:
                       NavigatorArguments(bloc: _profileBloc, data: user));
-            } else {
+            } 
+            else {
               Navigator.pushNamed(context, routeName);
             }
           },
@@ -103,6 +105,9 @@ class _DrawerViewState extends State<DrawerView> {
         item(Icons.mail, "Inbox", InboxBottomBarViewRoute),
         item(Icons.group, "Groups", GroupsViewRoute),
         item(Icons.search, "Groups Search", SearchViewRoute),
+        currentUser.role == Role.supervisor?
+          item(Icons.supervisor_account, 'Groups Supervised',SuperviseGroupworks)
+        : Container(),
         _themeSwitch(),
       ];
 

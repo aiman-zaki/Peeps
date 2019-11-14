@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/user/profile_form/profile_form_bloc.dart';
+import 'package:peeps/enum/role_enum.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/common/custom_stack_background.dart';
@@ -72,26 +73,52 @@ class AccountViewState extends State<AccountView> {
       );
     }
 
+    _showConfirmationDialog(){
+      showDialog(
+        context: context,
+        builder: (context){
+          return DialogWithAvatar(
+            height: 230,
+            avatarIcon: Icon(Icons.check),
+            title: "Confirmation",
+            description: "Change to Supervisor will enable certain functions and allow student to invite you as supervisor",
+            bottomLeft: FlatButton(
+              child: Text("Cancel"),
+              onPressed: (){
+                Navigator.of(context).pop();
+              },
+            ),
+            bottomRight: FlatButton(
+              onPressed: (){
+                setState(() {
+                  _bloc.add(UpdateRoleEvent(data: {"role":Role.supervisor.index}));
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text("Confirm"),
+            ),
+          );
+        }
+      );  
+    }
+
     _buildSupervsiorEnableButton() {
-      print(widget.data.role);
-      if (widget.data.role == 2) {
+      if (widget.data.role == Role.student) {
         return ListTile(
             leading: Icon(Icons.supervisor_account),
-            title: Text('Enable Supervisor Functions'),
-            onTap: () {
-              setState(() {
-                _bloc.add(UpdateRoleEvent(data: {"role":1}));
-              });
-            });
+            title: Text('Enable Supervisor Mode'),
+            onTap: _showConfirmationDialog);
       }
       return ListTile(
             leading: Icon(Icons.supervisor_account),
-            title: Text('Disable Supervisor Functions'),
+            title: Text('Disable Supervisor Mode'),
             onTap: () {
               setState(() {
-                _bloc.add(UpdateRoleEvent(data: {"role":2}));
+                _bloc.add(UpdateRoleEvent(data: {"role":Role.student.index}));
               });
             });
+      
+            
     }
 
     _fabOnPressed() {

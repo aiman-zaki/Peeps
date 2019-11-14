@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:peeps/enum/role_enum.dart';
 import 'package:peeps/resources/common_repo.dart';
 
 class UserModel {
@@ -10,7 +11,7 @@ class UserModel {
   String programmeCode;
   List<dynamic> activeGroup;
   String picture;
-  int role;
+  Role role;
 
   UserModel({
     @required this.id,
@@ -21,7 +22,7 @@ class UserModel {
     @required this.programmeCode,
     this.activeGroup,
     @required this.picture,
-    this.role,
+    @required this.role,
   
   });
 
@@ -35,7 +36,7 @@ class UserModel {
       programmeCode: "",
       activeGroup: [],
       picture: "",
-      role: 2,
+      role: Role.student,
     );
   }
 
@@ -50,7 +51,7 @@ class UserModel {
       programmeCode: json['profile']['programme_code'],
       activeGroup: json['active_group'],
       picture: url,
-      role: json['role']
+      role: Role.values.elementAt(json['role']),
     );
   }
 
@@ -64,6 +65,7 @@ class UserModel {
       contactNo: json['contact_no'],
       programmeCode: json['programme_code'], 
       picture: url,
+      role: Role.values.elementAt(json['role'])
     );
   
   }
@@ -76,6 +78,7 @@ class UserModel {
       "email":this.email,
       "contact_no":this.contactNo,
       "programme_code":this.programmeCode,
+      "role":this.role.index
     };
   }
 

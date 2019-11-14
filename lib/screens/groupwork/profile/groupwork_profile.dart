@@ -47,6 +47,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
   @override
   void initState() {
     super.initState();
+    _supervisorController.text = widget.data.supervisor;
     _creatorController.text = widget.data.creator;
     _descriptionController.text = widget.data.description;
     _courseController.text = widget.data.course;
@@ -257,6 +258,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                           flex: 2,
                           child: _readOnlyFormField(
                               labelText: "Supervisor",
+                              controller: _supervisorController,
                               data: widget.data.creator)),
                     ],
                   ),
@@ -338,7 +340,8 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
         "group_id": widget.data.id,
         "supervisor": _supervisorController.text,
         "description": _descriptionController.text,
-        "course": _courseController.text.toUpperCase()
+        "course": _courseController.text.toUpperCase(),
+        "supervisor":_supervisorController.text,
       };
 
       _bloc.add(UpdateGroupworkProfileEvent(data: data));

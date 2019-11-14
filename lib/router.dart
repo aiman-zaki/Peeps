@@ -2,13 +2,16 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/bloc/supervisor/bloc.dart';
 
 import 'package:peeps/resources/groupworks_repository.dart';
+import 'package:peeps/resources/supervise_groupworks_repository.dart';
 import 'package:peeps/resources/user_repository.dart';
 
 import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
 import 'package:peeps/screens/inbox/inbox_bottombar.dart';
+import 'package:peeps/screens/supervisor/groupworks_supervise.dart';
 import 'package:peeps/screens/user/joined_group.dart';
 import 'package:peeps/screens/user/account.dart';
 import 'package:peeps/screens/user/search.dart';
@@ -51,6 +54,13 @@ Route<dynamic> generateRoute(RouteSettings settings){
     case GroupViewRoute:
       final NavigatorArguments args = settings.arguments;
       return CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:args.data['groupData'],userData: args.data['userData'],));
+    case SuperviseGroupworks:
+      return CupertinoPageRoute(builder: (context){
+        return BlocProvider<GroupworksSuperviseBloc>(
+          builder: (context) => GroupworksSuperviseBloc(repository: SuperviseGroupworksRepository())..add(ReadGroupworksSuperviseEvent()),
+          child: GroupworksSuperviseView(),
+        );
+      });
     default:
       return MaterialPageRoute(builder: (context) => DrawerView());
   }

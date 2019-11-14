@@ -2,7 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/models/user.dart';
 
 import 'package:peeps/screens/common/custom_search.dart';
 
@@ -17,6 +19,10 @@ class _SearchViewState extends State<SearchView> {
 
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<SearchGroupsBloc>(context);
+    final _profileBloc = BlocProvider.of<ProfileBloc>(context);
+
+    UserModel currentUser = (_profileBloc.state as ProfileLoaded).data;
+
     List datas = [];
     
     _dataFromState(){
@@ -37,17 +43,41 @@ class _SearchViewState extends State<SearchView> {
           };
           _bloc.add(RequestGrouptEvent(data: data));
         },
-        child: Text("Request"),
+        child: Text("Request to join"),
       );
     }
 
     Widget _listViewChild(groupwork){
-      return Card(
-        child: Padding(
-          padding: const EdgeInsets.all(4.0),
-          child: ListTile(
-            title: Text(groupwork.name),
-            leading: _buildRequestButton(groupwork),
+      return Slidable(
+        actionPane: SlidableScrollActionPane(),
+        secondaryActions: <Widget>[
+          IconSlideAction(
+            icon: Icons.fast_forward,
+            color: Colors.blue,
+            caption: "Request to Join",
+            onTap: (){
+              _bloc.add(RequestGrouptEvent(data: {
+                "group_id":groupwork.id,
+                "request_date":DateTime.now().toString(),
+              }));
+            },
+          ),
+          IconSlideAction(
+            icon: Icons.explicit,
+            color: Colors.orange,
+            caption: "Superise",
+            onTap: (){
+              //TODO 
+              _bloc.add(RequestSuperviseGroupEvent(data: {}));
+            },
+          )
+        ],
+        child: Card(
+          child: Padding(
+            padding: const EdgeInsets.all(4.0),
+            child: ListTile(
+              title: Text(groupwork.name),
+            ),
           ),
         ),
       );

@@ -12,6 +12,7 @@ class GroupworkModel{
   String name;
   String description;
   String course;
+  String supervisor;
   List<dynamic> invitations;
   List<dynamic> members;
   List<AssignmentModel> assignments;
@@ -27,6 +28,7 @@ class GroupworkModel{
     @required this.course,
     @required this.invitations,
     @required this.members,
+    this.supervisor,
     this.notes,
     this.profilePicturerUrl
 
@@ -52,6 +54,7 @@ class GroupworkModel{
       course: data['course'],
       invitations: data['invitation_list'],
       members: data['members'],
+      supervisor: data['supervisor'],
       notes: item,
       profilePicturerUrl: url,
     
@@ -66,6 +69,7 @@ class GroupworkModel{
       "description":this.description,
       "course":this.course,
       "members":this.members,
+      "supervisor":this.supervisor,
       "invitation_list":this.invitations,
     };
   }

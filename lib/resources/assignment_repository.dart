@@ -45,7 +45,8 @@ class AssignmentRepository extends BaseRepository {
 
   readPeerReview() async {
     var data = await super.read(namespace: "peer-review");
-    if (data.isNotEmpty)
+    if (data != null)
+      print(data);
       return PeerReviewsModel.fromJson(data);
   
   }

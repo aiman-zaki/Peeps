@@ -6,3 +6,4 @@ const String GroupViewRoute = 'group';
 const String InboxViewRoute = 'inbox';
 const String InboxBottomBarViewRoute = 'inbox_bottomBar';
 const String SearchViewRoute = 'search';
+const String SuperviseGroupworks = "supervisor/groupworks";
