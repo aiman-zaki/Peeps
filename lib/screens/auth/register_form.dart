@@ -6,6 +6,7 @@ import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/user/register/register_bloc.dart';
+import 'package:peeps/screens/common/common_profile_picture.dart';
 
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
@@ -21,6 +22,37 @@ class _RegisterFormState extends State<RegisterForm> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordContorller = TextEditingController();
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
+  String _validateEmail(String value){
+    Pattern pattern = (r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    RegExp regex = new RegExp(pattern);
+    if(value.isEmpty){
+      return 'Please Enter your email';
+    } else {
+      if(!regex.hasMatch(value))
+        return 'Enter valind email';
+      else
+        return null;
+    }
+  
+  }
+
+  String _validatePassword(String value) {
+    //Taken from https://stackoverflow.com/questions/56253787/how-to-handle-textfield-validation-in-password-in-flutter
+    Pattern pattern =
+        r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
+    RegExp regex = new RegExp(pattern);
+    print(value);
+    if (value.isEmpty) {
+      return 'Please enter password';
+    } else {
+      if (!regex.hasMatch(value))
+        return 'Enter valid password';
+      else
+        return null;
+    }
+  }
 
   Future _getImage() async {
     var image = await ImagePicker.pickImage(source: ImageSource.gallery);
@@ -131,8 +163,6 @@ class _RegisterFormState extends State<RegisterForm> {
         width: width,
         child: RaisedButton(
           padding: EdgeInsets.all(15),
-  
-     
           onPressed: (){
             _passwordController.text == _confirmPasswordContorller.text ?
             _buildShowDialog() :
@@ -156,10 +186,14 @@ class _RegisterFormState extends State<RegisterForm> {
         Container(
           padding: const EdgeInsets.all(8.0),
           child: Form(
+            autovalidate: true,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: <Widget>[
                 TextFormField(
+                  validator: ((value){
+                    return _validateEmail(value);
+                  }),
                   controller: _emailController,
                   decoration: InputDecoration(
                     labelText: "Email",
@@ -171,6 +205,9 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 SizedBox(height: 10,),
                 TextFormField(
+                  validator: (value){
+                    return _validatePassword(value);
+                  },
                   controller: _passwordController,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -183,6 +220,18 @@ class _RegisterFormState extends State<RegisterForm> {
                 ),
                 SizedBox(height: 10,),
                 TextFormField(
+                  validator: ((value){
+                    if(value.isEmpty){
+                      return "Password Missmatch";
+                    } else {
+                      if(_passwordController.text == value){
+                        return null;
+                      } else {
+                        return "Password Missmatch";
+                      }
+                    }
+                    
+                  }),
                   controller: _confirmPasswordContorller,
                   obscureText: true,
                   decoration: InputDecoration(
@@ -194,7 +243,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
                 SizedBox(height: 30,),
-                
+                _buildLoginButton()
        
               ],
             ),
@@ -247,12 +296,13 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
               ),
-            
               Positioned(
-                top: 10,
-                left: 0,
-                right: 0,
-                child: _buildAvatar(),
+                top: 0,
+                child:  CustomNetworkProfilePicture(
+                  width: width * 0.8,
+                  heigth: 120,
+                  image: "http://192.168.43.112:5000/static/logo",
+                ),
               ),
               Positioned(
                 width: width,
@@ -264,10 +314,6 @@ class _RegisterFormState extends State<RegisterForm> {
                   ),
                 ),
               ),
-              Positioned(
-                bottom: 20,
-                child: _buildLoginButton()),
-              
             ],
           ),
         ),

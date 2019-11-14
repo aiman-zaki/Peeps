@@ -29,3 +29,19 @@ class LoadedAssignmentState extends AssignmentState{
   @override
   String toString() => "LoadedAssignmentState";
 }
+
+class UpdatingAssignmentStatusState extends AssignmentState{
+  @override
+  String toString() => "UpdatingAssignmentStatusState";
+
+  @override
+  List<Object> get props => [];
+}
+
+class UpdatedAssignmentStatusState extends AssignmentState{
+  @override
+  String toString() => "UpdatedAssignmentStatusState";
+
+  @override
+  List<Object> get props => [];
+}

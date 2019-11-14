@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:peeps/enum/status_enum.dart';
 import 'package:peeps/models/task.dart';
 
 class AssignmentModel{
@@ -6,7 +7,7 @@ class AssignmentModel{
   String title;
   String description;
   String leader;
-  String status;
+  Status status;
   double totalMarks;
   double scoredMark;
   DateTime createdDate;
@@ -25,7 +26,7 @@ class AssignmentModel{
       @required this.leader,
       this.totalMarks,
       this.scoredMark,
-      this.status,
+      @required this.status,
       this.tasks,
       this.createdDate,
       this.dueDate,
@@ -43,13 +44,11 @@ class AssignmentModel{
       "total_marks":this.totalMarks,
       "created_date": this.createdDate.toString(),
       "due_date":this.dueDate.toString(),
+      "status":this.status.index,
     };
   }
 
   static AssignmentModel fromJson(Map<String,dynamic> json){
-    //TODO : Refractor looks like dummy dumb dumb
-   
-
     return AssignmentModel(
       id: json['_id']['\$oid'],
       title: json['title'],
@@ -57,7 +56,7 @@ class AssignmentModel{
       leader: json['leader'],
       totalMarks: json['total_marks'].toDouble(),
       scoredMark: json['scored_marks'] != null ? json['scored_marks'].toDouble() : null,
-      status: json['status'] != null ? json['status'] : null,
+      status: json['status'] != null ? Status.values.elementAt(json['status']) : null,
       createdDate: json['created_date'] != null ? DateTime.parse(json['created_date']) : null,
       dueDate: json['due_date'] != null ? DateTime.parse(json['due_date']) : null,
   

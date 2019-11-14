@@ -49,7 +49,7 @@ class ContributionModel{
   }
 
   String display(){
-    return "${what.toUpperCase()} $where $why -> $how";
+    return "${what.toUpperCase()} $how $where $why";
   }
 
 

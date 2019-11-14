@@ -10,12 +10,6 @@ abstract class NoteEvent extends Equatable {
 }
 
 class LoadNotesEvent extends NoteEvent{
-  final data;
-  
-  LoadNotesEvent({
-    @required this.data
-  });
-
   @override
   String toString() => "LoadNotesEvent";
 }

@@ -21,7 +21,6 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
 
   @override
   Future<void> close() {
-    // TODO: implement close
     return super.close();
   }
 
@@ -44,7 +43,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
                 when: DateTime.now(),
                 how: "new",
                 where: "Task",
-                why: "",
+                why: "for ${event.assignment.title}",
                 room: event.groupId)));
         yield DisplayMessageSnackbar(color: "green", message: "Succeed");
       } catch (e) {

@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/models/timeline.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
@@ -11,11 +12,11 @@ import 'package:peeps/screens/common/withAvatar_dialog.dart';
 class TaskForm extends StatefulWidget {
   final bool edit;
   final TaskModel task;
-  final String assignmentId;
+  final AssignmentModel assignment;
   final String groupId;
   TaskForm({
     Key key,
-    this.assignmentId,
+    this.assignment,
     this.groupId,
     this.edit,
     this.task}) : super(key: key);
@@ -86,7 +87,7 @@ class _TaskFormState extends State<TaskForm> {
           onPressed: (){
             DateTime assignDate = DateTime.parse(_assignedDate.text);
             DateTime dueDate = DateTime.parse(_dueDate.text);
-            _taskBloc.add(AddNewTaskEvent(assignmentId: widget.assignmentId,groupId: widget.groupId,
+            _taskBloc.add(AddNewTaskEvent(assignment: widget.assignment,groupId: widget.groupId,
                   task: TaskModel(task: _taskController.text, description: _descriptionController.text, 
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 

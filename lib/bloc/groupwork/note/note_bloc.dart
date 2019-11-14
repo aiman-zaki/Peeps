@@ -21,7 +21,7 @@ class NoteBloc extends Bloc<NoteEvent, NoteState> {
   ) async* {
     if(event is LoadNotesEvent){
       yield LoadingNotesState();
-      final data = await repository.fetchNotes(event.data);
+      final data = await repository.readNotes();
    
       yield LoadedNotesState(data: data);
     }

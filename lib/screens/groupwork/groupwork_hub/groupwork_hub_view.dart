@@ -230,7 +230,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                     SizedBox(
                       height: 10,
                     ),
-                    HubMilestone(),
+                    HubMilestoneView(),
                     SizedBox(
                       height: 10,
                     ),

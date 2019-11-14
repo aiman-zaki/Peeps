@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/groupwork/bloc.dart';
+import 'package:peeps/enum/status_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/member.dart';
 import 'package:peeps/models/peer_reviews.dart';
@@ -27,7 +28,7 @@ class _PeersReviewViewState extends State<PeersReviewView> {
   void initState() {
     super.initState();
     int days = widget.assignment.dueDate.difference(DateTime.now()).inDays;
-    if (days > 0) pass = false;
+    if (days > 0 && widget.assignment.status != Status.done) pass = false;
   }
 
   @override

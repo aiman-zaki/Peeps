@@ -85,6 +85,9 @@ class ReferencesView extends StatelessWidget {
               return Center(child: CircularProgressIndicator(),);
             }
             if(state is LoadedReferenceState){
+              if(state.data.isEmpty){
+                return Center(child: Text("No Data is presented"),);
+              }
               return _buildReferencesList(state.data);
             }
           },

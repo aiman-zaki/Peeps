@@ -51,6 +51,8 @@ class _GroupworkFormState extends State<GroupworkForm> {
     
     )));
     
+    Navigator.of(context).pop();
+    
 
   }
 

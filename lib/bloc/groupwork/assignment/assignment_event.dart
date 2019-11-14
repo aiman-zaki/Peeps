@@ -7,13 +7,6 @@ abstract class AssignmentEvent extends Equatable {
 }
 
 class LoadAssignmentEvent extends AssignmentEvent{
-  final String groupId;
-
-  LoadAssignmentEvent({
-    @required this.groupId,
-    }
-  );
-
   @override
   List<Object> get props => [];
 
@@ -49,12 +42,27 @@ class TaskRefreshButtonClicked extends AssignmentEvent{
   String toString() => "TaskRefreshButtonClicked";
 }
 
+class UpdateAssignmentStatusEvent extends AssignmentEvent{
+  final data;
+  final user;
+  UpdateAssignmentStatusEvent({
+    @required this.data,
+    @required this.user,
+  });
+  @override
+  List<Object> get props => [];
+  @override
+  String toString() => "UpdateAssignmentStatusEvent";
+}
+
 class DeleteAssignmentEvent extends AssignmentEvent{
   final data;
+  final user;
   
   @override
   DeleteAssignmentEvent({
     @required this.data,
+    @required this.user,
   });
   
   @override

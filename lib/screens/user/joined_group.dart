@@ -35,6 +35,7 @@ class _GroupworksViewState extends State<GroupworksView> {
   void initState(){
     _bloc = BlocProvider.of<GroupworkBloc>(context);
     //_profileBloc = BlocProvider.of<ProfileBloc>(context);
+    _bloc.add(LoadGroupworkEvent());
     super.initState();
   }
 
@@ -141,35 +142,39 @@ class _GroupworksViewState extends State<GroupworksView> {
       appBar: AppBar(
         title: Text("Groupwork"),
       ),
-      body: BlocBuilder<GroupworkBloc,GroupworkState>(
-        bloc: _bloc,
-        builder: (BuildContext context, GroupworkState state){
-          if(state is InitialGroupworkState){
-            _bloc.add(LoadGroupworkEvent(data: widget.user.activeGroup));
-            return SplashScreen();
-          }
-          if(state is LoadingGroupworkState){
-            return Center(child: CircularProgressIndicator());
-          }
-          if(state is LoadedGroupworkState){    
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: RefreshIndicator(
-                onRefresh: () async {
-                   _bloc.add(LoadGroupworkEvent(data: widget.user.activeGroup));
-                },
-                child: _buildGroupworkList(state.data)),
-            );
-          }
-          if(state is NoGroupworkState){
-            return Container(
-              child: Center(
-                child: Text("No Groupwork Joined"),
-              ),
-            );
-          }
-
+      body: RefreshIndicator(
+        onRefresh: () async {
+          setState(() {
+            _bloc.add(LoadGroupworkEvent());
+          });
         },
+        child: BlocBuilder<GroupworkBloc,GroupworkState>(
+          bloc: _bloc,
+          builder: (BuildContext context, GroupworkState state){
+            if(state is InitialGroupworkState){
+              _bloc.add(LoadGroupworkEvent());
+              return SplashScreen();
+            }
+            if(state is LoadingGroupworkState){
+              return Center(child: CircularProgressIndicator());
+            }
+            if(state is LoadedGroupworkState){    
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: _buildGroupworkList(state.data),
+              );
+            }
+            if(state is NoGroupworkState){
+
+              return Container(
+                child: Center(
+                  child: Text("No Groupwork Joined"),
+                ),
+              );
+            }
+
+          },
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),

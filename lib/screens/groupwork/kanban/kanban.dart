@@ -129,7 +129,7 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
                   value: _membersBloc,
                   child: BlocProvider.value(
                     value: _timelineBloc,
-                    child: TaskForm(edit:false,groupId: widget.groupId,assignmentId: widget.data.id,)))),
+                    child: TaskForm(edit:false,groupId: widget.groupId,assignment:widget.data,)))),
               fullscreenDialog: true,
             )
           );

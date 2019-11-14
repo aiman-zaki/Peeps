@@ -26,19 +26,20 @@ class GroupworkBloc extends Bloc<GroupworkEvent, GroupworkState> {
   ) async* {
     if(event is CreateNewGroupworkEvent){
       yield InsertingGroupworkState();
-
       await repository.createGroupwork(data:event.data.toJson());  
       yield InsertedGroupworkState();
-    
+      
     }
     if(event is LoadGroupworkEvent){
       yield LoadingGroupworkState();
-      if(event.data.isEmpty){
-          yield NoGroupworkState();
+      List<GroupworkModel> activeGroups = await usersRepository.readActiveGroupworks();
+      if(activeGroups.isEmpty){
+        yield NoGroupworkState();
       } else {
-        List<GroupworkModel> activeGroups = await usersRepository.readActiveGroupworks();
         yield LoadedGroupworkState(data:activeGroups);
       }
+      
+    
     }
   }
 }

@@ -18,11 +18,11 @@ class LoadTaskEvent extends TaskEvent{
 }
 class AddNewTaskEvent extends TaskEvent{
   final groupId;
-  final assignmentId;
+  final assignment;
   final task;
   AddNewTaskEvent({
     @required this.groupId,
-    @required this.assignmentId,
+    @required this.assignment,
     @required this.task
   });
 

@@ -51,10 +51,22 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
       }
       yield LoadedAssignmentState(data:event.assignments);
     }
+    if(event is UpdateAssignmentStatusEvent){
+      yield UpdatingAssignmentStatusState();
+      await repository.updateAssignmentState(data: event.data);
+      yield UpdatedAssignmentStatusState();
+       timelineBloc.add(SendDataTimelineEvent(data: ContributionModel(
+        who: event.user,
+        what: "Update",
+        when: DateTime.now()
+      , how: "status", where: "assignment", why: "from ongoing to done",
+        room: repository.data)));
+      this.add(LoadAssignmentEvent());
+    }
     if(event is DeleteAssignmentEvent){
       await repository.deleteAssignment(id: event.data);
        timelineBloc.add(SendDataTimelineEvent(data: ContributionModel(
-        who: "Someone",
+        who: event.user,
         what: "delete",
         when: DateTime.now()
       , how: "", where: "assignment", why: "",

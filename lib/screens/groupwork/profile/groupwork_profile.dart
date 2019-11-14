@@ -159,7 +159,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                     MaterialPageRoute(
                       builder: (context) => BlocProvider(
                         builder: (context) =>
-                            NoteBloc(repository: const NoteRepository()),
+                            NoteBloc(repository: NoteRepository(data: widget.data)),
                         child: GroupProfileNotes(
                           groupId: widget.data.id,
                         ),

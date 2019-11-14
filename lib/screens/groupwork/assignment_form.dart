@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/enum/status_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/members.dart';
 import 'package:peeps/models/timeline.dart';
@@ -75,6 +76,7 @@ class _AssignmentFormState extends State<AssignmentFormView> {
                           totalMarks: double.parse(_totalMarks.text),
                           createdDate: DateTime.now(),
                           dueDate: DateTime.parse(_dueDate.text),
+                          status: Status.ongoing,
                           ),
                    ));
                   Navigator.of(context).pop();
