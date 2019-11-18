@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:peeps/enum/status_enum.dart';
+import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/changed_status.dart';
 import 'package:peeps/models/task.dart';
 
@@ -9,16 +11,16 @@ class Board extends StatefulWidget {
   final List<TaskModel> todo;
   final List<TaskModel> doing;
   final List<TaskModel> done;
-
   final Function(List<ChangedStatus>) callback;
-  final String  assignmentId;
+  final AssignmentModel  assignment;
+
   Board({
     Key key,
     @required this.todo,
     @required this.doing,
     @required this.done,
     this.callback,
-    this.assignmentId,
+    this.assignment,
     
     }) : super(key: key);
 
@@ -52,6 +54,7 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.todo){
         draggableTodo.add(
           DraggableTask(
+            assignmentIsDone: widget.assignment.status == Status.done ? true : false,
             data: data,
             onDragCompleted: (){
               setState(() {
@@ -64,6 +67,7 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.doing){
         draggableDoing.add(
           DraggableTask(
+            assignmentIsDone: widget.assignment.status == Status.done ? true : false,
             data: data,
           onDragCompleted: (){
             setState(() {
@@ -76,6 +80,7 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.done){
         draggableDone.add(
           DraggableTask(
+            assignmentIsDone: widget.assignment.status == Status.done ? true : false,
             data: data,
           onDragCompleted: (){
             setState(() {

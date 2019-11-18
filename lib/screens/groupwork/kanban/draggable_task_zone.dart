@@ -81,7 +81,7 @@ class _DraggableTaskZoneState extends State<DraggableTaskZone> {
                     widget.draggable.removeWhere((item) => item.data.id == data.id);
                     
                   });
-                },
+                }, assignmentIsDone: false,
               )
             );
           });

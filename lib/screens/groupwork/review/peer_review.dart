@@ -44,8 +44,6 @@ class _PeersReviewViewState extends State<PeersReviewView> {
           reviewed = true;
           reviewedAnswer = review;
       }
-      print(reviewed);
-      
       return ListTile(
         title: Text(member.email),
         trailing: reviewed? Text("Reviewed"):Text("Nope"),
@@ -91,13 +89,19 @@ class _PeersReviewViewState extends State<PeersReviewView> {
                               return CircularProgressIndicator();
                             }
                             if (state is LoadedPeerReviewState) {
-                              return ListView.builder(
-                                itemCount: memberState.data.length,
-                                itemBuilder: (context, index) {
-                                  return _buildMembers(
-                                      member: memberState.data[index],
-                                      data: state.data);
-                                },
+                              return Column(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: ListView.builder(
+                                      itemCount: memberState.data.length,
+                                      itemBuilder: (context, index) {
+                                        return _buildMembers(
+                                            member: memberState.data[index],
+                                            data: state.data);
+                                      },
+                                    ),
+                                  ),
+                                ],
                               );
                             }
                           },

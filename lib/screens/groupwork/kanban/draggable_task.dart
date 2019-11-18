@@ -6,10 +6,12 @@ import 'package:peeps/models/task.dart';
 import 'card_task.dart';
 
 class DraggableTask extends StatefulWidget {
+  final bool assignmentIsDone;
+
   final TaskModel data;
 
   final Function onDragCompleted;
-  DraggableTask({Key key, @required this.data, this.onDragCompleted})
+  DraggableTask({Key key, @required this.assignmentIsDone,@required this.data, this.onDragCompleted})
       : super(key: key);
   _DraggableTaskState createState() => _DraggableTaskState();
 }
@@ -21,7 +23,7 @@ class _DraggableTaskState extends State<DraggableTask> {
       builder: (context,state){
         if(state is ProfileLoaded){
           return Draggable<TaskModel>(
-            maxSimultaneousDrags: state.data.email == widget.data.assignTo ? 1 : 0,
+            maxSimultaneousDrags: widget.assignmentIsDone ? 0 : state.data.email == widget.data.assignTo ? 1 : 0,
             data: widget.data,
             onDragCompleted: widget.onDragCompleted,
             child: Container(

@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:peeps/enum/approval_enum.dart';
 
 class TaskModel{
   String id;
@@ -59,4 +60,52 @@ class TaskModel{
       "seq":this.seq,
     };
   }
+}
+
+
+class TaskRequestModel{
+  final String id;
+  final String taskId;
+  final String requester;
+  final String from;
+  final TaskModel task;
+  final String message;
+  DateTime createdDate;
+  Approval approval;
+
+  TaskRequestModel({
+    @required this.id,
+    @required this.taskId,
+    @required this.requester,
+    this.from,
+    @required this.approval,
+    @required this.message,
+    @required this.createdDate,
+    this.task,
+  });
+
+  static TaskRequestModel fromJson(Map<String,dynamic> json){
+    return TaskRequestModel(
+      id: json['_id']['\$oid'],
+      taskId: json['task_id']['\$oid'],
+      requester: json['requester'],
+      approval: Approval.values.elementAt(json['approval']),
+      message: json['message'],
+      createdDate: DateTime.parse(json['created_date']),
+      task: TaskModel.fromJson(json['task'])
+    );
+  }
+
+  Map<String,dynamic> toJson(){
+    return {
+      "_id":this.id,
+      "task_id":this.taskId,
+      "requester":this.requester,
+      "approval":this.approval.index,
+      "message":this.message,
+      "created_date":this.createdDate.toString(),
+    };
+  }
+
+
 }

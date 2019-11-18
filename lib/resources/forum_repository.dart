@@ -23,7 +23,7 @@ class ForumRepository extends BaseRepository{
     List discussions = [];
     var data = await super.read();
     if(data != null){
-      for(Map<String,dynamic> discussion in data['discussions']){
+      for(Map<String,dynamic> discussion in data){
       discussions.add(DiscussionModel.fromJson(discussion));
     }
     }

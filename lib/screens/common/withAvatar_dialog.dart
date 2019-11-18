@@ -20,6 +20,7 @@ class DialogWithAvatar extends StatelessWidget {
   Widget build(BuildContext context) {
   final List<Widget> body = [];
 
+
   if(title != null){
     body.add(
       Padding(
@@ -74,7 +75,7 @@ class DialogWithAvatar extends StatelessWidget {
     Widget _buildBody(){
       return Container(
         width: width,
-        height: height,
+        height: height == null ? 200 : height,
         padding: EdgeInsets.only(
           top: 30,
 

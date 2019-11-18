@@ -88,5 +88,14 @@ class RefreshAssignmentEvent extends TaskEvent{
   String toString() => "RefreshAssignmentEvent";
 }
 
+class RequestChangeAssignTo extends TaskEvent{
+  final data;
+  RequestChangeAssignTo({
+    @required this.data
+  });
+
+  @override
+  String toString() => "RequestChangeAssignTo";
+}
 
 

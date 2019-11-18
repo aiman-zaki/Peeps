@@ -40,4 +40,20 @@ class TaskRepository extends BaseRepository{
     },namespace: "tasks/status");
   }
 
+  readRequests() async {
+    var data = await super.read(namespace: "tasks/requests");
+    return data.map((request){
+      return TaskRequestModel.fromJson(request);
+    }).toList().cast<TaskRequestModel>();
+    
+  }
+
+  createRequest({@required data}) async {
+    await super.create(data: data,namespace: "tasks/requests");
+  }
+
+  updateRequest({@required data}) async {
+    await super.update(data: data,namespace: "tasks/requests");
+  }
+
 }

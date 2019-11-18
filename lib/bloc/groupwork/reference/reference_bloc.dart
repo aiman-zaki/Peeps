@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
+import 'package:peeps/enum/contribution_enum.dart';
 import 'package:peeps/models/contribution.dart';
 import 'package:peeps/resources/stash.dart';
 import 'package:meta/meta.dart';
@@ -33,12 +34,14 @@ class ReferenceBloc extends Bloc<ReferenceEvent, ReferenceState> {
     }
     if(event is CreateNewReferenceEvent){
       await stashRepository.createReference(data: event.data.toJson());
-      timelineBloc.add(SendDataTimelineEvent(data: ContributionModel(
+      timelineBloc.add(SendDataTimelineEvent(
+        intial: false,
+        data: ContributionModel(
         who: event.data.creator,
-        what: "create",
-        when: DateTime.now()
-      , how: "new", where: "Reference", why: "",
-        room: stashRepository.data)));
+        what: WhatEnum.create,
+        when: DateTime.now(),
+        how: "new", where: WhereEnum.reference, why: "",
+        room: stashRepository.data, from: null, assignmentId: null)));
       this.add(ReadReferencesEvent());
     }
   }

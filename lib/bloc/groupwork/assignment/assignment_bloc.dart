@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:meta/meta.dart';
+import 'package:peeps/enum/contribution_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/contribution.dart';
 import 'package:peeps/models/timeline.dart';
@@ -35,12 +36,14 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
     }
     if(event is AddAssignmentEvent){
       await repository.createAssignment(data: event.assignment.toJson());
-      timelineBloc.add(SendDataTimelineEvent(data: ContributionModel(
-        who: event.assignment.leader,
-        what: "create",
-        when: DateTime.now()
-      , how: "new", where: "assignment", why: "",
-        room: repository.data)));
+      timelineBloc.add(SendDataTimelineEvent(
+        intial: true,
+        data: ContributionModel(
+          who: event.assignment.leader,
+          what: WhatEnum.create,
+          when: DateTime.now(),
+          how: "new", where: WhereEnum.assignment, why: "",assignmentId: null,
+          room: repository.data, from: null)));
     }
     if(event is TaskRefreshButtonClicked){
       yield LoadingAssignmentState();
@@ -55,22 +58,26 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
       yield UpdatingAssignmentStatusState();
       await repository.updateAssignmentState(data: event.data);
       yield UpdatedAssignmentStatusState();
-       timelineBloc.add(SendDataTimelineEvent(data: ContributionModel(
-        who: event.user,
-        what: "Update",
-        when: DateTime.now()
-      , how: "status", where: "assignment", why: "from ongoing to done",
-        room: repository.data)));
+       timelineBloc.add(SendDataTimelineEvent(
+         intial: false,
+         data: ContributionModel(
+            who: event.user,
+            what: WhatEnum.update,
+            when: DateTime.now()
+          , how: "status", where: WhereEnum.assignment, why: "from ongoing to done",
+        room: repository.data, from: null, assignmentId: event.data.id)));
       this.add(LoadAssignmentEvent());
     }
     if(event is DeleteAssignmentEvent){
       await repository.deleteAssignment(id: event.data);
-       timelineBloc.add(SendDataTimelineEvent(data: ContributionModel(
-        who: event.user,
-        what: "delete",
-        when: DateTime.now()
-      , how: "", where: "assignment", why: "",
-        room: repository.data)));
+       timelineBloc.add(SendDataTimelineEvent(
+         intial: false,
+         data: ContributionModel(
+            who: event.user,
+            what: WhatEnum.delete,
+            when: DateTime.now()
+          , how: "", where: WhereEnum.assignment, why: "",
+        room: repository.data, from: null, assignmentId: event.data)));
     }
 
  

@@ -9,9 +9,6 @@ import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/stash/references.dart';
 import 'package:peeps/screens/splash_page.dart';
 
-import '../public_profile.dart';
-
-
 class CollaborateGroupworksView extends StatefulWidget {
   CollaborateGroupworksView({Key key}) : super(key: key);
 

@@ -55,3 +55,6 @@ export 'peers_reviews_questions/peers_reviews_questions_state.dart';
 export 'collaborate_groupworks/collaborate_groupworks_bloc.dart';
 export 'collaborate_groupworks/collaborate_groupworks_event.dart';
 export 'collaborate_groupworks/collaborate_groupworks_state.dart';
+export 'assignment_task_requests/assignment_task_requests_bloc.dart';
+export 'assignment_task_requests/assignment_task_requests_event.dart';
+export 'assignment_task_requests/assignment_task_requests_state.dart';

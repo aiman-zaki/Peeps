@@ -63,7 +63,10 @@ class _CollaborateForumViewState extends State<CollaborateForumView> {
                return Center(child: CircularProgressIndicator(),);
              }
              if(state is LoadedForumState){
-               return _buildDiscussionsList(state.data);
+               if(state.data.isNotEmpty){
+                 return _buildDiscussionsList(state.data);
+               }
+               return Center(child: Text("No Data"),);
              }
            },
            

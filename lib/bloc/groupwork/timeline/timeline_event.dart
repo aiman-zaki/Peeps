@@ -24,9 +24,11 @@ class DisconnectTimelineEvent extends TimelineEvent{
 }
 
 class SendDataTimelineEvent extends TimelineEvent{
+  final bool intial;
   final data;
 
   SendDataTimelineEvent({
+    @required this.intial,
     @required this.data,
   });
 

@@ -10,6 +10,7 @@ import 'package:peeps/resources/assignment_repository.dart';
 
 import 'package:peeps/resources/task_repository.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
+import 'package:peeps/screens/groupwork/assignment/task_requests.dart';
 import 'package:peeps/screens/groupwork/kanban/kanban.dart';
 import 'package:peeps/screens/groupwork/review/peer_review.dart';
 
@@ -113,24 +114,45 @@ class _HubAssignmentsState extends State<HubAssignments> {
     }
 
     _buildLeaderOnlyFunction(data,index){
-      return [
-         IconSlideAction(
+      List<Widget> widgets = [];
+      if(data[index].status != Status.done && data[index].leader == widget.userData.email){
+        widgets.add(IconSlideAction(
           color: Colors.red,
           icon: Icons.delete,
           caption: "Delete",
           onTap: (){
             _showConfirmationDialog(data, index,"delete");
           },
-        ),
-        IconSlideAction(
+        ));
+        widgets.add(IconSlideAction(
           color: Colors.green,
           icon: Icons.check_box,
           caption: "Done",
           onTap: (){
             _showConfirmationDialog(data, index,"update status");
           },
-        )
-      ];
+        ));
+        widgets.add(IconSlideAction(
+          color: Colors.yellow,
+          icon: Icons.stars,
+          caption: "Monitor",
+          onTap: (){
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => 
+                BlocProvider(
+                  builder: (context) => AssignmentTaskRequestsBloc(repository: TaskRepository(data: data[index].id))
+                    ..add(ReadTaskRequestsEvent()),  
+                  child: TaskRequestsView())
+              )
+            );
+          },
+        ));
+      }
+      if(data[index].status != Status.done){
+      
+      }
+        return widgets;
     }
 
     _buildLeaderTag(String leader) {

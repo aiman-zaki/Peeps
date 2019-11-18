@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:peeps/enum/contribution_enum.dart';
 
 import 'package:peeps/models/changed_status.dart';
 import 'package:peeps/models/contribution.dart';
@@ -37,14 +38,15 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
       try {
         await repository.createTask(data: event.task.toJson());
         timelineBloc.add(SendDataTimelineEvent(
-            data: ContributionModel(
-                who: event.task.creator,
-                what: "create",
-                when: DateTime.now(),
-                how: "new",
-                where: "Task",
-                why: "for ${event.assignment.title}",
-                room: event.groupId)));
+          intial: false,
+          data: ContributionModel(
+              who: event.task.creator,
+              what: WhatEnum.create,
+              when: DateTime.now(),
+              how: "new",
+              where: WhereEnum.task,
+              why: "for ${event.assignment.title}",
+              room: event.groupId, from: null, assignmentId:this.repository.data)));
         yield DisplayMessageSnackbar(color: "green", message: "Succeed");
       } catch (e) {
         yield DisplayMessageSnackbar(color: "red", message: e.toString());
@@ -77,18 +79,36 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         if (task.status == 2) newStatus = "done";
 
         timelineBloc.add(SendDataTimelineEvent(
-            data: ContributionModel(
-                who: task.by,
-                what: "Update",
-                when: DateTime.now(),
-                how: "${newStatus}",
-                where: "task: ${task.task}",
-                why: "${currentStatus}")));
+          intial: false,
+          data: ContributionModel(
+              who: task.by,
+              what: WhatEnum.update,
+              when: DateTime.now(),
+              how: "${newStatus}",
+              where: WhereEnum.task,
+              why: "${currentStatus}", from: null, assignmentId: this.repository.data)));
       }
       repository.updateTaskStatus(data: changedStatusTask);
       yield DisplayMessageSnackbar(color: "green", message: "Saved");
       try {} catch (e) {}
       yield InitialTaskState();
+    }
+    if(event is RequestChangeAssignTo){
+      repository.createRequest(data: event.data.toJson());
+      timelineBloc.add(SendDataTimelineEvent(
+        intial: false,
+        data: ContributionModel(
+          who: event.data.requester,
+          when: event.data.createdDate,
+          what: WhatEnum.request,
+          where: WhereEnum.task,
+          how: "",
+          why: "", from: event.data.from,
+          assignmentId: this.repository.data
+        )
+      )
+        
+      );
     }
   }
 }
