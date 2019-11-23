@@ -5,16 +5,14 @@ import 'package:rxdart/rxdart.dart';
 
 
 class ChatResources extends BaseSocketIO {
-  List<ChatModel> chats = [];
-  BehaviorSubject chatsController;
-  Sink get updateChatsSink => chatsController.sink;
-  Stream get chatsStream => chatsController.stream;
-
   @override
   ChatResources({
     namespace,
     room,
   }) : super(namespace: namespace, room: room);
+
+  List<ChatModel> chats = [];
+  BehaviorSubject chatsController;
 
   @override
   Future connect() async {
@@ -28,6 +26,10 @@ class ChatResources extends BaseSocketIO {
     super.disconnect();
     chatsController.close();
   }
+
+  Sink get updateChatsSink => chatsController.sink;
+
+  Stream get chatsStream => chatsController.stream;
 
   void sendMessage(ChatModel message) {
     super.socketIO.emit('send_message', [message.toJson()]);

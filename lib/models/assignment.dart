@@ -1,17 +1,20 @@
 import 'package:flutter/cupertino.dart';
+import 'package:peeps/enum/approval_enum.dart';
 import 'package:peeps/enum/status_enum.dart';
 import 'package:peeps/models/task.dart';
 
 class AssignmentModel{
-  String id;
-  String title;
-  String description;
-  String leader;
-  Status status;
-  double totalMarks;
-  double scoredMark;
-  DateTime createdDate;
-  DateTime dueDate;
+  final String id;
+  final String title;
+  final String description;
+  final String leader;
+  final Status status;
+  final double totalMarks;
+  final double scoredMark;
+  final DateTime createdDate;
+  final DateTime dueDate;
+  final double userPoint;
+  final Approval approval;
   List<TaskModel> tasks;
   List<TaskModel> todo;
   List<TaskModel> ongoing;
@@ -30,6 +33,8 @@ class AssignmentModel{
       this.tasks,
       this.createdDate,
       this.dueDate,
+      this.userPoint,
+      this.approval,
       this.todo,
       this.ongoing,
       this.done,  
@@ -45,6 +50,7 @@ class AssignmentModel{
       "created_date": this.createdDate.toString(),
       "due_date":this.dueDate.toString(),
       "status":this.status.index,
+      "approval":this.approval.index,
     };
   }
 
@@ -59,7 +65,8 @@ class AssignmentModel{
       status: json['status'] != null ? Status.values.elementAt(json['status']) : null,
       createdDate: json['created_date'] != null ? DateTime.parse(json['created_date']) : null,
       dueDate: json['due_date'] != null ? DateTime.parse(json['due_date']) : null,
-  
+      userPoint: json['user_point'] != null ? json['user_point'].toDouble() : null,
+      approval: json['approval'] != null ? Approval.values.elementAt(json['approval']) : null,
     
     );
   }

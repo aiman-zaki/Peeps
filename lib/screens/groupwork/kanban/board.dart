@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peeps/bloc/user/profile/profile_bloc.dart';
+import 'package:peeps/bloc/user/profile/profile_state.dart';
 import 'package:peeps/enum/status_enum.dart';
+import 'package:peeps/enum/task_status_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/changed_status.dart';
 import 'package:peeps/models/task.dart';
@@ -28,14 +32,17 @@ class Board extends StatefulWidget {
 }
 
 class _BoardState extends State<Board> {
-  
+  bool isLeader = false;
   final List<ChangedStatus> changedStatus = [];
   final List<DraggableTask> draggableTodo = [];
   final List<DraggableTask> draggableDoing = [];
   final List<DraggableTask> draggableDone = [];
-
+  String email;
   @override
   void initState() {
+    email = (BlocProvider.of<ProfileBloc>(context).state as ProfileLoaded).data.email;
+    if(widget.assignment.leader == email)
+      isLeader = true;
     _buildDraggable();
     super.initState();
   }
@@ -43,7 +50,7 @@ class _BoardState extends State<Board> {
   _addToChangedStatusList({String taskId,int newStatus,String task,int prevStatus}){
       int index = changedStatus.indexWhere((item) => item.taskId == taskId);
       if(index == -1){
-        changedStatus.add(ChangedStatus(status: newStatus,taskId: taskId, by: "Someone", previousStatus: prevStatus, task: task));
+        changedStatus.add(ChangedStatus(status: newStatus,taskId: taskId, by: email, previousStatus: prevStatus, task: task));
       }else{
         changedStatus[index].status = newStatus;
       }
@@ -54,7 +61,8 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.todo){
         draggableTodo.add(
           DraggableTask(
-            assignmentIsDone: widget.assignment.status == Status.done ? true : false,
+            isLeader: isLeader,
+            isDone: widget.assignment.status == Status.done ? true : false,
             data: data,
             onDragCompleted: (){
               setState(() {
@@ -67,7 +75,8 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.doing){
         draggableDoing.add(
           DraggableTask(
-            assignmentIsDone: widget.assignment.status == Status.done ? true : false,
+            isLeader: isLeader,
+            isDone: widget.assignment.status == Status.done ? true : false,
             data: data,
           onDragCompleted: (){
             setState(() {
@@ -80,7 +89,8 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.done){
         draggableDone.add(
           DraggableTask(
-            assignmentIsDone: widget.assignment.status == Status.done ? true : false,
+            isLeader: isLeader,
+            isDone: widget.assignment.status == Status.done ? true : false,
             data: data,
           onDragCompleted: (){
             setState(() {
@@ -100,27 +110,30 @@ class _BoardState extends State<Board> {
         children: <Widget>[
           Expanded(
             child: DraggableTaskZone(
+              isLeader: isLeader,
               draggable: draggableTodo,
               taskList: widget.todo,
-              zoneTitle: "Todo",
+              zone: TaskStatus.todo,
               onAccept: _addToChangedStatusList, backgroundcolor: Theme.of(context).backgroundColor,
               
             )
           ),
           Expanded(
             child: DraggableTaskZone(
+              isLeader: isLeader,
               draggable: draggableDoing,
               taskList: widget.doing,
-              zoneTitle: "Doing",
+              zone: TaskStatus.doing,
               onAccept: _addToChangedStatusList,
               backgroundcolor: Theme.of(context).backgroundColor
             ),
           ),
           Expanded(
             child: DraggableTaskZone(
+              isLeader: isLeader,
               draggable: draggableDone,
               taskList: widget.done,
-              zoneTitle: "Done",
+              zone: TaskStatus.done,
               onAccept: _addToChangedStatusList,   
               backgroundcolor: Theme.of(context).backgroundColor         
             ),

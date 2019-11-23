@@ -18,6 +18,20 @@ class _LoginFormState extends State<LoginForm> {
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
 
+  String _validateEmail(String value){
+    Pattern pattern = (r"^[a-zA-Z0-9.]+@[a-zA-Z0-9]+\.[a-zA-Z]+");
+    RegExp regex = new RegExp(pattern);
+    if(value.isEmpty){
+      return 'Please Enter your email';
+    } else {
+      if(!regex.hasMatch(value))
+        return 'Enter valind email';
+      else
+        return null;
+    }
+  
+  }
+
   @override
   Widget build(BuildContext context) {
     final _loginBloc = BlocProvider.of<LoginBloc>(context);
@@ -32,56 +46,62 @@ class _LoginFormState extends State<LoginForm> {
     _buildBody(state) {
       return Padding(
         padding: const EdgeInsets.all(12.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            TextFormField(
-              controller: _usernameController,
-              decoration: InputDecoration(
-                  labelText: "Email",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20))),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextFormField(
-              controller: _passwordController,
-              obscureText: true,
-              decoration: InputDecoration(
-                  labelText: "Password",
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20))),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            RaisedButton(
-              elevation: 12.00,
-       
-              padding: EdgeInsets.all(15),
-              shape: OutlineInputBorder(
-                borderRadius: BorderRadius.all(Radius.circular(20)),
+        child: Form(
+          autovalidate: true,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: <Widget>[
+              TextFormField(
+                controller: _usernameController,
+                validator: ((value){
+                  return _validateEmail(value);
+                }),
+                decoration: InputDecoration(
+                    labelText: "Email",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20))),
               ),
-              onPressed: state is LoginLoading? null : _onLoginButtonPressed,
-              child: Text("Login"),
-            ),
-            SizedBox(
-              height: 25,
-            ),
-            Align(
-                alignment: Alignment.bottomRight,
-                child: InkWell(
-                  onTap: (){
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => 
-                      BlocProvider.value(value:_loginBloc,
-                        child: BlocProvider(
-                          builder: (context) => RegisterBloc(loginBloc: _loginBloc,repository: AuthRepository()),
-                          child: RegisterForm())),fullscreenDialog: true));
-                  },
-                  child: Text("Register new account")))
-          ],
+              SizedBox(
+                height: 10,
+              ),
+              TextFormField(
+                controller: _passwordController,
+                obscureText: true,
+                decoration: InputDecoration(
+                    labelText: "Password",
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20))),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              RaisedButton(
+                elevation: 12.00,
+       
+                padding: EdgeInsets.all(15),
+                shape: OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                onPressed: state is LoginLoading? null : _onLoginButtonPressed,
+                child: Text("Login"),
+              ),
+              SizedBox(
+                height: 25,
+              ),
+              Align(
+                  alignment: Alignment.bottomRight,
+                  child: InkWell(
+                    onTap: (){
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => 
+                        BlocProvider.value(value:_loginBloc,
+                          child: BlocProvider(
+                            builder: (context) => RegisterBloc(loginBloc: _loginBloc,repository: AuthRepository()),
+                            child: RegisterForm())),fullscreenDialog: true));
+                    },
+                    child: Text("Register new account")))
+            ],
+          ),
         ),
       );
     }

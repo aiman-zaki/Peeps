@@ -11,10 +11,12 @@ import '../task_form.dart';
 class DialogTaskCard extends StatefulWidget {
   final TaskModel task;
   final Color headerColor;
+  final isLeader;
   DialogTaskCard({
     Key key,
     @required this.task,
-    @required this.headerColor,
+    @required this.headerColor, 
+    @required this.isLeader,
     }) : super(key: key);
 
   @override
@@ -220,25 +222,41 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
             ),
             Align(
               alignment: FractionalOffset.centerRight,
-              child: InkWell(
-                child: Icon(Icons.edit),
-                onTap: () {
-                  Navigator.pop(context);
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => BlocProvider.value(
-                        value: _taskBloc,
-                        child: BlocProvider.value(
-                            value: _membersBloc,
-                            child: BlocProvider.value(
-                                value: _timelineBloc,
-                                child: TaskForm(
-                                  task: widget.task,
-                                  edit: true,
-                                )))),
-                    fullscreenDialog: true,
-                  ));
-                },
-              ),
+              child: Container(
+                width: 100,
+                child: Row(
+                  children: <Widget>[
+                    Expanded(
+                      child: InkWell(
+                        child: Icon(Icons.redeem),
+                        onTap: () {
+                           },
+                      ),
+                    ),
+                    Expanded(
+                      child: InkWell(
+                        child: Icon(Icons.edit),
+                        onTap: () {
+                          Navigator.pop(context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BlocProvider.value(
+                                value: _taskBloc,
+                                child: BlocProvider.value(
+                                    value: _membersBloc,
+                                    child: BlocProvider.value(
+                                        value: _timelineBloc,
+                                        child: TaskForm(
+                                          task: widget.task,
+                                          edit: true,
+                                        )))),
+                            fullscreenDialog: true,
+                          ));
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              )
             )
           ],
         ),
@@ -249,6 +267,7 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
       child: Container(
         height: 300,
         child: Dialog(
+          elevation: 1.00,
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           child: Container(

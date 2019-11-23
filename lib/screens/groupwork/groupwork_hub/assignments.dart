@@ -155,8 +155,18 @@ class _HubAssignmentsState extends State<HubAssignments> {
         return widgets;
     }
 
+    _buildPointTag(double point){
+      return Card(
+        elevation: 1.00,
+        color: Colors.orange,
+        child: Padding(
+          padding: const EdgeInsets.all(2.0),
+          child: Text(point.toString(),textAlign: TextAlign.center,),
+        ),
+      );
+    }
+
     _buildLeaderTag(String leader) {
-      print(leader);
       if (leader == widget.userData.email)
         return Card(
             elevation: 5.00,
@@ -253,24 +263,37 @@ class _HubAssignmentsState extends State<HubAssignments> {
                         width: size.width,
                         padding: EdgeInsets.all(9),
                         child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: <Widget>[
                             Expanded(
                               flex: 3,
-                              child: Text(
-                                data[index].title,
-                                style: TextStyle(
-                                  fontSize: 17,
-                                ),
-                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: <Widget>[
+                                  _buildStatusTag((data[index].status)),
+                                  Padding(
+                                    padding: const EdgeInsets.all(4.0),
+                                    child: Text(
+                                      data[index].title,
+                                      style: TextStyle(
+                                        fontSize: 15,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              )
                             ),
+                          
                             Expanded(
                               flex: 1,
                               child: _buildLeaderTag(data[index].leader)
                             ),
-                            Expanded(
+                              Expanded(
                               flex: 1,
-                              child: _buildStatusTag((data[index].status)),
-                            )
+                              child: _buildPointTag(data[index].userPoint),
+                            ),
+                           
                           ],
                         ),
                       ),

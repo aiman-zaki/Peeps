@@ -108,6 +108,9 @@ class _DrawerViewState extends State<DrawerView> {
         currentUser.role == Role.supervisor?
           item(Icons.supervisor_account, 'Groups Supervised',SuperviseGroupworks)
         : Container(),
+        currentUser.role == Role.supervisor?
+          item(Icons.code, 'Course',SuperviseCourse)
+        : Container(),
         _themeSwitch(),
       ];
 

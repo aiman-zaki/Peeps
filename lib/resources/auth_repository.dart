@@ -7,9 +7,7 @@ import 'dart:convert';
 import 'common_repo.dart';
 
 class AuthRepository {
-  
   final String baseUrl = domain+authUrl;
-
 
   Future<String> authenticate({
     @required String email,
@@ -43,7 +41,7 @@ class AuthRepository {
     var response = await http.post(baseUrl+"register",body:jsonEncode(data),headers: {"Content-Type":"application/json"});
     return response;
   }
-  
+
   Future<http.Response> refreshToken() async{
     var token = await storage.read(key:"refresh_token");
     var response = await http.post(baseUrl+"refresh",
@@ -67,6 +65,4 @@ class AuthRepository {
     else 
       return false;
   }
-
-  
 }

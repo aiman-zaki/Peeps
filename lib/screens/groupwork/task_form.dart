@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/enum/task_status_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/models/timeline.dart';
@@ -91,7 +92,7 @@ class _TaskFormState extends State<TaskForm> {
                   task: TaskModel(task: _taskController.text, description: _descriptionController.text, 
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
-                                  dueDate: dueDate, assignTo: _assignedTo, lastUpdated: DateTime.now(), priority: _priority,status: 0)));
+                                  dueDate: dueDate, assignTo: _assignedTo, lastUpdated: DateTime.now(), priority: _priority,status: TaskStatus.todo)));
             Navigator.of(context).pop();
           },
           child: Text("Accept"),

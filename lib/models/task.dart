@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:peeps/enum/approval_enum.dart';
+import 'package:peeps/enum/task_status_enum.dart';
 
 class TaskModel{
   String id;
@@ -11,7 +12,7 @@ class TaskModel{
   DateTime assignDate;
   DateTime dueDate;
   DateTime lastUpdated;
-  int status;
+  TaskStatus status;
   int priority;
   int seq;
   TaskModel({
@@ -39,7 +40,7 @@ class TaskModel{
       createdDate: DateTime.parse(json['created_date']),
       dueDate: DateTime.parse(json['due_date']),
       lastUpdated: DateTime.parse(json['last_updated']),
-      status: json['status'],
+      status: TaskStatus.values.elementAt(json['status']),
       priority: json['priority'],
       seq: json['seq'],
     );
@@ -56,7 +57,7 @@ class TaskModel{
       "due_date":this.dueDate.toString(),
       "last_updated":this.lastUpdated.toString(),
       "priority": this.priority,
-      "status":this.status,
+      "status":this.status.index,
       "seq":this.seq,
     };
   }

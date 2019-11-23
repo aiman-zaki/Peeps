@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/enum/status_enum.dart';
+import 'package:peeps/enum/task_status_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/changed_status.dart';
 import 'package:peeps/models/task.dart';
@@ -46,13 +47,13 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
 
   _separate(data){  
     for(TaskModel task in data){
-      if(task.status == 0){
+      if(task.status == TaskStatus.todo){
         _todo.add(task);
       }
-      if(task.status == 1){
+      if(task.status == TaskStatus.doing){
         _doing.add(task);
       }
-      if(task.status == 2){
+      if(task.status == TaskStatus.done){
         _done.add(task);
     
       }

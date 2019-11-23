@@ -1,43 +1,27 @@
 import 'package:flutter/material.dart';
+import 'package:peeps/enum/task_status_enum.dart';
 import 'package:peeps/models/task.dart';
 
 import 'draggable_task.dart';
 import 'draggable_task_zone.dart';
-enum TaskStatus{
-  todo,
-  doing,
-  done,
-}
+
 typedef AddToChangeStatusList = void Function({String taskId,int newStatus,String task,int prevStatus}); 
 class DraggableTaskZone extends StatefulWidget {
   
+  final isLeader;
   final List<DraggableTask> draggable;
   final List<TaskModel> taskList;
   final Color backgroundcolor;
-  final String zoneTitle;
+  final TaskStatus zone;
   final Function onAccept;
 
-  DraggableTaskZone({Key key,@required this.draggable,@required this.taskList,@required this.backgroundcolor,this.zoneTitle, this.onAccept}) : super(key: key);
+  DraggableTaskZone({Key key,@required this.draggable,@required this.taskList,@required this.backgroundcolor,this.zone, this.onAccept, @required this.isLeader}) : super(key: key);
   _DraggableTaskZoneState createState() => _DraggableTaskZoneState();
 }
 
 class _DraggableTaskZoneState extends State<DraggableTaskZone> {
   @override
   Widget build(BuildContext context) {
-    //TODO: Temp will change
-    
-    int status = 0;
-    if(widget.zoneTitle != null){
-      if(widget.zoneTitle.toLowerCase() == "todo")
-        status = 0;
-      if(widget.zoneTitle.toLowerCase() == "doing")
-        status = 1;
-      if(widget.zoneTitle.toLowerCase() == "done")
-        status = 2;
-    }
-
-    
-    
     AddToChangeStatusList _addToChangeStatusList = widget.onAccept;
     return DragTarget(
       builder: (BuildContext context, List candidateData, List rejectedData) {
@@ -46,11 +30,11 @@ class _DraggableTaskZoneState extends State<DraggableTaskZone> {
             child: Scrollbar(
               child: ListView(
                 children: [
-                  widget.zoneTitle != null ?
+                  widget.zone != null ?
                   Container(
                     alignment: Alignment(0.0,0.0),
                     margin: EdgeInsets.only(top: 10),
-                    child: Text(widget.zoneTitle,
+                    child: Text(getTaskStatusStringEnum(widget.zone),
                       style: TextStyle(
                         fontSize: 22,
                       ),),
@@ -66,22 +50,22 @@ class _DraggableTaskZoneState extends State<DraggableTaskZone> {
           );
       },
       onWillAccept: (TaskModel data){
-        bool accept; 
-       //TODO WORKING BUT SMALL BRAIN
+        bool accept;
         widget.draggable.where((item) => item.data.id == data.id).length >= 1 ? accept = false : accept = true;
           return accept;
       },
         onAccept: (TaskModel data){
           setState(() {
-            _addToChangeStatusList(taskId:data.id,newStatus:status,task:data.task,prevStatus:data.status);
+            _addToChangeStatusList(taskId:data.id,newStatus:widget.zone.index,task:data.task,prevStatus:data.status.index);
             widget.draggable.add(
               DraggableTask(data: data,
+              isLeader: widget.isLeader,
                 onDragCompleted: (){
                   setState(() {
                     widget.draggable.removeWhere((item) => item.data.id == data.id);
                     
                   });
-                }, assignmentIsDone: false,
+                }, isDone: false,
               )
             );
           });

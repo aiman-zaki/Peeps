@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/peer_review.dart';
 import 'package:peeps/models/peer_reviews.dart';
+import 'package:peeps/models/points.dart';
 import 'package:peeps/models/question.dart';
 
 import 'package:peeps/resources/base_respository.dart';
@@ -48,8 +49,16 @@ class AssignmentRepository extends BaseRepository {
     if (data != null)
       print(data);
       return PeerReviewsModel.fromJson(data);
-  
   }
 
+  readPoint() async {
+    var data = await super.read(namespace: "point");
+    return data.map((value){
+      PointsModel.fromJson(value);
+    }).toList().cast<PointsModel>();
+  }
 
+  updatePoint({@required data}) async {
+    await super.update(data: data,namespace: "point");
+  }
 }

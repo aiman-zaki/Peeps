@@ -11,8 +11,9 @@ import 'dialog_card_task.dart';
 
 class CardTask extends StatelessWidget {
   final TaskModel task;
+  final bool isLeader;
 
-  const CardTask({Key key, this.task}) : super(key: key);
+  const CardTask({Key key, this.task, @required this.isLeader}) : super(key: key);
 
   Color _cardColorSwitch(int priority) {
     switch (priority) {
@@ -45,7 +46,8 @@ class CardTask extends StatelessWidget {
                     child: BlocProvider.value(
                         value: _timelineBloc,
                         child: DialogTaskCard(
-                            task: task, headerColor: _headerColor))),
+                          isLeader: isLeader,
+                          task: task, headerColor: _headerColor))),
               ));
     }
 

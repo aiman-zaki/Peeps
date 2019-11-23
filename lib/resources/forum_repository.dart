@@ -6,8 +6,6 @@ import 'package:meta/meta.dart';
 
 
 class ForumRepository extends BaseRepository{
-
-
   ForumRepository({
     @required data,
   }):super(baseUrl:forumUrl,data:data);
@@ -16,7 +14,6 @@ class ForumRepository extends BaseRepository{
   create({@required data,namespace}) async {
     await super.create(data:data.toJson());
   }
-
 
   @override
   read({namespace}) async {
@@ -36,6 +33,4 @@ class ForumRepository extends BaseRepository{
     // TODO: implement update
     return null;
   }
-
-  
 }

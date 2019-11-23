@@ -19,6 +19,8 @@ import 'package:peeps/screens/home/drawer.dart';
 import 'bloc/simple_bloc_delegate.dart';
 import 'configs/theme.dart';
 
+//TODO POINT SYSTEM FOR GROUPWORK
+
 StreamSubscription periodicSub;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 void main() async {

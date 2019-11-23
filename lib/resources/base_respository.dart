@@ -9,7 +9,7 @@ abstract class BaseRepository{
   final baseUrl;
   final data;
   final data2;
-  
+
   const BaseRepository(
     {
       @required this.baseUrl,
@@ -30,7 +30,7 @@ abstract class BaseRepository{
   }
 
   String url(namespace) => _url(namespace);
-  
+
   requestHandler({response}){
     var jsonDecoded = jsonDecode(response.body);
     if(response.statusCode == 200){
@@ -60,6 +60,7 @@ abstract class BaseRepository{
     var response = await http.get(_url(namespace),headers: headers);
     return requestHandler(response: response);
   }
+
   update({@required data,namespace}) async {
     var headers = await fetchHeaders();
     var response = await http.put(_url(namespace),
@@ -76,6 +77,4 @@ abstract class BaseRepository{
     );
     return requestHandler(response: response);
   }
-
-
 }
