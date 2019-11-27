@@ -45,8 +45,11 @@ class DialogWithAvatar extends StatelessWidget {
 
   if(children != null){
     body.add(
-      Column(
-        children: children,
+      Container(
+        padding: EdgeInsets.only(left: 5),
+        child: Column(
+          children: children,
+        ),
       )
     );
   } else {
@@ -74,6 +77,7 @@ class DialogWithAvatar extends StatelessWidget {
 
     Widget _buildBody(){
       return Container(
+        
         width: width,
         height: height == null ? 200 : height,
         padding: EdgeInsets.only(
@@ -83,16 +87,19 @@ class DialogWithAvatar extends StatelessWidget {
           right: 10,
         ),
         margin: EdgeInsets.only(top: 15),
+        
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
           color: Colors.grey[850],
           shape: BoxShape.rectangle,
         ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: body,
-        ),
+      child: Container(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: body,
+          ),
+      ),
       );
     }
     Widget _buildCircleTop(){
@@ -109,11 +116,13 @@ class DialogWithAvatar extends StatelessWidget {
     return Dialog(
         elevation: 0,
         backgroundColor: Colors.transparent,
-        child: Stack(
-          children: <Widget>[
-            _buildBody(),
-            _buildCircleTop(),
-          ],
+        child: SingleChildScrollView(
+          child: Stack(
+            children: <Widget>[
+              _buildBody(),
+              _buildCircleTop(),
+            ],
+          ),
         ),
     );
   }

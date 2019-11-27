@@ -18,6 +18,7 @@ class _GroupworkFormState extends State<GroupworkForm> {
   final _nameController = new TextEditingController();
   final _descriptionController = new TextEditingController();
   final _courseController = new TextEditingController();
+  final _templateController = TextEditingController();
   List<TextEditingController> _membersController = [];
 
   @override
@@ -43,11 +44,12 @@ class _GroupworkFormState extends State<GroupworkForm> {
     _bloc.add(CreateNewGroupworkEvent(data: GroupworkModel(
       id: "",
       name: _nameController.text,
-      course: _nameController.text,
+      course: _courseController.text,
       invitations: membersEmail,
       creator: "",
       description: _descriptionController.text,
-      members: []
+      members: [],
+      templateId: _templateController.text
     
     )));
     
@@ -126,8 +128,17 @@ class _GroupworkFormState extends State<GroupworkForm> {
           Text("Optional",style:TextStyle(
             fontSize: 20,
           ),),
+          SizedBox(height: 10,),
+          _captions(text: "Insert Template ID for this Groupwork"),
+          TextFormField(
+            controller: _templateController,
+            decoration: InputDecoration(
+              labelText: 'Template ID'
+            ),
+          ),
           Divider(),
           _captions(text: "Invite your team members, can be invited later"),
+          
           ListTile(
             title: Text("Invite Members"),
             leading: Icon(Icons.person_outline),

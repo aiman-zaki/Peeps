@@ -26,6 +26,19 @@ class AddAssignmentEvent extends AssignmentEvent{
   String toString() => "AddAssignmentEvent";
 }
 
+class UpdateAssignmentEvent extends AssignmentEvent{
+  final data;
+  UpdateAssignmentEvent({
+    @required this.data
+  });
+
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => "UpdateAssignmentEvent";
+}
+
 class TaskRefreshButtonClicked extends AssignmentEvent{
   final latestAssignment;
   final assignments;

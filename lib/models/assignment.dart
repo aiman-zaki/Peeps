@@ -12,6 +12,7 @@ class AssignmentModel{
   final double totalMarks;
   final double scoredMark;
   final DateTime createdDate;
+  final DateTime startDate;
   final DateTime dueDate;
   final double userPoint;
   final Approval approval;
@@ -31,8 +32,9 @@ class AssignmentModel{
       this.scoredMark,
       @required this.status,
       this.tasks,
-      this.createdDate,
-      this.dueDate,
+      @required this.createdDate,
+      @required this.startDate,
+      @required this.dueDate,
       this.userPoint,
       this.approval,
       this.todo,
@@ -43,11 +45,13 @@ class AssignmentModel{
 
   Map<String,dynamic> toJson(){
     return {
+      "_id":this.id,
       "title":this.title,
       "description":this.description,
       "leader":this.leader,
       "total_marks":this.totalMarks,
       "created_date": this.createdDate.toString(),
+      "start_date":this.startDate.toString(),
       "due_date":this.dueDate.toString(),
       "status":this.status.index,
       "approval":this.approval.index,
@@ -64,6 +68,7 @@ class AssignmentModel{
       scoredMark: json['scored_marks'] != null ? json['scored_marks'].toDouble() : null,
       status: json['status'] != null ? Status.values.elementAt(json['status']) : null,
       createdDate: json['created_date'] != null ? DateTime.parse(json['created_date']) : null,
+      startDate: json['start_date'] != null ? DateTime.parse(json['start_date']) : null,
       dueDate: json['due_date'] != null ? DateTime.parse(json['due_date']) : null,
       userPoint: json['user_point'] != null ? json['user_point'].toDouble() : null,
       approval: json['approval'] != null ? Approval.values.elementAt(json['approval']) : null,

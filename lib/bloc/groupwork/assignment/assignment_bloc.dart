@@ -79,6 +79,10 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
           , how: "", where: WhereEnum.assignment, why: "",
         room: repository.data, from: null, assignmentId: event.data)));
     }
+    if(event is UpdateAssignmentEvent){
+      await repository.updateAssignment(data: event.data.toJson());
+      this.add(LoadAssignmentEvent());
+    }
 
  
   }

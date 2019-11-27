@@ -7,17 +7,17 @@ import 'note.dart';
 
 
 class GroupworkModel{
-  String id;
-  String creator;
-  String name;
-  String description;
-  String course;
-  String supervisor;
-  List<dynamic> invitations;
-  List<dynamic> members;
-  List<AssignmentModel> assignments;
-  List<Note> notes;
-  String profilePicturerUrl;
+  final String id;
+  final String creator;
+  final String name;
+  final String description;
+  final String course;
+  final String supervisor;
+  final List<dynamic> invitations;
+  final List<dynamic> members;
+  final List<Note> notes;
+  final String profilePicturerUrl;
+  final String templateId;
 
 
   GroupworkModel({
@@ -30,7 +30,8 @@ class GroupworkModel{
     @required this.members,
     this.supervisor,
     this.notes,
-    this.profilePicturerUrl
+    this.profilePicturerUrl,
+    @required this.templateId,
 
   });
 
@@ -45,7 +46,7 @@ class GroupworkModel{
         item.add(Note.fromJson(note));
       }
     }
-    
+  
     return GroupworkModel(
       id: data['_id']['\$oid'],
       creator: data['creator'],
@@ -57,7 +58,7 @@ class GroupworkModel{
       supervisor: data['supervisor'],
       notes: item,
       profilePicturerUrl: url,
-    
+      templateId: data['template_id'] != null ? data['template_id']['\$oid'] : null,
     );
   }
 
@@ -71,6 +72,7 @@ class GroupworkModel{
       "members":this.members,
       "supervisor":this.supervisor,
       "invitation_list":this.invitations,
+      "template_id":this.templateId
     };
   }
 }

@@ -6,11 +6,13 @@ import 'package:peeps/bloc/supervisor/bloc.dart';
 
 import 'package:peeps/resources/groupworks_repository.dart';
 import 'package:peeps/resources/supervise_groupworks_repository.dart';
+import 'package:peeps/resources/supervisor_courses_repository.dart';
 import 'package:peeps/resources/user_repository.dart';
 
 import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
 import 'package:peeps/screens/inbox/inbox_bottombar.dart';
+import 'package:peeps/screens/supervisor/courses_supervise.dart';
 import 'package:peeps/screens/supervisor/groupworks_supervise.dart';
 import 'package:peeps/screens/user/joined_group.dart';
 import 'package:peeps/screens/user/account.dart';
@@ -61,6 +63,9 @@ Route<dynamic> generateRoute(RouteSettings settings){
           child: GroupworksSuperviseView(),
         );
       });
+    case SuperviseCourse:
+      return CupertinoPageRoute(
+        builder: (context) => BlocProvider<CoursesSupervisorBloc>(builder: (context) => CoursesSupervisorBloc(repository: SupervisorRepository())..add(ReadCoursesSupervisorEvent()),child: CoursesSuperviseView(),));
     default:
       return MaterialPageRoute(builder: (context) => DrawerView());
   }

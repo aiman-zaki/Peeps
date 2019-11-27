@@ -36,6 +36,10 @@ class AssignmentRepository extends BaseRepository {
     });
   }
 
+  updateAssignment({@required data}) async{
+    await super.update(data:data,namespace: "assignments");
+  }
+
   updateAssignmentState({@required data}) async {
     await super.update(namespace: "assignments/status",data: data);
   }

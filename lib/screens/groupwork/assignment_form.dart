@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/enum/approval_enum.dart';
 import 'package:peeps/enum/status_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/members.dart';
@@ -11,13 +12,18 @@ import 'package:peeps/screens/common/withAvatar_dialog.dart';
 //TODO : Dynamic Role Assignation - Madam Faridah
 
 class AssignmentFormView extends StatefulWidget {
+  final bool isEdit;
   final String groupId;
   final userData;
+  final AssignmentModel assignmentData;
 
   const AssignmentFormView({
     Key key, 
-    this.groupId,
-    this.userData}) : super(key: key);
+    @required this.groupId,
+    @required this.userData,
+    @required this.isEdit,
+    this.assignmentData,
+    }) : super(key: key);
 
   _AssignmentFormState createState() => new _AssignmentFormState();
 }
@@ -28,21 +34,30 @@ class _AssignmentFormState extends State<AssignmentFormView> {
   final _dueDate = TextEditingController();
   final _totalMarks = TextEditingController();
   final format = DateFormat("yyyy-MM-dd HH:mm");
-  var dropdownValue;
+  var _leader;
+
+  @override
+  void initState() {
+    super.initState();
+    if(widget.isEdit){
+      _titleController.text = widget.assignmentData.title;
+      _descriptionController.text = widget.assignmentData.description;
+      _dueDate.text = widget.assignmentData.dueDate.toString();
+      _leader = widget.assignmentData.leader;
+      _totalMarks.text = widget.assignmentData.totalMarks.toString();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
-    final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
-
     Widget _captions({@required text}) {
       return Text(
         "$text",
         style: TextStyle(color: Colors.white30),
       );
     }
-
     _buildDialog() {
       showDialog(
           context: (context),
@@ -50,7 +65,7 @@ class _AssignmentFormState extends State<AssignmentFormView> {
             return DialogWithAvatar(
               avatarIcon: Icon(Icons.check),
               title: "Confirm",
-              description: "Add new Assignment?",
+              description: " ${widget.isEdit? 'Update': 'New'} Assignment?",
               width: 400,
               height: 180,
               children: <Widget>[
@@ -67,18 +82,37 @@ class _AssignmentFormState extends State<AssignmentFormView> {
               bottomRight: FlatButton(
                 child: Text('Confirm'),
                 onPressed: () {
-                
-                  _assignmentBloc.add(AddAssignmentEvent(
+                  if(widget.isEdit){
+                    _assignmentBloc.add(UpdateAssignmentEvent(
+                      data: AssignmentModel(
+                          id: widget.assignmentData.id,
+                          title: _titleController.text,
+                          description: _descriptionController.text,
+                          leader: _leader,
+                          totalMarks: double.parse(_totalMarks.text),
+                          createdDate: widget.assignmentData.createdDate,
+                          dueDate: DateTime.parse(_dueDate.text),
+                          status: widget.assignmentData.status,
+                          approval: widget.assignmentData.approval,
+                          startDate: widget.assignmentData.startDate,
+                          ),
+                    ));
+                  } else {
+                    _assignmentBloc.add(AddAssignmentEvent(
                       assignment: AssignmentModel(
                           title: _titleController.text,
                           description: _descriptionController.text,
-                          leader: dropdownValue,
+                          leader: _leader,
                           totalMarks: double.parse(_totalMarks.text),
                           createdDate: DateTime.now(),
                           dueDate: DateTime.parse(_dueDate.text),
                           status: Status.ongoing,
+                          approval: Approval.tbd,
+                          startDate: DateTime.now(),
                           ),
                    ));
+                  }
+                  
                   Navigator.of(context).pop();
                 },
               ),
@@ -106,10 +140,10 @@ class _AssignmentFormState extends State<AssignmentFormView> {
             return DropdownButtonFormField(
                 onChanged: (value) {
                   setState(() {
-                    dropdownValue = value;
+                    _leader = value;
                   });
                 },
-                value: dropdownValue,
+                value: _leader,
                 items: items);
           }
         },

@@ -100,13 +100,9 @@ class _HubAssignmentsState extends State<HubAssignments> {
                         );
                       }
                     );
-                  }
-                  
+                  } 
                 }
-           
               },
-
-            
             ),
           );
         }
@@ -149,6 +145,30 @@ class _HubAssignmentsState extends State<HubAssignments> {
           },
         ));
       }
+      if(widget.isAdmin){
+        widgets.add(IconSlideAction(
+          caption: "Edit",
+          color: Colors.pink,
+          icon: Icons.edit,
+          onTap: (){
+             Navigator.of(context).push(new MaterialPageRoute(
+                builder: (context) => MultiBlocProvider(
+                  providers: [
+                    BlocProvider<AssignmentBloc>.value(value: _assignmentBloc,),
+                    BlocProvider<MembersBloc>.value(value: _membersBloc,),
+                  ],
+                  child: AssignmentFormView(
+                    userData: widget.userData,
+                    groupId: widget.groupData.id,
+                    isEdit: true,assignmentData: data[index],),
+                ),
+                fullscreenDialog: true,
+              ));
+          },
+        ));
+      }
+
+
       if(data[index].status != Status.done){
       
       }
@@ -167,6 +187,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
     }
 
     _buildLeaderTag(String leader) {
+      print(leader);
       if (leader == widget.userData.email)
         return Card(
             elevation: 5.00,
@@ -176,7 +197,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
               child: Text("Leader",textAlign: TextAlign.center,),
             ));
       else
-        return Text("");
+        return SizedBox();
     }
 
     _buildStatusTag(Status status){
@@ -200,12 +221,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
             itemBuilder: (context, index) {
               return Slidable(
                 actionPane: SlidableDrawerActionPane(),
-                actions: 
-                  widget.isAdmin
-                      ? 
-                          _buildLeaderOnlyFunction(data,index)
-                    
-                      : [],
+                actions: _buildLeaderOnlyFunction(data,index),
               
                 secondaryActions: <Widget>[
                   IconSlideAction(
@@ -309,7 +325,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                           ListTile(
                             leading: Icon(Icons.people),
                             title: Text("Leader"),
-                            subtitle: Text(data[index].leader),
+                            subtitle: Text("${data[index].leader == null ? "" :data[index].leader }"),
                           ),
                           ListTile(
                             leading: Icon(Icons.calendar_today),
@@ -371,6 +387,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                                 child: BlocProvider.value(
                                   value: _timelineBloc,
                                   child: AssignmentFormView(
+                                    isEdit: false,
                                     userData: widget.userData,
                                     groupId: widget.groupData.id,
                                   ),
