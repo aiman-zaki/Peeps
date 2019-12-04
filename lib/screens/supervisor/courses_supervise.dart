@@ -31,7 +31,7 @@ class _CoursesSuperviseViewState extends State<CoursesSuperviseView> {
         builder: (context){
           return DialogWithAvatar(
             avatarIcon: Icon(Icons.add),
-            title: "Add Course",
+            title: Text("Add Course"),
 
             children: <Widget>[
               Padding(

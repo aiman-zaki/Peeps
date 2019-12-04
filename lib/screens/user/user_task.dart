@@ -7,14 +7,18 @@ import 'package:meta/meta.dart';
 import 'package:peeps/bloc/user/task/bloc.dart';
 import 'package:peeps/configs/notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:showcaseview/showcase.dart';
+import 'package:showcaseview/showcaseview.dart';
 
 class UserTasks extends StatefulWidget {
-  UserTasks({Key key}) : super(key: key);
+  final Map<String,GlobalKey> showCaseKey;
+  UserTasks({Key key,this.showCaseKey}) : super(key: key);
 
   _UserTasksState createState() => _UserTasksState();
 }
 
 class _UserTasksState extends State<UserTasks> {
+
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
   LocalNotifications _localNotifications = LocalNotifications();
@@ -28,6 +32,7 @@ class _UserTasksState extends State<UserTasks> {
         InitializationSettings(initializationSettingsAndroid, null);
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
+   
   }
 
   @override
@@ -130,54 +135,58 @@ class _UserTasksState extends State<UserTasks> {
           );
         }
         if (state is LoadedUserTaskState) {
-          return Container(
-            height: 350,
-            padding: EdgeInsets.all(3.0),
-            child: Card(
+          return Showcase(
+            key: widget.showCaseKey['userTasks'],
+            description: "Ongoing Tasks with Notification Support",
+            child: Container(
+              height: 350,
+              padding: EdgeInsets.all(3.0),
+              child: Card(
          
-              child: Stack(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: <Widget>[
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Keep Track With Your Tasks!",
-                          style: TextStyle(fontSize: 20),
-                        ),
-                        Divider(
-                          thickness: 2.0,
-                          height: 15,
-                          color: Colors.lightBlue[700],
-                        ),
-                          _buildData(state.data),
-                      ],
-                      
-                    ),
-                  ),
-                
-                  Positioned(
-                    bottom: 0,
-                    child: ClipPath(
-                      clipper: WaveClipperOne(reverse: true),
-                      child: Container(
-                        width: size.width,
-                        height: 80,
-                        decoration: BoxDecoration(
-                            gradient: LinearGradient(colors: [
-                          Colors.lightBlue[700],
-                          Colors.lightBlue[800],
-                          Colors.lightBlue[900],
-                        ])),
+                child: Stack(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(
+                            height: 10,
+                          ),
+                          Text(
+                            "Keep Track With Your Tasks!",
+                            style: TextStyle(fontSize: 20),
+                          ),
+                          Divider(
+                            thickness: 2.0,
+                            height: 15,
+                            color: Colors.lightBlue[700],
+                          ),
+                            _buildData(state.data),
+                        ],
+                        
                       ),
                     ),
-                  ),
-                ],
+                  
+                    Positioned(
+                      bottom: 0,
+                      child: ClipPath(
+                        clipper: WaveClipperOne(reverse: true),
+                        child: Container(
+                          width: size.width,
+                          height: 80,
+                          decoration: BoxDecoration(
+                              gradient: LinearGradient(colors: [
+                            Colors.lightBlue[700],
+                            Colors.lightBlue[800],
+                            Colors.lightBlue[900],
+                          ])),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           );
