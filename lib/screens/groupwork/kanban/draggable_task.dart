@@ -6,12 +6,13 @@ import 'package:peeps/models/task.dart';
 import 'card_task.dart';
 
 class DraggableTask extends StatefulWidget {
+  final assignmentId;
   final bool isDone;
   final bool isLeader;
   final TaskModel data;
 
   final Function onDragCompleted;
-  DraggableTask({Key key, @required this.isDone,@required this.data, this.onDragCompleted, @required this.isLeader})
+  DraggableTask({Key key, @required this.isDone,@required this.data, this.onDragCompleted, @required this.isLeader,@required this.assignmentId})
       : super(key: key);
   _DraggableTaskState createState() => _DraggableTaskState();
 }
@@ -30,6 +31,7 @@ class _DraggableTaskState extends State<DraggableTask> {
               width: 100,
               height: 80,
               child: CardTask(
+                assignmentId: widget.assignmentId,
                 isLeader: widget.isLeader,
                 task: widget.data,
               ),

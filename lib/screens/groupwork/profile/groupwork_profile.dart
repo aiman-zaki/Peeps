@@ -13,9 +13,12 @@ import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/note_repository.dart';
 import 'package:peeps/screens/common/captions.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
+import 'package:peeps/screens/common/tag.dart';
 import 'package:peeps/screens/groupwork/profile/admin.dart';
 import 'package:peeps/screens/groupwork/profile/notes.dart';
 import 'package:peeps/screens/groupwork/profile/requests.dart';
+
+import 'drawer.dart';
 
 enum Role {
   admin,
@@ -125,73 +128,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
       );
     }
 
-    _buildAdminOnlySettings() {
-      if (widget.isAdmin) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              ListTile(
-                contentPadding: EdgeInsets.all(6),
-                trailing: Icon(Icons.keyboard_arrow_right),
-                leading: Icon(FontAwesomeIcons.criticalRole),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => BlocProvider.value(
-                      value: _bloc,
-                      child: BlocProvider.value(
-                          value: _membersBloc,
-                          child: GroupProfileAdmin(
-                            groupData: widget.data,
-                          )),
-                    ),
-                  ));
-                },
-                title: Text("Team"),
-              ),
-              ListTile(
-                title: Text("Notes | Announcements"),
-                contentPadding: EdgeInsets.all(6),
-                trailing: Icon(Icons.keyboard_arrow_right),
-                leading: Icon(FontAwesomeIcons.stickyNote),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider(
-                        builder: (context) =>
-                            NoteBloc(repository: NoteRepository(data: widget.data)),
-                        child: GroupProfileNotes(
-                          groupId: widget.data.id,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-              ListTile(
-                title: Text("Requests"),
-                contentPadding: EdgeInsets.all(6),
-                trailing: Icon(Icons.keyboard_arrow_right),
-                leading: Icon(FontAwesomeIcons.inbox),
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => BlocProvider(
-                            builder: (context) => RequestBloc(
-                                groupworkRepository:
-                                    GroupworkRepository(data: widget.data.id)),
-                            child: GroupRequest(
-                              groupId: widget.data.id,
-                            ),
-                          )));
-                },
-              )
-            ],
-          ),
-        );
-      }
-      return Container();
-    }
+    
 
     _buildProfileDetail() {
       return Container(
@@ -217,7 +154,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                         child: Text('Update')),
                   ),
                   width: size.width,
-                  height: 80,
+                  height: 50,
                   decoration: BoxDecoration(
                     gradient: LinearGradient(colors: [
                       Colors.blue[700],
@@ -232,13 +169,13 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: <Widget>[
-                  CustomCaptions(
-                    text: "id: ${widget.data.id}",
-                    color: Theme.of(context).accentColor,
-                  ),
-                  Text(
-                    widget.data.name,
-                    style: TextStyle(fontSize: 21),
+                  CustomTag(
+                    padding: EdgeInsets.all(2),
+                    color: Colors.blue,
+                    text: Text(
+                      widget.data.id,
+                      style: TextStyle(fontSize: 12),
+                    ),
                   ),
                   SizedBox(
                     height: 10,
@@ -303,7 +240,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
     Widget _buildAvatar() {
       return Center(
         child: CircleAvatar(
-          backgroundColor: Theme.of(context).primaryColor,
+
           radius: 70,
           child: Padding(
             padding: const EdgeInsets.all(3.0),
@@ -382,7 +319,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                       height: 80,
                     ),
                     Card(
-                      elevation: 8.00,
+                      elevation: 1.00,
                       child: Column(
                         children: <Widget>[
                           SizedBox(
@@ -393,7 +330,6 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
                         ],
                       ),
                     ),
-                    _buildAdminOnlySettings(),
                   ],
                 ),
                 Container(
@@ -403,6 +339,7 @@ class _GroupworkProfileState extends State<GroupworkProfile> {
           ),
         ),
       ),
+      endDrawer: GroupworkProfileDrawerView(data: widget.data,),
       floatingActionButton: readOnly
           ? null
           : FloatingActionButton(

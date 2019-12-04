@@ -92,8 +92,6 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
       );
     }
 
-
-
     _buildGroupworks(List<GroupworkModel> groupworks){
       return _buildGroupworksList(groupworks);
     }

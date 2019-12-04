@@ -66,13 +66,13 @@ class AccountViewState extends State<AccountView> {
     _buildBlocListenerDialog({@required icon, @required children}) {
       return DialogWithAvatar(
         avatarIcon: icon,
-        title: "",
+        title: Text(""),
         width: 300,
         height: 180,
         children: children,
       );
     }
-
+ 
     _showConfirmationDialog(){
       showDialog(
         context: context,
@@ -80,7 +80,7 @@ class AccountViewState extends State<AccountView> {
           return DialogWithAvatar(
             height: 230,
             avatarIcon: Icon(Icons.check),
-            title: "Confirmation",
+            title: Text("Confirmation"),
             description: "Change to Supervisor will enable certain functions and allow student to invite you as supervisor",
             bottomLeft: FlatButton(
               child: Text("Cancel"),

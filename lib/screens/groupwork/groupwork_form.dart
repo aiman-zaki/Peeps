@@ -49,7 +49,7 @@ class _GroupworkFormState extends State<GroupworkForm> {
       creator: "",
       description: _descriptionController.text,
       members: [],
-      templateId: _templateController.text
+      templateId: _templateController.text == "" ? null : _templateController.text,
     
     )));
     
@@ -66,7 +66,7 @@ class _GroupworkFormState extends State<GroupworkForm> {
           width: 400,
           height: 180,
           avatarIcon: Icon(Icons.check),
-          title: "Confirm",
+          title: Text("Confirm"),
           description: "Do you realy want to create the groupwork?",
           bottomLeft: FlatButton(
             child: Text("Cancel"),

@@ -117,8 +117,8 @@ class _KanbanBoardViewState extends State<KanbanBoardView> {
             if(state is LoadedTaskState){
               _separate(state.data);
               return Container(
-                child: Board(todo: _todo,doing: _doing, done: _done,callback: callBack,assignment: widget.data,)
-                  );
+                child: BlocProvider.value(value:_timelineBloc, child: Board(todo: _todo,doing: _doing, done: _done,callback: callBack,assignment: widget.data,))
+                );
             }
           },
         ),

@@ -58,6 +58,7 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
       yield UpdatingAssignmentStatusState();
       await repository.updateAssignmentState(data: event.data);
       yield UpdatedAssignmentStatusState();
+      print(event.data);
        timelineBloc.add(SendDataTimelineEvent(
          intial: false,
          data: ContributionModel(
@@ -65,7 +66,7 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
             what: WhatEnum.update,
             when: DateTime.now()
           , how: "status", where: WhereEnum.assignment, why: "from ongoing to done",
-        room: repository.data, from: null, assignmentId: event.data.id)));
+        room: repository.data, from: null, assignmentId: event.data['assignment_id'])));
       this.add(LoadAssignmentEvent());
     }
     if(event is DeleteAssignmentEvent){

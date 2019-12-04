@@ -7,6 +7,7 @@ import 'package:peeps/enum/role_enum.dart';
 import 'package:peeps/models/user.dart';
 import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/routing_constant.dart';
+import 'package:showcaseview/showcaseview.dart';
 import 'home.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -114,20 +115,6 @@ class _DrawerViewState extends State<DrawerView> {
         _themeSwitch(),
       ];
 
-
-      _supervisorDrawer(){
-        if(user.role == 1){
-          return Column(
-            children: <Widget>[
-              Divider(),
-              item((FontAwesomeIcons.markdown), "Marking", "routeName")
-            ],
-          );
-        }
-        return Container();
-      }
-
-
       Widget _footerDrawer() {
         return Container(
           child: Align(
@@ -154,7 +141,6 @@ class _DrawerViewState extends State<DrawerView> {
       }
 
       ListView listView = new ListView(children: drawerChildren);
-
       return new Drawer(
         child: new Column(
           children: <Widget>[
@@ -162,14 +148,12 @@ class _DrawerViewState extends State<DrawerView> {
               flex: 3,
               child: listView,
             ),
-
             _footerDrawer(),
           ],
         ),
       );
     }
 
-  
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       appBar: new AppBar(
@@ -197,7 +181,9 @@ class _DrawerViewState extends State<DrawerView> {
           }
         },
         child: new SingleChildScrollView(
-          child: HomeView(),
+          child: ShowCaseWidget(
+            builder: Builder(builder: (context) => HomeView(),),
+          ),
         ),
       ),
       drawer: _drawerContent(context, currentUser),

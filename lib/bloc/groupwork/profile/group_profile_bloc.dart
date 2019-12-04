@@ -33,6 +33,9 @@ class GroupProfileBloc extends Bloc<GroupProfileEvent, GroupProfileState> {
       await repository.updateRoles(data: event.data);
       yield UpdatedAdminRoleState();
     }
+    if(event is UpdateTemplateRevision){
+      await repository.updateTemplate();
+    }
     if (event is DeleteMemberEvent) {
       yield DeletingMemberState();
       await repository.updateMembers(data: event.data);

@@ -4,15 +4,18 @@ import 'package:peeps/models/assignment.dart';
 class GroupworkTemplateModel{
   final String id;
   final String description;
+  double revision;
   final List<AssignmentTemplateModel> assignments;
   GroupworkTemplateModel({
     @required this.id,
     @required this.description,
+    @required this.revision,
     @required this.assignments
   });
   static GroupworkTemplateModel fromJson(Map<String,dynamic> json){
     return GroupworkTemplateModel(
       id: json['_id']['\$oid'],
+      revision: json['revision'].toDouble(),
       description: json['description'],
       assignments: json['assignments'].map((assignment){
         return AssignmentTemplateModel.fromJson(assignment);
@@ -23,6 +26,7 @@ class GroupworkTemplateModel{
     return {
       "_id":this.id,
       "description":this.description,
+      "revision":this.revision,
       "assignments":this.assignments.map((assignment){
         return assignment.toJson();
       }).toList()
@@ -30,6 +34,7 @@ class GroupworkTemplateModel{
   }
 }
 class AssignmentTemplateModel{
+  final String id;
   final String title;
   final String description;
   final double totalMarks;
@@ -37,6 +42,7 @@ class AssignmentTemplateModel{
   final DateTime dueDate;
   List<TaskTemplateModel> tasks;
   AssignmentTemplateModel({
+    @required this.id,
     @required this.title,
     @required this.description,
     @required this.totalMarks,
@@ -46,6 +52,7 @@ class AssignmentTemplateModel{
   });
   static AssignmentTemplateModel fromJson(Map<String,dynamic> json){
     return AssignmentTemplateModel(
+      id: json['_id']['\$oid'],
       title: json['title'],
       description: json['description'],
       totalMarks: json['total_marks'].toDouble(),
@@ -58,6 +65,7 @@ class AssignmentTemplateModel{
   }
   Map<String,dynamic> toJson(){
     return {
+      "_id":this.id,
       "title":this.title,
       "description":this.description,
       "total_marks":this.totalMarks,
@@ -70,10 +78,12 @@ class AssignmentTemplateModel{
   }
 }
 class TaskTemplateModel{
+  final String id;
   final String title;
   final String description;
   final int difficulty;
   TaskTemplateModel({
+    @required this.id,
     @required this.title,
     @required this.description,
     @required this.difficulty,
@@ -81,6 +91,7 @@ class TaskTemplateModel{
   
   static TaskTemplateModel fromJson(Map<String,dynamic> json){
     return TaskTemplateModel(
+      id: json['_id']['\$oid'],
       title: json['title'],
       description: json['description'],
       difficulty: json['difficulty']
@@ -89,6 +100,7 @@ class TaskTemplateModel{
 
   Map<String,dynamic> toJson(){
     return {
+      "_id":this.id,
       "title":this.title,
       "description":this.description,
       "difficulty":this.difficulty,

@@ -6,12 +6,12 @@ import 'package:peeps/enum/contribution_enum.dart';
 import 'package:peeps/models/changed_status.dart';
 import 'package:peeps/models/contribution.dart';
 
-import 'package:peeps/resources/task_repository.dart';
+import 'package:peeps/resources/tasks_repository.dart';
 import '../bloc.dart';
 
 class TaskBloc extends Bloc<TaskEvent, TaskState> {
   final TimelineBloc timelineBloc;
-  final TaskRepository repository;
+  final TasksRepository repository;
   TaskBloc({
     @required this.repository,
     @required this.timelineBloc,

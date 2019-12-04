@@ -16,6 +16,7 @@ class AssignmentModel{
   final DateTime dueDate;
   final double userPoint;
   final Approval approval;
+  final String templateId;
   List<TaskModel> tasks;
   List<TaskModel> todo;
   List<TaskModel> ongoing;
@@ -35,6 +36,7 @@ class AssignmentModel{
       @required this.createdDate,
       @required this.startDate,
       @required this.dueDate,
+      @required this.templateId,
       this.userPoint,
       this.approval,
       this.todo,
@@ -53,6 +55,7 @@ class AssignmentModel{
       "created_date": this.createdDate.toString(),
       "start_date":this.startDate.toString(),
       "due_date":this.dueDate.toString(),
+      "template_id":this.templateId,
       "status":this.status.index,
       "approval":this.approval.index,
     };
@@ -72,6 +75,7 @@ class AssignmentModel{
       dueDate: json['due_date'] != null ? DateTime.parse(json['due_date']) : null,
       userPoint: json['user_point'] != null ? json['user_point'].toDouble() : null,
       approval: json['approval'] != null ? Approval.values.elementAt(json['approval']) : null,
+      templateId: json['template_id'] != null ? json['template_id']['\$oid'] : null,
     
     );
   }

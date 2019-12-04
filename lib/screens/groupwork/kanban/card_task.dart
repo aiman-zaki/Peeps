@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/enum/approval_enum.dart';
+import 'package:peeps/models/assignment.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 import 'package:peeps/screens/groupwork/kanban/task_review.dart';
@@ -10,10 +11,11 @@ import 'package:peeps/screens/groupwork/task_form.dart';
 import 'dialog_card_task.dart';
 
 class CardTask extends StatelessWidget {
+  final String assignmentId;
   final TaskModel task;
   final bool isLeader;
 
-  const CardTask({Key key, this.task, @required this.isLeader}) : super(key: key);
+  const CardTask({Key key, this.task, @required this.isLeader,@required this.assignmentId}) : super(key: key);
 
   Color _cardColorSwitch(int priority) {
     switch (priority) {
@@ -46,9 +48,11 @@ class CardTask extends StatelessWidget {
                     child: BlocProvider.value(
                         value: _timelineBloc,
                         child: DialogTaskCard(
+                          assignmentId: assignmentId,
                           isLeader: isLeader,
                           task: task, headerColor: _headerColor))),
-              ));
+              )
+            );
     }
 
     return GestureDetector(

@@ -64,7 +64,7 @@ class _AssignmentFormState extends State<AssignmentFormView> {
           builder: (context) {
             return DialogWithAvatar(
               avatarIcon: Icon(Icons.check),
-              title: "Confirm",
+              title:Text( "Confirm"),
               description: " ${widget.isEdit? 'Update': 'New'} Assignment?",
               width: 400,
               height: 180,
@@ -95,6 +95,7 @@ class _AssignmentFormState extends State<AssignmentFormView> {
                           status: widget.assignmentData.status,
                           approval: widget.assignmentData.approval,
                           startDate: widget.assignmentData.startDate,
+                          templateId: null,
                           ),
                     ));
                   } else {
@@ -109,6 +110,7 @@ class _AssignmentFormState extends State<AssignmentFormView> {
                           status: Status.ongoing,
                           approval: Approval.tbd,
                           startDate: DateTime.now(),
+                          templateId: null,
                           ),
                    ));
                   }

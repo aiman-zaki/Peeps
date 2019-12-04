@@ -43,6 +43,10 @@ class GroupworkRepository extends BaseRepository{
     await super.update(data: data,namespace: "roles");
   }
 
+  updateTemplate() async {
+    await super.create(data: null,namespace: "template/update");
+  }
+
   readRequests() async{
     var data = await super.read(namespace: "requests");
   }

@@ -19,4 +19,8 @@ class SGroupworkTemplateRepository extends BaseRepository{
   createGroupworkTemplate({@required data}) async {
     await super.create(namespace: 'templates',data: data);
   }
+
+  updateGroupworkTemplate({@required data}) async {
+    await super.update(namespace: 'templates',data: data);
+  }
 }

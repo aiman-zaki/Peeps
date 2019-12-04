@@ -86,7 +86,12 @@ class HubHeader extends StatelessWidget {
                     height: 10,
                   ),
                   CustomCaptions(
-                    text: groupData.id,
+                    color: Colors.cyan,
+                    text: "group id : ${groupData.id}",
+                  ),
+                  CustomCaptions(
+                    color: Colors.blue,
+                    text: "template id : ${groupData.templateId}"
                   )
                 ],
               ),

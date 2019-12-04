@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
-import 'package:peeps/resources/task_repository.dart';
+import 'package:peeps/resources/tasks_repository.dart';
 import 'package:meta/meta.dart';
 import '../bloc.dart';
 
 class AssignmentTaskRequestsBloc extends Bloc<AssignmentTaskRequestsEvent, AssignmentTaskRequestsState> {
-  final TaskRepository repository;
+  final TasksRepository repository;
   AssignmentTaskRequestsBloc({
     @required this.repository
   });

@@ -6,7 +6,7 @@ class DialogWithAvatar extends StatelessWidget {
 
    final Widget avatarIcon;
 
-   final String title; 
+   final Widget title; 
    final String description;
    final Widget bottomLeft;
    final Widget bottomRight;
@@ -25,11 +25,8 @@ class DialogWithAvatar extends StatelessWidget {
     body.add(
       Padding(
         padding: titlePadding,
-        child: Text(title,
-          style: TextStyle(
-            fontSize: 20,
-          ),
-        ),
+        child: title
+        
       )
     );
   }
@@ -48,6 +45,8 @@ class DialogWithAvatar extends StatelessWidget {
       Container(
         padding: EdgeInsets.only(left: 5),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: children,
         ),
       )
@@ -59,30 +58,31 @@ class DialogWithAvatar extends StatelessWidget {
 
   if(bottomLeft != null || bottomRight != null){
     body.add(
-      Stack(
-        children: <Widget>[
-          Align(
-              alignment: Alignment.bottomLeft,
-              child: bottomLeft == null ? Text('') : bottomLeft,
-          ),
-          Align(
-              alignment: Alignment.bottomRight,
-              child:  bottomRight == null ? Text('') :bottomRight,
-          ),
+      Container(
+        padding: EdgeInsets.all(6),
+        child: Stack(
+          children: <Widget>[
+            Align(
+                alignment: Alignment.bottomLeft,
+                child: bottomLeft == null ? FlatButton(child: Text("Cancel"), onPressed: (){Navigator.of(context).pop();},) : bottomLeft,
+            ),
+            Align(
+                alignment: Alignment.bottomRight,
+                child:  bottomRight == null ? Text('') :bottomRight,
+            ),
   
-        ],
+          ],
+        ),
       )
     );
   }
 
     Widget _buildBody(){
       return Container(
-        
         width: width,
-        height: height == null ? 200 : height,
+        height: height == null ? 210 : height,
         padding: EdgeInsets.only(
           top: 30,
-
           left: 10,
           right: 10,
         ),

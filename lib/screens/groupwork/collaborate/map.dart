@@ -50,7 +50,7 @@ class _CollaborateMapViewState extends State<CollaborateMapView> {
             return DialogWithAvatar(
               height: 200,
               avatarIcon: Icon(Icons.message),
-              title: "Message to be Display on Marker",
+              title: Text("Message to be Display on Marker"),
               children: <Widget>[
                 TextFormField(
                   controller: _messageController,

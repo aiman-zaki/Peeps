@@ -18,6 +18,7 @@ class GroupworkModel{
   final List<Note> notes;
   final String profilePicturerUrl;
   final String templateId;
+  final double revision;
 
 
   GroupworkModel({
@@ -32,6 +33,7 @@ class GroupworkModel{
     this.notes,
     this.profilePicturerUrl,
     @required this.templateId,
+    this.revision,
 
   });
 
@@ -59,6 +61,7 @@ class GroupworkModel{
       notes: item,
       profilePicturerUrl: url,
       templateId: data['template_id'] != null ? data['template_id']['\$oid'] : null,
+      revision: data['revision'] != null ? data['revision'].toDouble() : 0.00,
     );
   }
 
@@ -72,7 +75,8 @@ class GroupworkModel{
       "members":this.members,
       "supervisor":this.supervisor,
       "invitation_list":this.invitations,
-      "template_id":this.templateId
+      "template_id":this.templateId,
+      "revision":this.revision
     };
   }
 }

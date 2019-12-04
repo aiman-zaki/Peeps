@@ -1,10 +1,13 @@
+import 'package:datetime_picker_formfield/datetime_picker_formfield.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/groupwork/assignment_task_requests/assignment_task_requests_bloc.dart';
 import 'package:peeps/enum/approval_enum.dart';
 import 'package:peeps/models/request.dart';
 import 'package:peeps/models/task.dart';
+import 'package:peeps/screens/common/withAvatar_dialog.dart';
 import 'package:peeps/screens/splash_page.dart';
 
 
@@ -16,6 +19,8 @@ class TaskRequestsView extends StatefulWidget {
 }
 
 class _TaskRequestsViewState extends State<TaskRequestsView> {
+  final format = DateFormat("yyyy-MM-dd HH:mm");
+  final _dueDate = TextEditingController();
   @override
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<AssignmentTaskRequestsBloc>(context);
@@ -40,8 +45,48 @@ class _TaskRequestsViewState extends State<TaskRequestsView> {
                         color: Colors.green,
                         child: Text("Approve"),
                         onPressed: (){
-                          data[index].approval = Approval.approved;
-                          _bloc.add(UpdateTaskRequestEvent(data: data[index]));
+                          showDialog(
+                            context: context,
+                            builder: (context){
+                              data[index].approval = Approval.approved;
+                              return DialogWithAvatar(
+                                avatarIcon: Icon(Icons.check),
+                                children: <Widget>[
+                                  DateTimeField(
+                                    decoration: InputDecoration(
+                                      labelText: "Due Date"
+                                    ),
+                                    controller: _dueDate,
+                                    format: format,
+                                    onShowPicker: (context, currentValue) async {
+                                      final date = await showDatePicker(
+                                          context: context,
+                                          firstDate: DateTime(1900),
+                                          initialDate: currentValue ?? DateTime.now(),
+                                          lastDate: DateTime(2100));
+                                      if (date != null) {
+                                        final time = await showTimePicker(
+                                          context: context,
+                                          initialTime:
+                                              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                                        );
+                                        return DateTimeField.combine(date, time);
+                                      } else {
+                                        return currentValue;
+                                      }
+                                    },
+                                  ),
+                                ],
+                                bottomRight: FlatButton(
+                                  onPressed: (){
+                                     data[index].dueDate = DateTime.parse(_dueDate.text);
+                                    _bloc.add(UpdateTaskRequestEvent(data: data[index]));
+                                  },
+                                  child: Text("Confirm"),
+                                ),
+                              );
+                            }
+                          );
                         },
                       ),
                       SizedBox(width: 10,),

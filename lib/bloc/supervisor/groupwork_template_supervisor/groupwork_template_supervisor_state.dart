@@ -29,3 +29,31 @@ class LoadedGroupworkTemplateSupervisorState  extends GroupworkTemplateSuperviso
   @override
   String toString() => "LoadedGroupworkTemplateSupervisorState";
 }
+
+class GroupworkTemplateSupervisorErrorState extends GroupworkTemplateSupervisorState{
+  final error;
+  GroupworkTemplateSupervisorErrorState({
+    @required this.error
+  });
+  
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => "GroupworkTemplateSupervisorErrorState";
+
+}
+
+class GroupworkTemplateSupervisorSucessState extends GroupworkTemplateSupervisorState{
+  final message;
+
+  GroupworkTemplateSupervisorSucessState({
+    @required this.message
+  });
+
+  @override
+  String toString() => "GroupworkTemplateSupervisorSucessState";
+
+  @override
+  List<Object> get props => [message];
+}

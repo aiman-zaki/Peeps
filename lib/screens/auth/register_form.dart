@@ -80,7 +80,7 @@ class _RegisterFormState extends State<RegisterForm> {
               builder: (context,state){
                 if(state is InitialRegisterState){
                   return DialogWithAvatar(
-                    title: "Registration",
+                    title: Text("Registration"),
                     description: "Are you sure to continue ? ",
                     children: <Widget>[
                       SizedBox(height: 15,)
@@ -121,7 +121,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 if(state is CompletedRegisterState){
                   return DialogWithAvatar(
                     avatarIcon: Icon(Icons.account_circle),
-                    title: "Update Your Profile Now?",
+                    title: Text("Update Your Profile Now?"),
                     width: 300,
                     height: 180,
                     children: <Widget>[

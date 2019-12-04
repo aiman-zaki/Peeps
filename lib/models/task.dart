@@ -1,18 +1,21 @@
 import 'package:flutter/widgets.dart';
 import 'package:peeps/enum/approval_enum.dart';
 import 'package:peeps/enum/task_status_enum.dart';
+import 'package:peeps/screens/groupwork/kanban/task_review.dart';
 
 class TaskModel{
-  String id;
-  String creator;
-  String assignTo;
-  String task;
-  String description;
-  DateTime createdDate;
-  DateTime assignDate;
-  DateTime dueDate;
-  DateTime lastUpdated;
-  TaskStatus status;
+  final String id;
+  final String creator;
+  final String assignTo;
+  final String task;
+  final String description;
+  final DateTime createdDate;
+  final DateTime assignDate;
+  final DateTime dueDate;
+  final DateTime lastUpdated;
+  final TaskStatus status;
+  final List<TaskItemsModel> items;
+  final List<TaskReviewsModel> reviews;
   int priority;
   int seq;
   TaskModel({
@@ -26,21 +29,26 @@ class TaskModel{
     @required this.dueDate,
     @required this.lastUpdated,
     @required this.status,
+    @required this.items,
+    @required this.reviews,
     this.priority,
     this.seq,
   });
   static TaskModel fromJson(Map<String,dynamic> json){
+    print(json);
     return TaskModel(
       id: json['_id']['\$oid'],
       creator: json['creator'],
       assignTo: json['assign_to'],
       task: json['task'],
       description: json['description'],
-      assignDate: DateTime.parse(json['assign_date']),
+      assignDate: json['assign_date'] == null ? null : DateTime.parse(json['assign_date']),
       createdDate: DateTime.parse(json['created_date']),
-      dueDate: DateTime.parse(json['due_date']),
-      lastUpdated: DateTime.parse(json['last_updated']),
+      dueDate: json['due_date'] == null ? null : DateTime.parse(json['due_date']),
+      lastUpdated: json['last_updated'] == null ? null : DateTime.parse(json['last_updated']),
       status: TaskStatus.values.elementAt(json['status']),
+      items: json['items'] == null ? [] : json['items'].map((item) => TaskItemsModel.fromJson(item)).toList().cast<TaskItemsModel>(),
+      reviews: json['reviews'] == null ? [] : json['reviews'].map((item) => TaskReviewsModel.fromJson(item)).toList().cast<TaskReviewsModel>(),
       priority: json['priority'],
       seq: json['seq'],
     );
@@ -63,6 +71,74 @@ class TaskModel{
   }
 }
 
+class TaskItemsModel{
+  final String id;
+  final String item;
+  final Approval approval;
+  final DateTime createdDate;
+
+  TaskItemsModel({
+    @required this.id,
+    @required this.item,
+    @required this.approval,
+    @required this.createdDate,
+  });
+
+  static TaskItemsModel fromJson(Map<String,dynamic> json){
+    return TaskItemsModel(
+      id: json['_id']['\$oid'],
+      item: json['item'],
+      approval: json['approval'] !=  null ? Approval.values.elementAt(json['approval']) : Approval.tbd,
+      createdDate: DateTime.parse(json['created_date'])
+    );
+  }
+
+  Map<String,dynamic> toJson(){
+    return {
+      "_id": this.id,
+      "item": this.item,
+      "created_date": this.createdDate.toString(),
+      "approval":this.approval.index,
+    };
+  }
+}
+
+class TaskReviewsModel{
+  final String id;
+  final String review;
+  Approval approval;
+
+  final DateTime createdDate;
+
+  TaskReviewsModel({
+    @required this.id,
+    @required this.review,
+    @required this.approval,
+
+    @required this.createdDate,
+  });
+
+  static TaskReviewsModel fromJson(Map<String,dynamic> json){
+    return TaskReviewsModel(
+      id: json['_id']['\$oid'],
+      review: json['review'],
+      approval: json['approval'] !=  null ? Approval.values.elementAt(json['approval']) : Approval.tbd,
+
+      createdDate: DateTime.parse(json['created_date'])
+    );
+  }
+
+  Map<String,dynamic> toJson(){
+    return {
+      "_id": this.id,
+      "review": this.review,
+      "created_date": this.createdDate.toString(),
+      "approval":this.approval.index,
+
+    };
+  }
+}
+
 
 class TaskRequestModel{
   final String id;
@@ -71,6 +147,7 @@ class TaskRequestModel{
   final String from;
   final TaskModel task;
   final String message;
+  DateTime dueDate;
   DateTime createdDate;
   Approval approval;
 
@@ -79,6 +156,7 @@ class TaskRequestModel{
     @required this.taskId,
     @required this.requester,
     this.from,
+    @required this.dueDate,
     @required this.approval,
     @required this.message,
     @required this.createdDate,
@@ -92,6 +170,7 @@ class TaskRequestModel{
       requester: json['requester'],
       approval: Approval.values.elementAt(json['approval']),
       message: json['message'],
+      dueDate: DateTime.parse(json['due_date']),
       createdDate: DateTime.parse(json['created_date']),
       task: TaskModel.fromJson(json['task'])
     );
@@ -105,6 +184,7 @@ class TaskRequestModel{
       "approval":this.approval.index,
       "message":this.message,
       "created_date":this.createdDate.toString(),
+      "due_date":this.dueDate.toString()
     };
   }
 

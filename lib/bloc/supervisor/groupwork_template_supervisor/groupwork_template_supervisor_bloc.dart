@@ -24,7 +24,21 @@ class GroupworkTemplateSupervisorBloc extends Bloc<GroupworkTemplateSupervisorEv
       yield LoadedGroupworkTemplateSupervisorState(data: data);
     }
     if(event is CreateGroupworkTemplateSupervisorEvent){
-      await repository.createGroupworkTemplate(data: event.data.toJson());
+      try{
+         var message = await repository.createGroupworkTemplate(data: event.data.toJson());
+         yield GroupworkTemplateSupervisorSucessState(message: message);
+      }catch(e){
+        yield GroupworkTemplateSupervisorErrorState(error: e);
+      }
+      this.add(ReadGroupworkTemplateSupervisorEvent());
+    }
+    if(event is UpdateGroupworkTemplateSupervisorEvent){
+      try{
+         var message = await repository.updateGroupworkTemplate(data: event.data.toJson());
+         yield GroupworkTemplateSupervisorSucessState(message: message);
+      }catch(e){
+        yield GroupworkTemplateSupervisorErrorState(error: e);
+      }
       this.add(ReadGroupworkTemplateSupervisorEvent());
     }
   }

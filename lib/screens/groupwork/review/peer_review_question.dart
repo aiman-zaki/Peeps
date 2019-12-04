@@ -132,7 +132,7 @@ class _PeerReviewQuestionsViewState extends State<PeerReviewQuestionsView> {
             avatarIcon: Icon(Icons.check),
             width: 300,
             height: 200,
-            title: "Confirmation",
+            title: Text("Confirmation"),
             description: "Are you sure breo",
             bottomRight: FlatButton(
               child: Text("Confirm"),

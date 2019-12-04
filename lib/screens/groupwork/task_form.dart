@@ -51,12 +51,10 @@ class _TaskFormState extends State<TaskForm> {
     if(widget.edit){
       _taskController.text = widget.task.task;
       _descriptionController.text = widget.task.description;
-      _assignedDate.text = widget.task.assignDate.toString();
-      _dueDate.text = widget.task.dueDate.toString();
+      _assignedDate.text = widget.task.assignDate == null ? null : widget.task.assignDate.toString();
+      _dueDate.text = widget.task.dueDate == null ? null : widget.task.dueDate.toString();
       _assignedTo = widget.task.assignTo;
-      _priority = widget.task.priority;
-      print(widget.task.toJson());
-    
+      _priority = widget.task.priority;    
     }
   }
 
@@ -71,7 +69,7 @@ class _TaskFormState extends State<TaskForm> {
         width: 400,
         height: 180,
         avatarIcon: Hero(tag: "confirm",child: Icon(Icons.check),),
-        title: "Confirm",
+        title: Text("Confirm"),
         description: "Process with the task creation?",
         children: <Widget>[
           SizedBox(height: 15,)
@@ -88,11 +86,12 @@ class _TaskFormState extends State<TaskForm> {
           onPressed: (){
             DateTime assignDate = DateTime.parse(_assignedDate.text);
             DateTime dueDate = DateTime.parse(_dueDate.text);
-            _taskBloc.add(AddNewTaskEvent(assignment: widget.assignment,groupId: widget.groupId,
+            _taskBloc.add(
+              AddNewTaskEvent(assignment: widget.assignment,groupId: widget.groupId,
                   task: TaskModel(task: _taskController.text, description: _descriptionController.text, 
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
-                                  dueDate: dueDate, assignTo: _assignedTo, lastUpdated: DateTime.now(), priority: _priority,status: TaskStatus.todo)));
+                                  dueDate: dueDate, assignTo: _assignedTo, lastUpdated: DateTime.now(), priority: _priority,status: TaskStatus.todo,reviews: [],items: [])));
             Navigator.of(context).pop();
           },
           child: Text("Accept"),
@@ -111,9 +110,6 @@ class _TaskFormState extends State<TaskForm> {
     }
 
     _buildPriorityDropdown(){
-
-      //TODO Dumbfuck but working
-
       var data  = ['highest','high','normal'];
       List<DropdownMenuItem> items = [];
       for(int i = 0 ; i<data.length;i++){
@@ -282,16 +278,20 @@ class _TaskFormState extends State<TaskForm> {
             _taskBloc.add(UpdateTaskEvent(data: TaskModel(
               id: widget.task.id, 
               creator: widget.task.creator, 
-              description: widget.task.description, 
+              description: _descriptionController.text, 
               createdDate: widget.task.createdDate,
               dueDate: DateTime.parse(_dueDate.text), 
               task: _taskController.text, 
-              assignDate: widget.task.assignDate, 
+              assignDate: DateTime.parse(_assignedDate.text), 
               assignTo: _assignedTo, 
               status: widget.task.status, 
               lastUpdated: DateTime.now(),
+              priority: _priority,
+              reviews: widget.task.reviews,
+              items: widget.task.items,
               seq: widget.task.seq
             )));
+            
           }
         }
       ),

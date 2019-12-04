@@ -8,7 +8,7 @@ import 'package:peeps/enum/status_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/resources/assignment_repository.dart';
 
-import 'package:peeps/resources/task_repository.dart';
+import 'package:peeps/resources/tasks_repository.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 import 'package:peeps/screens/groupwork/assignment/task_requests.dart';
 import 'package:peeps/screens/groupwork/kanban/kanban.dart';
@@ -54,7 +54,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
             avatarIcon: Icon(Icons.check),
             width: 300,
             height: 200,
-            title: "Confirmation",
+            title: Text("Confirmation"),
             description: "Are you sure want to $fun ${data[index].title}",
             bottomLeft: FlatButton(
               child: Text("Cancel"),
@@ -96,7 +96,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                         return DialogWithAvatar(
                           height: 100,
                           avatarIcon: Icon(Icons.error),
-                          title: "You Cannot Change from Done to Ongoing!",
+                          title: Text("You Cannot Change from Done to Ongoing!"),
                         );
                       }
                     );
@@ -137,7 +137,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
               MaterialPageRoute(
                 builder: (context) => 
                 BlocProvider(
-                  builder: (context) => AssignmentTaskRequestsBloc(repository: TaskRepository(data: data[index].id))
+                  builder: (context) => AssignmentTaskRequestsBloc(repository: TasksRepository(data: data[index].id))
                     ..add(ReadTaskRequestsEvent()),  
                   child: TaskRequestsView())
               )
@@ -232,7 +232,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                       Navigator.of(context).push(CupertinoPageRoute(
                         builder: (context) => BlocProvider<TaskBloc>(
                           builder: (context) => TaskBloc(
-                              repository: TaskRepository(data: data[index].id), timelineBloc: _timelineBloc),
+                              repository: TasksRepository(data: data[index].id), timelineBloc: _timelineBloc),
                           child: BlocProvider<MembersBloc>.value(
                             value: _membersBloc,
                             child: BlocProvider<TimelineBloc>.value(
@@ -375,7 +375,8 @@ class _HubAssignmentsState extends State<HubAssignments> {
                     ],
                   ),
                 ),
-                Expanded(
+                widget.groupData.templateId == null ? 
+                  Expanded(
                   flex: 1,
                   child: FlatButton(
                       onPressed: () {
@@ -400,7 +401,8 @@ class _HubAssignmentsState extends State<HubAssignments> {
                         "New",
                         textAlign: TextAlign.center,
                       )),
-                ),
+                ):
+                Container(),
               ],
             ),
             BlocBuilder<AssignmentBloc, AssignmentState>(

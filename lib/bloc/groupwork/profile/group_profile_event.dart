@@ -52,3 +52,13 @@ class DeleteMemberEvent extends GroupProfileEvent{
   @override
   String toString() => "DeleteMemberEvent";
 }
+
+
+class UpdateTemplateRevision extends GroupProfileEvent{
+  @override
+  String toString() => "UpdateTemplateRevision";
+
+  @override
+  List<Object> get props => [];
+  
+}

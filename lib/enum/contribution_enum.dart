@@ -5,6 +5,7 @@ enum WhatEnum{
   update,
   delete,
   request,
+  suggestion,
 }
 
 String getWhatEnumString(WhatEnum whatEnum){
@@ -14,8 +15,8 @@ String getWhatEnumString(WhatEnum whatEnum){
     WhatEnum.update:"Update",
     WhatEnum.delete:"Delete",
     WhatEnum.request:"Request",
+    WhatEnum.suggestion:"Suggestion",
   };
-
   return enumString[whatEnum];
 }
 

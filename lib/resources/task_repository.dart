@@ -4,56 +4,39 @@ import 'package:peeps/resources/base_respository.dart';
 import 'package:peeps/resources/common_repo.dart';
 
 class TaskRepository extends BaseRepository{
-
+  final String data;
+  final String data2;
+  
   TaskRepository({
-    @required data,
-  }):super(baseUrl:groupworksUrl,data:data);
+    @required this.data,
+    @required this.data2
+  }):super(baseUrl:groupworksUrl,data:data,data2:data2);
 
-  readTasks() async {
-    var data = await super.read(namespace: "tasks");
-    List<TaskModel> tasks = [];
-    for(Map<String,dynamic> task in data){
-      tasks.add(TaskModel.fromJson(task));
-    }
-    return tasks;
+  readTaskItems() async {
+    var data =  await super.read(namespace: 'task/items');
+    return data.map((value){
+      return TaskItemsModel.fromJson(value);
+    }).toList().cast<TaskItemsModel>();
   }
 
-  readTask() async {
-    var data = super.read(namespace: "");
+  readTaskReviews() async {
+    var data =  await super.read(namespace: 'task/reviews');
+    return data.map((value){
+      return TaskReviewsModel.fromJson(value);
+    }).toList().cast<TaskReviewsModel>();
+  }
+ 
+  updateTaskItems({@required data}) async{
+    await super.create(data: data,namespace: "task/items");
   }
 
-  createTask({@required data}) async {
-    await super.create(data: data,namespace: "tasks");
+  updateTaskReview({@required data}) async{
+    await super.create(data: data,namespace: "task/reviews");
   }
 
-  updateTask({@required data}) async {
-    await super.update(data: data,namespace: "${data['_id']}/task");
+  updateTaskReviewApproval({@required data}) async {
+    await super.update(data: data,namespace: "task/reviews/approval");
   }
 
-  deleteTask({@required id}) async {
-    await super.delete(namespace: "$id/task");
-  }
-
-  updateTaskStatus({@required data}) async {
-    await super.update(data: {
-      "tasks":data,
-    },namespace: "tasks/status");
-  }
-
-  readRequests() async {
-    var data = await super.read(namespace: "tasks/requests");
-    return data.map((request){
-      return TaskRequestModel.fromJson(request);
-    }).toList().cast<TaskRequestModel>();
-    
-  }
-
-  createRequest({@required data}) async {
-    await super.create(data: data,namespace: "tasks/requests");
-  }
-
-  updateRequest({@required data}) async {
-    await super.update(data: data,namespace: "tasks/requests");
-  }
 
 }

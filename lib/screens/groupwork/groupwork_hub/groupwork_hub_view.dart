@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_custom_clippers/flutter_custom_clippers.dart';
 import 'package:peeps/bloc/bloc.dart';
@@ -15,6 +16,7 @@ import 'package:peeps/screens/groupwork/collaborate/user_joined.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/live_timeline.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/members.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/milestone.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/welcome.dart';
 import 'package:peeps/screens/groupwork/stash/stash.dart';
 
 import 'header.dart';
@@ -51,14 +53,17 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
 
   @override
   void initState() {
+    super.initState();
     BlocProvider.of<TimelineBloc>(context).add(ConnectTimelineEvent(data: widget.groupData.id));
     BlocProvider.of<GroupChatBloc>(context).add(LoadGroupChatEvent(room: widget.groupData.id));
+    SchedulerBinding.instance.addPostFrameCallback((_) => showDialog(context: context,builder: (context) => WelcomeGroupworkHubDialog(groupwork: widget.groupData,)));
     _isAdmin = checkIsAdmin();
-    super.initState();
+    
   }
 
   @override
   Widget build(BuildContext context) {
+  
     final _referencesBloc = BlocProvider.of<ReferenceBloc>(context);
     final size = MediaQuery.of(context).size;
     

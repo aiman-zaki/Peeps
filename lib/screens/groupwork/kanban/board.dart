@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:peeps/bloc/groupwork/timeline/timeline_bloc.dart';
 import 'package:peeps/bloc/user/profile/profile_bloc.dart';
 import 'package:peeps/bloc/user/profile/profile_state.dart';
 import 'package:peeps/enum/status_enum.dart';
@@ -61,6 +62,7 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.todo){
         draggableTodo.add(
           DraggableTask(
+            assignmentId: widget.assignment.id,
             isLeader: isLeader,
             isDone: widget.assignment.status == Status.done ? true : false,
             data: data,
@@ -75,6 +77,7 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.doing){
         draggableDoing.add(
           DraggableTask(
+            assignmentId: widget.assignment.id,
             isLeader: isLeader,
             isDone: widget.assignment.status == Status.done ? true : false,
             data: data,
@@ -89,6 +92,7 @@ class _BoardState extends State<Board> {
       for(TaskModel data in widget.done){
         draggableDone.add(
           DraggableTask(
+            assignmentId: widget.assignment.id,
             isLeader: isLeader,
             isDone: widget.assignment.status == Status.done ? true : false,
             data: data,
@@ -104,12 +108,15 @@ class _BoardState extends State<Board> {
   
   @override
   Widget build(BuildContext context) {
+  final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
+
     Size size = MediaQuery.of(context).size;
     return Container(
       child: Row(
         children: <Widget>[
           Expanded(
             child: DraggableTaskZone(
+              assignmentId: widget.assignment.id,
               isLeader: isLeader,
               draggable: draggableTodo,
               taskList: widget.todo,
@@ -120,6 +127,7 @@ class _BoardState extends State<Board> {
           ),
           Expanded(
             child: DraggableTaskZone(
+              assignmentId: widget.assignment.id,
               isLeader: isLeader,
               draggable: draggableDoing,
               taskList: widget.doing,
@@ -130,6 +138,7 @@ class _BoardState extends State<Board> {
           ),
           Expanded(
             child: DraggableTaskZone(
+              assignmentId: widget.assignment.id,
               isLeader: isLeader,
               draggable: draggableDone,
               taskList: widget.done,

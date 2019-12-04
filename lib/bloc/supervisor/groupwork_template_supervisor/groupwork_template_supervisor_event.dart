@@ -21,3 +21,32 @@ class CreateGroupworkTemplateSupervisorEvent extends GroupworkTemplateSupervisor
   @override
   String toString() => "CreateGroupworkTemplateSupervisorEvent";
 }
+
+class UpdateGroupworkTemplateSupervisorEvent extends GroupworkTemplateSupervisorEvent{
+  final data;
+
+  UpdateGroupworkTemplateSupervisorEvent({
+    @required this.data
+  });
+
+  @override
+  String toString() => "UpdateGroupworkTemplateSupervisorEvent";
+  @override
+  List<Object> get props => [];
+}
+
+class GroupworkTemplateSupervisorErrorEvent extends GroupworkTemplateSupervisorEvent{
+  final error;
+
+  GroupworkTemplateSupervisorErrorEvent({
+    @required this.error
+  });
+
+  @override
+  String toString() => "GroupworkTemplateSupervisorErrorEvent";
+
+  @override
+  List<Object> get props => [error];
+}
+
+
