@@ -9,7 +9,7 @@ String getRoleStringEnum(Role role){
   Map<Role,dynamic> roles = {
     Role.admin:"Admin",
     Role.supervisor:"Supervisor",
-    Role.student:"Student,"
+    Role.student:"Student"
   };
   return roles[role];
 }

@@ -38,5 +38,9 @@ class TaskRepository extends BaseRepository{
     await super.update(data: data,namespace: "task/reviews/approval");
   }
 
+  updateAcceptTaskSolution({@required data}) async {
+    await super.update(data: data,namespace: "task/accepted_date");
+  }
+
 
 }

@@ -30,9 +30,9 @@ class TimelineBloc extends Bloc<TimelineEvent, TimelineState> {
       yield ConnectedTimelineState(repo: liveTimeline);
     }
     if(event is DisconnectTimelineEvent){
-      //liveTimeline.disconnect();
     }
     if(event is SendDataTimelineEvent){
+      event.data.room = repository.data;
       liveTimeline.sendData(event.data);
       if(!event.intial){
         await repository.create(data:event.data);

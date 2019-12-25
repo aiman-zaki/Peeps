@@ -49,3 +49,15 @@ class UpdateReviewsApprovalEvent extends TaskItemsReviewsEvent{
   @override
   List<Object> get props => [];
 }
+
+class AcceptTaskSolutionsEvent extends TaskItemsReviewsEvent{
+  final data;
+  AcceptTaskSolutionsEvent({
+    @required this.data,
+  });
+  @override
+  String toString() => "AcceptTaskSolutionsEvent";
+
+  @override
+  List<Object> get props => [];
+}

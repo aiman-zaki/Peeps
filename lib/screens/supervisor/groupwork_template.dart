@@ -22,7 +22,6 @@ class _SupervisorGroupworkTemplateViewState extends State<SupervisorGroupworkTem
     
     _buildTemplatesList(List<GroupworkTemplateModel> data){
       return Container(
-        padding: EdgeInsets.all(9),
         child: ListView.builder(
           itemCount: data.length,
           itemBuilder: (context,index){
@@ -76,6 +75,7 @@ class _SupervisorGroupworkTemplateViewState extends State<SupervisorGroupworkTem
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        heroTag: "course-template",
         onPressed: (){
           Navigator.of(context).push(
             CupertinoPageRoute(builder: (context) =>  BlocProvider.value(value: _bloc,child: GroupworkTemplateFormView(isEdit: false,),))

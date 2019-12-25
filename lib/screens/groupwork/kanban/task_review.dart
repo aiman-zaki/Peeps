@@ -15,7 +15,8 @@ import 'package:peeps/screens/splash_page.dart';
 
 class TaskReviewView extends StatefulWidget {
   final TaskModel tasks;
-  TaskReviewView({Key key,@required this.tasks}) : super(key: key);
+  final bool isLeader;
+  TaskReviewView({Key key,@required this.tasks,@required this.isLeader}) : super(key: key);
   _TaskReviewViewState createState() => _TaskReviewViewState();
 }
 
@@ -70,8 +71,8 @@ class _TaskReviewViewState extends State<TaskReviewView> {
             itemBuilder: (context,index){
               return Slidable(
                 actionPane: SlidableDrawerActionPane(),
-                actions: <Widget>[
-                  IconSlideAction(
+                actions: isAssignedTo ?
+                  [IconSlideAction(
                     icon: Icons.check,
                     color: Colors.green,
                     onTap: (){
@@ -90,8 +91,7 @@ class _TaskReviewViewState extends State<TaskReviewView> {
                       data: reviews[index]
                       ));
                     },
-                  )
-                ],
+                  )] : [] ,
                 child: ListTile(
                   title: Text(reviews[index].review),
                   trailing: CustomTag(padding:EdgeInsets.all(3), color: Colors.pink,text: Text("${getApprovalEnumString(reviews[index].approval)}"),),
@@ -108,6 +108,35 @@ class _TaskReviewViewState extends State<TaskReviewView> {
     return Scaffold(
       appBar: AppBar(
         title: Text("Task Review"),
+        actions: <Widget>[
+          widget.isLeader ?
+          InkWell(
+            child: Icon(Icons.check_box),
+            onTap: (){
+              showDialog(
+                context: context,
+                builder: (context){
+                  return DialogWithAvatar(
+                    height: 200,
+                    avatarIcon: Icon(Icons.check_box),
+                    title: Text("You accept solution submitted?",style: TextStyle(fontSize: 22),),
+                    description: "",
+                    children: <Widget>[],
+                    bottomRight: FlatButton(
+                      onPressed: (){
+                        _bloc.add(AcceptTaskSolutionsEvent(data: {
+                          "by":_email,
+                        }));
+                        Navigator.of(context).pop();
+                      },
+                      child: Text("Confirm"),
+                    ),
+                  );
+                }
+              );
+            },
+          ) : Container(),
+        ],
       ),
       body: Container(
         padding: EdgeInsets.all(9),
@@ -156,6 +185,7 @@ class _TaskReviewViewState extends State<TaskReviewView> {
                       TaskReviewsModel(
                         id: "",
                         review: _suggestionController.text,
+                        by: _email,
                         createdDate: DateTime.now(),
                         approval: Approval.tbd, 
                       )));
@@ -164,6 +194,7 @@ class _TaskReviewViewState extends State<TaskReviewView> {
                       _bloc.add(CreateItemsEvent(
                         data: TaskItemsModel(
                           id: "",
+                          by: _email,
                           item: _itemController.text,
                           createdDate: DateTime.now(),
                           approval: Approval.tbd

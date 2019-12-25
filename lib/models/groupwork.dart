@@ -1,5 +1,6 @@
 import 'package:meta/meta.dart';
 import 'package:peeps/models/assignment.dart';
+import 'package:peeps/models/complaint.dart';
 import 'package:peeps/resources/common_repo.dart';
 
 import 'note.dart';
@@ -16,6 +17,7 @@ class GroupworkModel{
   final List<dynamic> invitations;
   final List<dynamic> members;
   final List<Note> notes;
+  final List<ComplaintModel> complaints;
   final String profilePicturerUrl;
   final String templateId;
   final double revision;
@@ -33,6 +35,7 @@ class GroupworkModel{
     this.notes,
     this.profilePicturerUrl,
     @required this.templateId,
+    @required this.complaints,
     this.revision,
 
   });
@@ -60,6 +63,7 @@ class GroupworkModel{
       supervisor: data['supervisor'],
       notes: item,
       profilePicturerUrl: url,
+      complaints: data['complaints'] != null ? data['complaints'].map((value) => ComplaintModel.fromJson(value)).toList().cast<ComplaintModel>() : [],
       templateId: data['template_id'] != null ? data['template_id']['\$oid'] : null,
       revision: data['revision'] != null ? data['revision'].toDouble() : 0.00,
     );

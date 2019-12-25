@@ -76,7 +76,7 @@ class _DrawerViewState extends State<DrawerView> {
         child: Column(
           children: <Widget>[
             Text(user.email),
-      
+            Text(getRoleStringEnum(user.role))
           ],
         ),
       );
@@ -106,11 +106,14 @@ class _DrawerViewState extends State<DrawerView> {
         item(Icons.mail, "Inbox", InboxBottomBarViewRoute),
         item(Icons.group, "Groups", GroupsViewRoute),
         item(Icons.search, "Groups Search", SearchViewRoute),
-        currentUser.role == Role.supervisor?
-          item(Icons.supervisor_account, 'Groups Supervised',SuperviseGroupworks)
-        : Container(),
-        currentUser.role == Role.supervisor?
-          item(Icons.code, 'Course',SuperviseCourse)
+        currentUser.role.index == 2 ?
+          Container()
+        : item(Icons.supervisor_account, 'Groups Supervised',SuperviseGroupworks),
+        currentUser.role.index == 2?
+          Container()
+        : item(Icons.code, 'Course',SuperviseCourse),
+        currentUser.role == Role.admin ?
+          item(FontAwesomeIcons.superpowers, 'SuperUser',SuperuserUsers)
         : Container(),
         _themeSwitch(),
       ];

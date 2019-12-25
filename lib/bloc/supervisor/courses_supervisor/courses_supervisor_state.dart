@@ -25,3 +25,13 @@ class LoadedCoursesSupervisorState extends CoursesSupervisorState{
   @override
   List<Object> get props => [data];
 }
+
+class MessageCoursesSupervisorState extends CoursesSupervisorState{
+  final message;
+  MessageCoursesSupervisorState({
+    @required this.message
+  });
+
+  @override
+  List<Object> get props => [message];
+}

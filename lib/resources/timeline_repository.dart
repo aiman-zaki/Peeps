@@ -17,7 +17,7 @@ class TimelineRepository extends BaseRepository{
   read10Only({@required namespace}) async {
     var data = await super.read(namespace: namespace);
     List<ContributionModel> contributions = [];
-    
+    print(data);
     if(data != null){
       for(Map<String,dynamic> contribution in data){
         contributions.add(ContributionModel.fromJson(contribution));

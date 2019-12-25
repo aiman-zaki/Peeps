@@ -9,8 +9,10 @@ import 'package:peeps/models/assignment.dart';
 import 'package:peeps/resources/assignment_repository.dart';
 
 import 'package:peeps/resources/tasks_repository.dart';
+import 'package:peeps/resources/timeline_assignment_repository.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 import 'package:peeps/screens/groupwork/assignment/task_requests.dart';
+import 'package:peeps/screens/groupwork/assignment/timeline.dart';
 import 'package:peeps/screens/groupwork/kanban/kanban.dart';
 import 'package:peeps/screens/groupwork/review/peer_review.dart';
 
@@ -267,6 +269,21 @@ class _HubAssignmentsState extends State<HubAssignments> {
                           ],
                           child: PeersReviewView(assignment: data[index],)),
                       ));
+                    },
+                  ),
+                  IconSlideAction(
+                    color: Colors.blueGrey,
+                    icon: Icons.timeline,
+                    caption: "Conclusion",
+                    onTap: (){
+                      Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => 
+                          BlocProvider(
+                            builder: (context) => AssignmentTimelineBloc(
+                              repository: TimelineAssignmentRepository(
+                                data: widget.groupData.id,data2:data[index].id))..add(ReadAssignmentTimelineEvent()),
+                            child: AssignmentTimelineView()))
+                      );
                     },
                   )
                 ],

@@ -8,8 +8,10 @@ import 'package:peeps/resources/groupworks_repository.dart';
 import 'package:peeps/resources/supervise_groupworks_repository.dart';
 import 'package:peeps/resources/supervisor_courses_repository.dart';
 import 'package:peeps/resources/user_repository.dart';
+import 'package:peeps/resources/users_repository.dart';
 
 import 'package:peeps/router/navigator_args.dart';
+import 'package:peeps/screens/admin/users.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
 import 'package:peeps/screens/inbox/inbox_bottombar.dart';
 import 'package:peeps/screens/supervisor/courses_supervise.dart';
@@ -58,14 +60,27 @@ Route<dynamic> generateRoute(RouteSettings settings){
       return CupertinoPageRoute(builder: (context) => GroupworkHub(groupData:args.data['groupData'],userData: args.data['userData'],));
     case SuperviseGroupworks:
       return CupertinoPageRoute(builder: (context){
-        return BlocProvider<GroupworksSuperviseBloc>(
-          builder: (context) => GroupworksSuperviseBloc(repository: SuperviseGroupworksRepository())..add(ReadGroupworksSuperviseEvent()),
+        return MultiBlocProvider(
           child: GroupworksSuperviseView(),
+          providers: [
+            BlocProvider<GroupworksSuperviseBloc>(
+              builder: (context) => GroupworksSuperviseBloc(repository: SuperviseGroupworksRepository())..add(ReadGroupworksSuperviseEvent()),
+            ),
+            BlocProvider<CoursesSupervisorBloc>(
+              builder: (context) => CoursesSupervisorBloc(repository: SupervisorRepository())..add(ReadCoursesSupervisorEvent()),
+            ),
+          ],
         );
       });
     case SuperviseCourse:
       return CupertinoPageRoute(
         builder: (context) => BlocProvider<CoursesSupervisorBloc>(builder: (context) => CoursesSupervisorBloc(repository: SupervisorRepository())..add(ReadCoursesSupervisorEvent()),child: CoursesSuperviseView(),));
+    case SuperuserUsers:
+      return CupertinoPageRoute(
+        builder: (context) => BlocProvider<AdminUsersBloc>(builder: (context) => AdminUsersBloc(repository: UsersRepository())..add(ReadUsersEvent()),
+        child:  UsersListView(),
+      ));
+
     default:
       return MaterialPageRoute(builder: (context) => DrawerView());
   }

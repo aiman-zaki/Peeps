@@ -8,3 +8,4 @@ const String InboxBottomBarViewRoute = 'inbox_bottomBar';
 const String SearchViewRoute = 'search';
 const String SuperviseGroupworks = "supervisor/groupworks";
 const String SuperviseCourse = 'supervisor/courses';
+const String SuperuserUsers = 'superuser/users';

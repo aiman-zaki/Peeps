@@ -15,9 +15,11 @@ class ContributionModel{
   final String why;
   //[New|Update]
   final String how;
-  final String room;
 
   final String assignmentId;
+  final String taskId;
+
+  String room;
 
   ContributionModel({
     this.id,
@@ -29,6 +31,7 @@ class ContributionModel{
     @required this.why,
     @required this.how,
     @required this.assignmentId,
+    @required this.taskId,
     this.room,
     
   });
@@ -43,7 +46,9 @@ class ContributionModel{
       where: WhereEnum.values.elementAt(json['where']),
       why: json['why'],
       how: json['how'], 
-      assignmentId: json['assignment_id'] != null ? json['assignment_id'] :null,
+      assignmentId: json['assignment_id'] != null ? json['assignment_id']['\$oid'] : null,
+      taskId: json['task_id'] != null ? json['task_id']['\$oid'] : null,
+ 
     );
   }
 
@@ -57,12 +62,13 @@ class ContributionModel{
       "why":this.why,
       "how":this.how,
       "room":this.room,
-      "assignment_id": this.assignmentId == null ? "" : this.assignmentId,
+      "assignment_id": this.assignmentId,
+      "task_id":this.taskId,
     };
   }
 
   String display(){
-    return "${getWhatEnumString(what)} $how ${getWhereEnumString(where)} $why";
+    return "${getWhatEnumString(what)}${how != "" ? " "+how : ""} ${getWhereEnumString(where)} $why";
   }
 
 

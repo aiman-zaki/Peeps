@@ -84,20 +84,29 @@ class _CoursesSuperviseViewState extends State<CoursesSuperviseView> {
         title: Text("Courses"),
 
       ),
-      body: BlocBuilder(
+      body: BlocListener(
         bloc: _bloc,
-        builder: (context,state){
-          if(state is InitialCoursesSupervisorState){
-            return SplashScreen();
+        listener: (context,state){
+          if(state is MessageCoursesSupervisorState){
+            Scaffold.of(context).showSnackBar(SnackBar(content: state.message,));
           }
-          if(state is LoadingCoursesSupervisorState){
-            return Center(child: CircularProgressIndicator(),);
-          }
-          if(state is LoadedCoursesSupervisorState){
-            return _buildSupevisorCoursesList(state.data);
-          }
-        }),
+        },
+        child: BlocBuilder(
+          bloc: _bloc,
+          builder: (context,state){
+            if(state is InitialCoursesSupervisorState){
+              return SplashScreen();
+            }
+            if(state is LoadingCoursesSupervisorState){
+              return Center(child: CircularProgressIndicator(),);
+            }
+            if(state is LoadedCoursesSupervisorState){
+              return _buildSupevisorCoursesList(state.data);
+            }
+          }),
+      ),
         floatingActionButton: FloatingActionButton(
+          heroTag: "course-template",
           child: Icon(Icons.add),
           onPressed: (){
             _showAddCourseDialog();

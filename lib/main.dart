@@ -24,11 +24,14 @@ import 'configs/theme.dart';
 StreamSubscription periodicSub;
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
   final authRepository = AuthRepository();
   final userRepository = UserRepository();
 
   var theme = await ThemeController.getTheme();
+
+
     //RefreshToken
   periodicSub = Stream.periodic(Duration(minutes: 15)).listen((_)=> authRepository.refreshToken());
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();

@@ -4,11 +4,14 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/supervisor/bloc.dart';
 import 'package:peeps/bloc/supervisor/groupworks_supervise/groupworks_supervise_bloc.dart';
+import 'package:peeps/models/course.dart';
 import 'package:peeps/models/groupwork.dart';
+import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/stash.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/stash/references.dart';
 import 'package:peeps/screens/splash_page.dart';
+import 'package:peeps/screens/supervisor/complaints.dart';
 
 class GroupworksSuperviseView extends StatefulWidget {
   GroupworksSuperviseView({Key key}) : super(key: key);
@@ -18,12 +21,52 @@ class GroupworksSuperviseView extends StatefulWidget {
 }
 
 class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
-
+  String filter;
   
   @override
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<GroupworksSuperviseBloc>(context);
+    final _courseBloc = BlocProvider.of<CoursesSupervisorBloc>(context);
     final _size = MediaQuery.of(context).size;
+    print(filter);
+
+    _buildSupevisorCoursesList(List<CourseModel> courses){
+      return Container(
+        child: ListView.builder(
+          itemCount: courses.length,
+          itemBuilder: (context,index){
+            return Card(
+              child: ListTile(
+                  title: Text(courses[index].name),
+                  trailing: Text(courses[index].code),
+                  onTap: (){
+                    setState(() {
+                      filter = courses[index].code;
+                    });
+                  },
+              ),
+            );
+          },
+        ),
+      );
+    }
+
+    Widget _buildDrawerContent(){
+      return BlocBuilder(
+        bloc: _courseBloc,
+        builder: (context,state){
+          if(state is InitialCoursesSupervisorState){
+            return SplashScreen();
+          }
+          if(state is LoadingCoursesSupervisorState){
+            return Center(child: CircularProgressIndicator(),);
+          }
+          if(state is LoadedCoursesSupervisorState){
+            return _buildSupevisorCoursesList(state.data);
+          }
+        },
+      );
+    }
 
      Widget _buildAvatar(GroupworkModel groupwork){
       return Container(
@@ -39,7 +82,6 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
 
     Widget _buildGroupworksList(List<GroupworkModel> data){
       return Container(
-   
         child: GridView.builder(
           physics: const AlwaysScrollableScrollPhysics(),
           gridDelegate: new SliverGridDelegateWithFixedCrossAxisCount(
@@ -67,18 +109,55 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
                                     child: ReferencesView(isPublic: true,),
                                   ),
                                 ),
-                                
-                                
                               )
-                        
                             )
                           );
                         },
                         caption: "Stash",
+                      ),
+                      IconSlideAction(
+                        icon: Icons.timeline,
+                        color: Colors.green,
+                        onTap: (){
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => BlocProvider(
+                                builder: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
+                                ..add(ReadPublicReferencesEvent()),
+                                child: Scaffold(
+                                  appBar: AppBar(title: Text("Public References"),),
+                                  body: Container(
+                                    child: ReferencesView(isPublic: true,),
+                                  ),
+                                ),
+                              )
+                            )
+                          );
+                        },
+                        caption: "Timelines",
+                      ),
+                      IconSlideAction(
+                        icon: Icons.report,
+                        color: Colors.red,
+                        onTap: (){
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider<ComplaintBloc>(
+                                    builder: (context) => ComplaintBloc(repository: GroupworkRepository(data: data[index].id))),
+                                ],
+                                child: GroupworkComplaintView(complaints: data[index].complaints,),
+                              )
+                              )
+                          );
+                        },
+                        caption: "Reports",
                       )
                     ],
                 child: Container(
-                  
                   child: Column(
                     children: <Widget>[
                       _buildAvatar(data[index])
@@ -99,25 +178,37 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
       appBar: AppBar(
         title: Text("Groupworks Supervise"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(6),
-        child: BlocBuilder(
-          bloc:_bloc,
-          builder: (context,state){
-            if(state is InitialGroupworksSuperviseState){
-              return SplashScreen();
-            }
-            if(state is LoadingGroupworksSuperviseState){
-              return Center(child: CircularProgressIndicator(),);
-            }
-            if(state is LoadedGroupworksSuperviseState){
-              if(state.data.isEmpty){
-                return Center(child: Text("No Data"),);
-              }
-              return _buildGroupworks(state.data);
-            }
-          },
-        ),
+      endDrawer: Drawer(
+        child: _buildDrawerContent(),
+      ),
+      body: Column(
+        children: <Widget>[
+          Expanded(
+            child: BlocBuilder(
+              bloc:_bloc,
+              builder: (context,state){
+                if(state is InitialGroupworksSuperviseState){
+                  return SplashScreen();
+                }
+                if(state is LoadingGroupworksSuperviseState){
+                  return Center(child: CircularProgressIndicator(),);
+                }
+                if(state is LoadedGroupworksSuperviseState){
+                  if(state.data.isEmpty){
+                    return Center(child: Text("No Data"),);
+                  }
+                  if(filter == null){
+                    return _buildGroupworks(state.data);
+                  }
+                  final List<GroupworkModel> datas = []..addAll(state.data);
+                  datas.removeWhere((item) => item.course != filter);
+                  return _buildGroupworks(datas);
+                   
+                }
+              },
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -40,7 +40,7 @@ class ReferenceBloc extends Bloc<ReferenceEvent, ReferenceState> {
         who: event.data.creator,
         what: WhatEnum.create,
         when: DateTime.now(),
-        how: "new", where: WhereEnum.reference, why: "",
+        how: "new", where: WhereEnum.reference, why: "",taskId: null,
         room: stashRepository.data, from: null, assignmentId: null)));
       this.add(ReadReferencesEvent());
     }

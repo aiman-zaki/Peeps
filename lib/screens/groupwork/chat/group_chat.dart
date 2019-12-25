@@ -220,7 +220,7 @@ class _GroupChatViewState extends State<GroupChatView> with WidgetsBindingObserv
       break;
       case AppLifecycleState.paused:
       break;
-      case AppLifecycleState.suspending:
+       case AppLifecycleState.detached:
       chat.disconnect();
       break;
     }

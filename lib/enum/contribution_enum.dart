@@ -1,11 +1,12 @@
-
 enum WhatEnum{
   create,
   receive,
   update,
   delete,
   request,
-  suggestion,
+  accept,
+  deny,
+
 }
 
 String getWhatEnumString(WhatEnum whatEnum){
@@ -15,7 +16,8 @@ String getWhatEnumString(WhatEnum whatEnum){
     WhatEnum.update:"Update",
     WhatEnum.delete:"Delete",
     WhatEnum.request:"Request",
-    WhatEnum.suggestion:"Suggestion",
+    WhatEnum.accept:"Accept",
+    WhatEnum.accept:"Deny",
   };
   return enumString[whatEnum];
 }
@@ -25,6 +27,8 @@ enum WhereEnum{
   assignment,
   task,
   reference,
+  suggestion,
+  material,
 }
 
 String getWhereEnumString(WhereEnum whereEnum){
@@ -32,7 +36,9 @@ String getWhereEnumString(WhereEnum whereEnum){
     WhereEnum.groupwork:"Groupwork",
     WhereEnum.assignment:"Assignment",
     WhereEnum.task:"Task",
-    WhereEnum.reference:"Reference"
+    WhereEnum.reference:"Reference",
+    WhereEnum.suggestion:"Suggestion",
+    WhereEnum.material:"Material",
   };
   return enumString[whereEnum];
 }

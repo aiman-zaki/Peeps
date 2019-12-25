@@ -13,6 +13,7 @@ class TaskModel{
   final DateTime assignDate;
   final DateTime dueDate;
   final DateTime lastUpdated;
+  final DateTime acceptedDate;
   final TaskStatus status;
   final List<TaskItemsModel> items;
   final List<TaskReviewsModel> reviews;
@@ -28,6 +29,7 @@ class TaskModel{
     @required this.assignDate,
     @required this.dueDate,
     @required this.lastUpdated,
+    @required this.acceptedDate,
     @required this.status,
     @required this.items,
     @required this.reviews,
@@ -46,6 +48,7 @@ class TaskModel{
       createdDate: DateTime.parse(json['created_date']),
       dueDate: json['due_date'] == null ? null : DateTime.parse(json['due_date']),
       lastUpdated: json['last_updated'] == null ? null : DateTime.parse(json['last_updated']),
+      acceptedDate: json['accepted_date'] == null ? null : DateTime.parse(json['accepted_date']),
       status: TaskStatus.values.elementAt(json['status']),
       items: json['items'] == null ? [] : json['items'].map((item) => TaskItemsModel.fromJson(item)).toList().cast<TaskItemsModel>(),
       reviews: json['reviews'] == null ? [] : json['reviews'].map((item) => TaskReviewsModel.fromJson(item)).toList().cast<TaskReviewsModel>(),
@@ -64,6 +67,7 @@ class TaskModel{
       "assign_date":this.assignDate.toString(),
       "due_date":this.dueDate.toString(),
       "last_updated":this.lastUpdated.toString(),
+      "accepted_date":this.acceptedDate.toString(),
       "priority": this.priority,
       "status":this.status.index,
       "seq":this.seq,
@@ -74,12 +78,14 @@ class TaskModel{
 class TaskItemsModel{
   final String id;
   final String item;
+  final String by;
   final Approval approval;
   final DateTime createdDate;
 
   TaskItemsModel({
     @required this.id,
     @required this.item,
+    @required this.by,
     @required this.approval,
     @required this.createdDate,
   });
@@ -88,6 +94,7 @@ class TaskItemsModel{
     return TaskItemsModel(
       id: json['_id']['\$oid'],
       item: json['item'],
+      by: json['by'],
       approval: json['approval'] !=  null ? Approval.values.elementAt(json['approval']) : Approval.tbd,
       createdDate: DateTime.parse(json['created_date'])
     );
@@ -106,15 +113,15 @@ class TaskItemsModel{
 class TaskReviewsModel{
   final String id;
   final String review;
+  final String by;
   Approval approval;
-
   final DateTime createdDate;
 
   TaskReviewsModel({
     @required this.id,
     @required this.review,
     @required this.approval,
-
+    @required this.by,
     @required this.createdDate,
   });
 
@@ -123,7 +130,7 @@ class TaskReviewsModel{
       id: json['_id']['\$oid'],
       review: json['review'],
       approval: json['approval'] !=  null ? Approval.values.elementAt(json['approval']) : Approval.tbd,
-
+      by: json['by'],
       createdDate: DateTime.parse(json['created_date'])
     );
   }
@@ -134,6 +141,7 @@ class TaskReviewsModel{
       "review": this.review,
       "created_date": this.createdDate.toString(),
       "approval":this.approval.index,
+      "by":this.by,
 
     };
   }

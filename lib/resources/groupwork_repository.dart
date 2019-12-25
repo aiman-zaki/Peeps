@@ -68,5 +68,9 @@ class GroupworkRepository extends BaseRepository{
     print(response.statusCode);
   }
 
+  createComplaint({@required data}) async {
+    return await super.create(data:data,namespace: 'complaints');
+  }
+
 
 }

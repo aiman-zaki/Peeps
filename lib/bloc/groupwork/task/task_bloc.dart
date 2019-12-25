@@ -46,7 +46,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
               how: "new",
               where: WhereEnum.task,
               why: "for ${event.assignment.title}",
-              room: event.groupId, from: null, assignmentId:this.repository.data)));
+              room: event.groupId, from: null, assignmentId:this.repository.data,taskId: null)));
         yield DisplayMessageSnackbar(color: "green", message: "Succeed");
       } catch (e) {
         yield DisplayMessageSnackbar(color: "red", message: e.toString());
@@ -86,7 +86,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
               when: DateTime.now(),
               how: "${newStatus}",
               where: WhereEnum.task,
-              why: "${currentStatus}", from: null, assignmentId: this.repository.data)));
+              why: "${currentStatus}", from: null, assignmentId: this.repository.data,taskId: null)));
       }
       repository.updateTaskStatus(data: changedStatusTask);
       yield DisplayMessageSnackbar(color: "green", message: "Saved");
@@ -104,7 +104,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
           where: WhereEnum.task,
           how: "",
           why: "", from: event.data.from,
-          assignmentId: this.repository.data
+          assignmentId: this.repository.data,taskId: null
         )
       )
         

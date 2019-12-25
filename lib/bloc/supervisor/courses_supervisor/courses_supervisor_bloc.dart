@@ -25,7 +25,13 @@ class CoursesSupervisorBloc extends Bloc<CoursesSupervisorEvent, CoursesSupervis
       yield LoadedCoursesSupervisorState(data: data);
     }
     if(event is UpdateCoursesSupervisorEvent){
-      await repository.updateCourses(data:event.data);
+      try {
+        await repository.updateCourses(data:event.data);
+      } catch (e){
+        yield MessageCoursesSupervisorState(message: e);
+        yield InitialCoursesSupervisorState();
+      }
+      this.add(ReadCoursesSupervisorEvent());
     }
   }
 }

@@ -46,7 +46,8 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
         BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
         BlocProvider<InviteMembersBloc>(builder: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository:  GroupworkRepository(data: widget.groupData.id)),),
         BlocProvider<ReferenceBloc>(builder: (context) => ReferenceBloc(stashRepository: StashRepository(data:widget.groupData.id), timelineBloc: _timelineBloc),),
-        BlocProvider.value(value: _timelineBloc,)
+        BlocProvider<ComplaintBloc>(builder: (context) => ComplaintBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
+        BlocProvider<TimelineBloc>.value(value: _timelineBloc,)
       ],
       child: GroupworkHubView(groupData:widget.groupData,userData:widget.userData)
     );

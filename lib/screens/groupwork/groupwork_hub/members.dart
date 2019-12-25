@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/models/complaint.dart';
 import 'package:peeps/models/member.dart';
+import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/groupwork/chat/group_chat.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/report.dart';
 
 import '../invite_members.dart';
 
@@ -26,6 +29,8 @@ class _HubMembersState extends State<HubMembers> {
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
     final _groupChatBloc = BlocProvider.of<GroupChatBloc>(context);
     final _inviteMembersBloc = BlocProvider.of<InviteMembersBloc>(context);
+    final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
+    final _complaintBloc = BlocProvider.of<ComplaintBloc>(context);
 
     _buildMembersList(List<MemberModel> data) {
       return ListView.builder(
@@ -35,12 +40,22 @@ class _HubMembersState extends State<HubMembers> {
           itemBuilder: (context, index) {
             return Slidable(
               actionPane: SlidableDrawerActionPane(),
-              secondaryActions: <Widget>[
+              actions: <Widget>[
                 IconSlideAction(
-                  icon: Icons.message,
-                  color: Colors.blue,
-                  caption: 'Chat',
-                  onTap: () {},
+                  icon: Icons.report,
+                  color: Colors.red,
+                  caption: 'Report',
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => 
+                            MultiBlocProvider(providers:[
+                              BlocProvider<AssignmentBloc>.value(value: _assignmentBloc,),
+                              BlocProvider<ComplaintBloc>.value(value: _complaintBloc,),
+                            ], child: MemberReportView(groupwork: widget.groupData,member:  data[index],)),
+                      )
+                    );
+                  },
                 )
               ],
               child: Padding(

@@ -50,7 +50,7 @@ class _GroupworkFormState extends State<GroupworkForm> {
       description: _descriptionController.text,
       members: [],
       templateId: _templateController.text == "" ? null : _templateController.text,
-    
+      complaints: [],
     )));
     
     Navigator.of(context).pop();

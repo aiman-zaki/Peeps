@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 
-
 class GroupChatForm extends StatefulWidget {
   GroupChatForm({Key key}) : super(key: key);
 

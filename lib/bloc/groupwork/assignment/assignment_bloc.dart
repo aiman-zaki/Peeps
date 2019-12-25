@@ -42,7 +42,7 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
           who: event.assignment.leader,
           what: WhatEnum.create,
           when: DateTime.now(),
-          how: "new", where: WhereEnum.assignment, why: "",assignmentId: null,
+          how: "new", where: WhereEnum.assignment, why: "",assignmentId: null,taskId: null,
           room: repository.data, from: null)));
     }
     if(event is TaskRefreshButtonClicked){
@@ -64,8 +64,11 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
          data: ContributionModel(
             who: event.user,
             what: WhatEnum.update,
-            when: DateTime.now()
-          , how: "status", where: WhereEnum.assignment, why: "from ongoing to done",
+            when: DateTime.now(), 
+            how: "status", 
+            where: WhereEnum.assignment, 
+            why: "from ongoing to done",
+            taskId: null,
         room: repository.data, from: null, assignmentId: event.data['assignment_id'])));
       this.add(LoadAssignmentEvent());
     }
@@ -78,6 +81,7 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
             what: WhatEnum.delete,
             when: DateTime.now()
           , how: "", where: WhereEnum.assignment, why: "",
+          taskId: null,
         room: repository.data, from: null, assignmentId: event.data)));
     }
     if(event is UpdateAssignmentEvent){

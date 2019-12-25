@@ -138,14 +138,12 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
             RaisedButton(
               child: Text("Task Review"),
               onPressed: (){
-               
-
-                Navigator.of(context).push(
+              Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context){
                       return BlocProvider(builder: (context) => 
                         TaskItemsReviewsBloc(timelineBloc:_timelineBloc,repository: TaskRepository(data: widget.assignmentId, data2: widget.task.id))..add(ReadItemsReviewsEvent()), 
-                          child: TaskReviewView(tasks: widget.task,));
+                          child: TaskReviewView(tasks: widget.task,isLeader:widget.isLeader));
                     }
                   )
                 );
