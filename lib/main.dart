@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,9 +20,12 @@ import 'package:peeps/screens/home/drawer.dart';
 import 'bloc/simple_bloc_delegate.dart';
 import 'configs/theme.dart';
 
+import 'package:http/http.dart' as http;
 //TODO POINT SYSTEM FOR GROUPWORK
 
 StreamSubscription periodicSub;
+StreamSubscription tryLocalNotification;
+
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,29 +35,28 @@ void main() async {
 
   var theme = await ThemeController.getTheme();
 
-
-    //RefreshToken
+  //RefreshToken
   periodicSub = Stream.periodic(Duration(minutes: 15)).listen((_)=> authRepository.refreshToken());
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   runApp(
     MultiBlocProvider(
       providers: [
         BlocProvider<AuthenticationBloc>(
-          builder: (context) {
+          create: (context) {
           return AuthenticationBloc(repositry: authRepository)
             ..add(AppStarted());
           },),
         BlocProvider<ProfileBloc>(
-          builder: (context) {
+          create: (context) {
             return ProfileBloc(repository: userRepository);
           },), 
         BlocProvider<UserTaskBloc>(
-          builder: (context){
+          create: (context){
             return UserTaskBloc(usersRepository: userRepository);
           },
         ),
         BlocProvider<AssignmentsBloc>(
-          builder: (context) => AssignmentsBloc(repository: userRepository),
+          create: (context) => AssignmentsBloc(repository: userRepository),
         ),
       ],
       child: App(userRepository: authRepository,theme: theme,),
@@ -83,6 +86,24 @@ class AppState extends State<App> {
     );
 
     flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  }
+
+  Future<void> _showNotification() async {
+    var response = await http.get(
+      'http://10.0.2.2:5000/api/stats/users/perweek'
+    );
+
+    var jsonEncode = jsonDecode(response.body);
+
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'yo yo yo', 'noti noti noti', 'aaaaaaa',
+        importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0, '${jsonEncode}', 'plain body', platformChannelSpecifics,
+        payload: 'item x');
   }
   
   @override

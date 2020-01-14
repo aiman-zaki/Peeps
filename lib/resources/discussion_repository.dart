@@ -20,6 +20,7 @@ class DiscussionRepository extends BaseRepository{
   @override
   read({namespace}) async {
     var data = await super.read(namespace: namespace);
+    print(data);
     return DiscussionModel.fromJson(data);
   }
 

@@ -56,7 +56,7 @@ class _CollaborateGroupworksViewState extends State<CollaborateGroupworksView> {
                             MaterialPageRoute(
                               fullscreenDialog: true,
                               builder: (context) => BlocProvider(
-                                builder: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
+                                create: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
                                 ..add(ReadPublicReferencesEvent()),
                                 child: Scaffold(
                                   appBar: AppBar(title: Text("Public References"),),
@@ -106,7 +106,7 @@ class _CollaborateGroupworksViewState extends State<CollaborateGroupworksView> {
                         MaterialPageRoute(
                           fullscreenDialog: true,
                           builder: (context) => BlocProvider(
-                            builder: (context) => ReferenceBloc(stashRepository: StashRepository(data: groupworks[index].id))
+                            create: (context) => ReferenceBloc(stashRepository: StashRepository(data: groupworks[index].id))
                             ..add(ReadPublicReferencesEvent()),
                             child: Scaffold(
                               appBar: AppBar(title: Text("Public References"),),

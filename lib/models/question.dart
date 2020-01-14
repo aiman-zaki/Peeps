@@ -5,31 +5,59 @@ class QuestionModel {
   
   final String id;
   final String question;
-  Rate answer;
+  final List<AnswerModel> answers;
+  int star = 0;
 
   QuestionModel({
     @required this.id,
     @required this.question,
-    this.answer,
+    @required this.answers,
   });
 
   static QuestionModel fromJson(Map<String,dynamic> json){
+    //TODO: will return length == null.
+    List<dynamic> temp = json['answers'];
+    List<AnswerModel> answers = [];
+    for(int i = 0 ; i<temp.length; i++){
+      answers.add(AnswerModel.fromJson(temp[i]));
+    }
     return QuestionModel(
       id: json['_id']['\$oid'],
       question: json['question'],
-      answer: json['answer'] == null ? Rate.normal : Rate.values.elementAt(json['answer']),
+      answers: answers
     );
   }
 
   Map<String,dynamic> toJson(){
     return {
       '_id':this.id,
-      'answer':this.answer.index,
+      'question':this.question,
+      'answers':this.answers,
     };
   }
+}
 
-  String toString() => "id:$id,question:$question,answer:${answer.index}";
+class AnswerModel{
+  final String id;
+  final String answer;
 
+  AnswerModel({
+    @required this.id,
+    @required this.answer,
+  });
 
+  static AnswerModel fromJson(Map<String,dynamic> json){
+    print(json);
+    return AnswerModel(
+      id: json['_id']['\$oid'],
+      answer: json['answer'],
+    );
+  }
 
+  Map<String,dynamic> toJson(){
+    return {
+      "_id":this.id,
+      "answer":this.answer,
+    };
+  }
 }

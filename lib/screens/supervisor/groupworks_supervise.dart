@@ -9,6 +9,7 @@ import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/stash.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
+import 'package:peeps/screens/common/tag.dart';
 import 'package:peeps/screens/groupwork/stash/references.dart';
 import 'package:peeps/screens/splash_page.dart';
 import 'package:peeps/screens/supervisor/complaints.dart';
@@ -28,26 +29,38 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
     final _bloc = BlocProvider.of<GroupworksSuperviseBloc>(context);
     final _courseBloc = BlocProvider.of<CoursesSupervisorBloc>(context);
     final _size = MediaQuery.of(context).size;
-    print(filter);
-
+  
     _buildSupevisorCoursesList(List<CourseModel> courses){
-      return Container(
-        child: ListView.builder(
-          itemCount: courses.length,
-          itemBuilder: (context,index){
-            return Card(
-              child: ListTile(
-                  title: Text(courses[index].name),
-                  trailing: Text(courses[index].code),
-                  onTap: (){
-                    setState(() {
-                      filter = courses[index].code;
-                    });
-                  },
-              ),
-            );
-          },
-        ),
+      return Column(
+        children: <Widget>[
+          Expanded(flex: 1,
+          child: Column(
+            children: <Widget>[
+              SizedBox(height: 30,),
+              Text("Courses",style: TextStyle(fontSize: 18),),
+            ],
+          ),),
+          
+          Expanded(
+            flex: 3,
+            child: ListView.builder(
+              itemCount: courses.length,
+              itemBuilder: (context,index){
+                return Card(
+                  child: ListTile(
+                      title: Text(courses[index].name),
+                      trailing: Text(courses[index].code),
+                      onTap: (){
+                        setState(() {
+                          filter = courses[index].code;
+                        });
+                      },
+                  ),
+                );
+              },
+            ),
+          ),
+        ],
       );
     }
 
@@ -101,7 +114,7 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
                             MaterialPageRoute(
                               fullscreenDialog: true,
                               builder: (context) => BlocProvider(
-                                builder: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
+                                create: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
                                 ..add(ReadPublicReferencesEvent()),
                                 child: Scaffold(
                                   appBar: AppBar(title: Text("Public References"),),
@@ -123,7 +136,7 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
                             MaterialPageRoute(
                               fullscreenDialog: true,
                               builder: (context) => BlocProvider(
-                                builder: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
+                                create: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
                                 ..add(ReadPublicReferencesEvent()),
                                 child: Scaffold(
                                   appBar: AppBar(title: Text("Public References"),),
@@ -147,7 +160,7 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
                               builder: (context) => MultiBlocProvider(
                                 providers: [
                                   BlocProvider<ComplaintBloc>(
-                                    builder: (context) => ComplaintBloc(repository: GroupworkRepository(data: data[index].id))),
+                                    create: (context) => ComplaintBloc(repository: GroupworkRepository(data: data[index].id))),
                                 ],
                                 child: GroupworkComplaintView(complaints: data[index].complaints,),
                               )

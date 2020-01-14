@@ -82,13 +82,13 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
               builder: (context) => MultiBlocProvider(
                 providers: [
                   BlocProvider<CollaborateMapBloc>(
-                    builder: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course))),
+                    create: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course))),
                   BlocProvider<CollaborateForumBloc>(
-                    builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course))),
+                    create: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course))),
                   BlocProvider<CollaborateBloc>(
-                    builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course))),
+                    create: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course))),
                   BlocProvider<CollaborateGroupworkBloc>(
-                    builder: (context) => CollaborateGroupworkBloc(repository: GroupworksRepository()),
+                    create: (context) => CollaborateGroupworkBloc(repository: GroupworksRepository()),
                   )
                   
                 
@@ -116,13 +116,13 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                               builder: (context) => MultiBlocProvider(
                                 providers: [
                                   BlocProvider<CollaborateMapBloc>(
-                                    builder: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course))),
+                                    create: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course))),
                                   BlocProvider<CollaborateForumBloc>(
-                                    builder: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course))),
+                                    create: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course))),
                                   BlocProvider<CollaborateBloc>(
-                                    builder: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course))),
+                                    create: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course))),
                                   BlocProvider<CollaborateGroupworkBloc>(
-                                    builder: (context) => CollaborateGroupworkBloc(repository: GroupworksRepository()),
+                                    create: (context) => CollaborateGroupworkBloc(repository: GroupworksRepository()),
                                   )
                                   
                                 

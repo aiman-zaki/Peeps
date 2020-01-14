@@ -25,22 +25,24 @@ class ReferencesView extends StatelessWidget {
         return ListView.builder(
           itemCount: data.length,
           itemBuilder: (context,index){
-            return ListTile(
-              title: Text(data[index].title),
-              trailing: Text(getPublicityEnumString(data[index].publicity)),
-              subtitle: data[index].reference.contains(new RegExp(r'(http.)'))
-              ? InkWell(
-                child: Text(data[index].reference),
-                onTap: (){
-                  Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => WebViewExplorer(url: data[index].reference,),
-                      fullscreenDialog: true,
-                    )
-                  );
-                },
-              )
-              : Text(data[index].reference),
+            return Card(
+              child: ListTile(
+                title: Text(data[index].title),
+                trailing: Text(getPublicityEnumString(data[index].publicity)),
+                subtitle: data[index].reference.contains(new RegExp(r'(http.)'))
+                ? InkWell(
+                  child: Text("click to view : ${data[index].reference}"),
+                  onTap: (){
+                    Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) => WebViewExplorer(url: data[index].reference,),
+                        fullscreenDialog: true,
+                      )
+                    );
+                  },
+                )
+                : Text(data[index].reference),
+              ),
             );
           },
         );

@@ -7,7 +7,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/user/register/register_bloc.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
-
+import 'package:peeps/screens/common/tag.dart';
+import 'package:peeps/resources/common_repo.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
 
@@ -39,7 +40,6 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   String _validatePassword(String value) {
-    //Taken from https://stackoverflow.com/questions/56253787/how-to-handle-textfield-validation-in-password-in-flutter
     Pattern pattern =
         r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[!@#\$&*~]).{8,}$';
     RegExp regex = new RegExp(pattern);
@@ -67,7 +67,7 @@ class _RegisterFormState extends State<RegisterForm> {
     final _bloc = BlocProvider.of<RegisterBloc>(context);
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
-
+    final size = MediaQuery.of(context).size;
 
     _buildShowDialog(){
       showDialog(
@@ -162,7 +162,7 @@ class _RegisterFormState extends State<RegisterForm> {
         padding: EdgeInsets.all(8),
         width: width,
         child: RaisedButton(
-          padding: EdgeInsets.all(15),
+          padding: EdgeInsets.all(13),
           onPressed: (){
             _passwordController.text == _confirmPasswordContorller.text ?
             _buildShowDialog() :
@@ -178,18 +178,21 @@ class _RegisterFormState extends State<RegisterForm> {
         Container(
           child: Column(
             children: <Widget>[
-              Text("Welcome To Peeps !",style: TextStyle(fontSize: 25),)
+              
             ],
           ),
         ),
-        SizedBox(height: 10,),
         Container(
           padding: const EdgeInsets.all(8.0),
           child: Form(
             autovalidate: true,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+                CustomTag(color: Colors.blueGrey,text: Text("Help us Grow! \nbecome one of us and start collaborate!"), padding: EdgeInsets.all(5),),
+
+                SizedBox(height: 12,),
                 TextFormField(
                   validator: ((value){
                     return _validateEmail(value);
@@ -198,13 +201,12 @@ class _RegisterFormState extends State<RegisterForm> {
                   decoration: InputDecoration(
                     labelText: "Email",
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(color: Colors.teal)
-                    ),
+                      borderRadius: BorderRadius.circular(20)),
                   ),
                 ),
                 SizedBox(height: 10,),
                 TextFormField(
+                  
                   validator: (value){
                     return _validatePassword(value);
                   },
@@ -212,9 +214,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   obscureText: true,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(color: Colors.teal)
-                    ),
+                      borderRadius: BorderRadius.circular(20)),
                     labelText: "Password"
                   ),
                 ),
@@ -236,9 +236,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   obscureText: true,
                   decoration: InputDecoration(
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(20),
-                      borderSide: BorderSide(color: Colors.blue[900])
-                    ),
+                      borderRadius: BorderRadius.circular(20)),
                     labelText: "Confirm Password"
                   ),
                 ),
@@ -277,8 +275,7 @@ class _RegisterFormState extends State<RegisterForm> {
 
     return Scaffold(
       appBar: new AppBar(
-        elevation: 0.00,
-        centerTitle: true,
+        title: Text("Get Started"),
       ),
       body: SingleChildScrollView(
         child: Container(
@@ -286,27 +283,48 @@ class _RegisterFormState extends State<RegisterForm> {
           child: Stack(
             children: <Widget>[
               Positioned(
-                top: 0,
-                child: ClipPath(
-                  clipper: TriangleClipper(),
-                  child: Container(
-                    width: width,
-                    height: 90,
-                    color: Theme.of(context).primaryColor,
+                    width: size.width,
+                    bottom: 0,
+                    child: ClipPath(
+                      clipper: WaveClipperOne(reverse: true),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          boxShadow: [
+                            BoxShadow(
+                              offset: Offset(0,0),
+                              blurRadius: 10.0,
+                                color: Theme.of(context).accentColor,
+                            )
+                          ]
+                        ),
+                        height: 80,
+                      
+                        child: Container(),
+                      ),
+                    ),
                   ),
-                ),
-              ),
               Positioned(
-                top: 0,
-                child:  CustomNetworkProfilePicture(
-                  width: width * 0.8,
-                  heigth: 120,
-                  image: "http://192.168.43.112:5000/static/logo",
+                top: 20,
+                left: 40,
+                child:  Column(
+                  children: <Widget>[
+                      CustomNetworkProfilePicture(
+                        topRadius: 0,
+                        bottomRadius: 0,
+                        width: size.width * 0.7,
+                        heigth: 90,
+                        image: "${domain}static/logo",
+                      ),
+                      SizedBox(height: 10,),
+
+                      CustomTag(color: Colors.green[800],text: Text("Groupwork Management for Student and Lecturer!"), padding: EdgeInsets.all(5),),
+
+                  ],
                 ),
               ),
               Positioned(
                 width: width,
-                top: 160,
+                top: 140,
                 child: Padding(
                   padding: const EdgeInsets.all(9.0),
                   child: Column(

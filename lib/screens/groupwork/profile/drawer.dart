@@ -55,7 +55,7 @@ class _GroupworkProfileDrawerViewState extends State<GroupworkProfileDrawerView>
                   Navigator.of(context).push(
                     MaterialPageRoute(
                       builder: (context) => BlocProvider(
-                        builder: (context) =>
+                        create: (context) =>
                             NoteBloc(repository: NoteRepository(data: widget.data)),
                         child: GroupProfileNotes(
                           groupId: widget.data.id,
@@ -72,7 +72,7 @@ class _GroupworkProfileDrawerViewState extends State<GroupworkProfileDrawerView>
                 onTap: () {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (context) => BlocProvider(
-                            builder: (context) => RequestBloc(
+                            create: (context) => RequestBloc(
                                 groupworkRepository:
                                     GroupworkRepository(data: widget.data.id)),
                             child: GroupRequest(

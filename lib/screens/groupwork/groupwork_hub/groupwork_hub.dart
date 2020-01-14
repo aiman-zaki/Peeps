@@ -39,14 +39,14 @@ class _GroupworkHubState extends State<GroupworkHub> with SingleTickerProviderSt
     
     return  MultiBlocProvider(
       providers: [
-        BlocProvider<GroupChatBloc>(builder: (context) => GroupChatBloc(chat: ChatResources(namespace: 'group_chat',room: widget.groupData.id),)),
-        BlocProvider<KanbanBoardBloc>(builder: (context) => KanbanBoardBloc(),),
-        BlocProvider<AssignmentBloc>(builder: (context) => AssignmentBloc(repository: AssignmentRepository(data: widget.groupData.id), timelineBloc: _timelineBloc),),
-        BlocProvider<MembersBloc>(builder: (context) => MembersBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
-        BlocProvider<GroupProfileBloc>(builder: (context) => GroupProfileBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
-        BlocProvider<InviteMembersBloc>(builder: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository:  GroupworkRepository(data: widget.groupData.id)),),
-        BlocProvider<ReferenceBloc>(builder: (context) => ReferenceBloc(stashRepository: StashRepository(data:widget.groupData.id), timelineBloc: _timelineBloc),),
-        BlocProvider<ComplaintBloc>(builder: (context) => ComplaintBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
+        BlocProvider<GroupChatBloc>(create: (context) => GroupChatBloc(chat: ChatResources(namespace: 'group_chat',room: widget.groupData.id),)),
+        BlocProvider<KanbanBoardBloc>(create: (context) => KanbanBoardBloc(),),
+        BlocProvider<AssignmentBloc>(create: (context) => AssignmentBloc(repository: AssignmentRepository(data: widget.groupData.id), timelineBloc: _timelineBloc),),
+        BlocProvider<MembersBloc>(create: (context) => MembersBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
+        BlocProvider<GroupProfileBloc>(create: (context) => GroupProfileBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
+        BlocProvider<InviteMembersBloc>(create: (context) => InviteMembersBloc(repository: const UsersRepository(), groupworkRepository:  GroupworkRepository(data: widget.groupData.id)),),
+        BlocProvider<ReferenceBloc>(create: (context) => ReferenceBloc(stashRepository: StashRepository(data:widget.groupData.id), timelineBloc: _timelineBloc),),
+        BlocProvider<ComplaintBloc>(create: (context) => ComplaintBloc(repository: GroupworkRepository(data: widget.groupData.id)),),
         BlocProvider<TimelineBloc>.value(value: _timelineBloc,)
       ],
       child: GroupworkHubView(groupData:widget.groupData,userData:widget.userData)

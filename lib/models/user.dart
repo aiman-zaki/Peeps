@@ -3,15 +3,16 @@ import 'package:peeps/enum/role_enum.dart';
 import 'package:peeps/resources/common_repo.dart';
 
 class UserModel {
-  String id;
-  String fname;
-  String lname;
-  String email;
-  String contactNo;
-  String programmeCode;
-  List<dynamic> activeGroup;
-  String picture;
-  Role role;
+  final String id;
+  final String fname;
+  final String lname;
+  final String email;
+  final String contactNo;
+  final String programmeCode;
+  final List<dynamic> activeGroup;
+  final String picture;
+  final Role role;
+  final DateTime createdDate;
 
   UserModel({
     @required this.id,
@@ -23,6 +24,7 @@ class UserModel {
     this.activeGroup,
     @required this.picture,
     @required this.role,
+    @required this.createdDate,
   
   });
 
@@ -37,6 +39,7 @@ class UserModel {
       activeGroup: [],
       picture: "",
       role: Role.student,
+      createdDate: DateTime.now()
     );
   }
 
@@ -52,6 +55,7 @@ class UserModel {
       activeGroup: json['active_group'],
       picture: url,
       role: Role.values.elementAt(json['role']),
+      createdDate: DateTime.parse(json['created_date'])
     );
   }
 
@@ -65,7 +69,8 @@ class UserModel {
       contactNo: json['contact_no'],
       programmeCode: json['programme_code'], 
       picture: url,
-      role: Role.values.elementAt(json['role'])
+      role: Role.values.elementAt(json['role']),
+      createdDate: DateTime.parse(json['created_date'])
     );
   
   }
@@ -78,9 +83,8 @@ class UserModel {
       "email":this.email,
       "contact_no":this.contactNo,
       "programme_code":this.programmeCode,
-      "role":this.role.index
+      "role":this.role.index,
+      "created_date":this.createdDate.toString(),
     };
   }
-
-  
 }

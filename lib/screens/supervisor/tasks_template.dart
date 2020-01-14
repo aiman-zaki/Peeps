@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:peeps/models/template.dart';
+import 'package:peeps/screens/common/tag.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 
 class TasksTemplateFormView extends StatefulWidget {
@@ -35,8 +36,7 @@ class _TasksTemplateFormViewState extends State<TasksTemplateFormView> {
           return DialogWithAvatar(
             height: 350,
             avatarIcon: Icon(Icons.check),
-            title: Text("Task"),
-            description: "",
+            title: Text("Task Information"),
             children: <Widget>[
               TextFormField(
                 controller: _titleController,
@@ -66,10 +66,11 @@ class _TasksTemplateFormViewState extends State<TasksTemplateFormView> {
                     title: _titleController.text,
                     description: _descriptionController.text,
                     difficulty: int.parse(_difficultyController.text)
-                  )
-              
-
+                  )             
                 );
+                setState(() {
+                  
+                });
                 Navigator.of(context).pop();
               },
             ),
@@ -92,13 +93,14 @@ class _TasksTemplateFormViewState extends State<TasksTemplateFormView> {
         child: Column(
           children: <Widget>[
             Row(children: <Widget>[
-              Expanded(child: Text("Tasks")),
+              Expanded(flex:3,child: CustomTag(text: Text("Tasks"),color: Colors.green,padding: EdgeInsets.all(9),)),
               Expanded(
+                flex:1,
                 child: FlatButton(
                   onPressed: (){
                     _showTaskTemplateForm();
                   },
-                  child: Text("Add"),),
+                  child: Icon(Icons.add),),
               )
             ],),
             Expanded(

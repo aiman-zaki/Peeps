@@ -181,13 +181,7 @@ class _InboxInvitationViewState extends State<InboxInvitationView> {
           if (state is LoadedInboxState) {
             return ListView(
               children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Text(
-                    "Groupwork Invitation",
-                    style: TextStyle(fontSize: 22),
-                  ),
-                ),
+               
                 Padding(
                   padding: const EdgeInsets.all(18.0),
                   child: _buildGroupInvitationListView(state.data),

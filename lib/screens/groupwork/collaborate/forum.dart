@@ -32,7 +32,7 @@ class _CollaborateForumViewState extends State<CollaborateForumView> {
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder: (context) => BlocProvider(
-                      builder: (context) => CollaborateDiscussionBloc(repository: DiscussionRepository(data: widget.course,data2: data[index].id)),
+                      create: (context) => CollaborateDiscussionBloc(repository: DiscussionRepository(data: widget.course,data2: data[index].id)),
                       child: DiscussionView(),
                     ),
                   ),

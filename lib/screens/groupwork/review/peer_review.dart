@@ -51,7 +51,7 @@ class _PeersReviewViewState extends State<PeersReviewView> {
           if (!reviewed) {
             Navigator.of(context).push(CupertinoPageRoute(
                 builder: (context) => BlocProvider(
-                    builder: (context) => PeersReviewsQuestionsBloc(
+                    create: (context) => PeersReviewsQuestionsBloc(
                         assignmentRepository:
                             AssignmentRepository(data: widget.assignment.id),
                         repository: QuestionsRepository())

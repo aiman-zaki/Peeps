@@ -8,7 +8,7 @@ import 'package:peeps/resources/auth_repository.dart';
 import 'package:peeps/resources/users_repository.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'register_form.dart';
-
+import 'package:peeps/resources/common_repo.dart';
 class LoginForm extends StatefulWidget {
   @override
   State<LoginForm> createState() => _LoginFormState();
@@ -96,7 +96,7 @@ class _LoginFormState extends State<LoginForm> {
                         builder: (context) => 
                         BlocProvider.value(value:_loginBloc,
                           child: BlocProvider(
-                            builder: (context) => RegisterBloc(loginBloc: _loginBloc,repository: AuthRepository()),
+                            create: (context) => RegisterBloc(loginBloc: _loginBloc,repository: AuthRepository()),
                             child: RegisterForm())),fullscreenDialog: true));
                     },
                     child: Text("Register new account")))
@@ -105,6 +105,7 @@ class _LoginFormState extends State<LoginForm> {
         ),
       );
     }
+    
 
     _buildHeader(state) {
       return Positioned(
@@ -117,7 +118,7 @@ class _LoginFormState extends State<LoginForm> {
             CustomNetworkProfilePicture(
               width: size.width * 0.8,
               heigth: 120,
-              image: "http://192.168.43.112:5000/static/logo",
+              image: "${domain}static/logo",
             ),
             SizedBox(
               height: 20,

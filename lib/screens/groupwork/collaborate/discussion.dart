@@ -150,12 +150,17 @@ class _DiscussionViewState extends State<DiscussionView> {
                             child: Card(
                               child: ListTile(
                                 title: Text(data.replies[index].reply),
-                                subtitle: Row(
+                                subtitle: Column(
                                   children: <Widget>[
-                                    Text(" by : " + data.replies[index].by),
-                                    Text(" at : " +
-                                        DateFormat.yMd().add_Hms().format(
-                                            data.replies[index].createdDate))
+                                    SizedBox(height: 10,),
+                                    Row(
+                                      children: <Widget>[
+                                        Text(" by : " + data.replies[index].by),
+                                        Text(" at : " +
+                                            DateFormat.yMd().add_Hms().format(
+                                                data.replies[index].createdDate))
+                                      ],
+                                    ),
                                   ],
                                 ),
                               ),

@@ -94,11 +94,13 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
           children: <Widget>[
             Row(
               children: <Widget>[
-                Text(
-                  'Description : ',
-                  style: TextStyle(color: Colors.cyan),
+                Container(
+                  child: Text(
+                    'Description : ',
+                    style: TextStyle(color: Colors.cyan[300]),
+                  ),
                 ),
-                Text(widget.task.description),
+                Flexible(child: Text(widget.task.description)),
               ],
             ),
             SizedBox(height: 15),
@@ -106,7 +108,7 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
               children: <Widget>[
                 Text(
                   'Creator : ',
-                  style: TextStyle(color: Colors.cyan),
+                  style: TextStyle(color: Colors.cyan[300]),
                 ),
                 Text(widget.task.creator),
               ],
@@ -118,7 +120,7 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
               children: <Widget>[
                 Text(
                   'Assign To : ',
-                  style: TextStyle(color: Colors.cyan),
+                  style: TextStyle(color: Colors.cyan[300]),
                 ),
                 Text(widget.task.assignTo),
               ],
@@ -130,24 +132,40 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
               children: <Widget>[
                 Text(
                   'Due Date : ',
-                  style: TextStyle(color: Colors.cyan),
+                  style: TextStyle(color: Colors.cyan[300]),
                 ),
                 Text(widget.task.dueDate.toString()),
               ],
             ),
-            RaisedButton(
-              child: Text("Task Review"),
-              onPressed: (){
-              Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context){
-                      return BlocProvider(builder: (context) => 
-                        TaskItemsReviewsBloc(timelineBloc:_timelineBloc,repository: TaskRepository(data: widget.assignmentId, data2: widget.task.id))..add(ReadItemsReviewsEvent()), 
-                          child: TaskReviewView(tasks: widget.task,isLeader:widget.isLeader));
-                    }
-                  )
-                );
-            },)
+            SizedBox(height: 10,),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: FlatButton(
+                    child: Text("Request"),
+                    onPressed: (){
+                      _showRequestConfirmationDialog(widget.task);
+                    }, 
+                  ),
+                ),
+                Expanded(
+                  child: FlatButton(
+                    child: Text("Review"),
+                    onPressed: (){
+                    Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context){
+                            return BlocProvider(create: (context) => 
+                              TaskItemsReviewsBloc(timelineBloc:_timelineBloc,repository: TaskRepository(data: widget.assignmentId, data2: widget.task.id))..add(ReadItemsReviewsEvent()), 
+                                child: TaskReviewView(tasks: widget.task,isLeader:widget.isLeader));
+                          }
+                        )
+                      );
+                    },
+                  ),
+                ),
+              ],
+            )
           ],
         ),
       );
@@ -214,70 +232,40 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
               topLeft: Radius.circular(20),
               topRight: Radius.circular(20),
             )),
-        child: Stack(
+        child: Row(
           children: <Widget>[
-            Align(
-              alignment: Alignment.centerLeft,
-              child: Row(
-                children: <Widget>[
-                  InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                        _showConfirmationDialog(widget.task.task);
-                      },
-                      child: Icon(Icons.delete)),
-                  SizedBox(width: 30,),
-                  InkWell(
-                    child: Icon(Icons.star),
-                    onTap: (){
-                      _showRequestConfirmationDialog(widget.task);
-                    },
-                  )
-                ],
-              ),
+            Expanded(
+              flex: 1,
+              child: InkWell(
+                onTap: () {
+                  Navigator.pop(context);
+                  _showConfirmationDialog(widget.task.task);
+                },
+                child: Icon(Icons.delete)),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Text(widget.task.task),
-            ),
-            Align(
-              alignment: FractionalOffset.centerRight,
-              child: Container(
-                width: 100,
-                child: Row(
-                  children: <Widget>[
-                    Expanded(
-                      child: InkWell(
-                        child: Icon(Icons.redeem),
-                        onTap: () {
-                           },
-                      ),
-                    ),
-                    Expanded(
-                      child: InkWell(
-                        child: Icon(Icons.edit),
-                        onTap: () {
-                          Navigator.pop(context);
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => BlocProvider.value(
-                                value: _taskBloc,
-                                child: BlocProvider.value(
-                                    value: _membersBloc,
-                                    child: BlocProvider.value(
-                                        value: _timelineBloc,
-                                        child: TaskForm(
-                                          task: widget.task,
-                                          edit: true,
-                                        )))),
-                            fullscreenDialog: true,
-                          ));
-                        },
-                      ),
-                    ),
-                  ],
+            Flexible(flex:2,child: Text(widget.task.task)),
+            Expanded(
+              flex: 1,
+              child: InkWell(
+                  child: Icon(Icons.edit),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => BlocProvider.value(
+                          value: _taskBloc,
+                          child: BlocProvider.value(
+                              value: _membersBloc,
+                              child: BlocProvider.value(
+                                  value: _timelineBloc,
+                                  child: TaskForm(
+                                    task: widget.task,
+                                    edit: true,
+                                  )))),
+                      fullscreenDialog: true,
+                    ));
+                  },
                 ),
-              )
-            )
+            ),
           ],
         ),
       );
@@ -285,7 +273,7 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
 
     return Center(
       child: Container(
-        height: 300,
+        height: 315,
         child: Dialog(
           elevation: 1.00,
           shape:

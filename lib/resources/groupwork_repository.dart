@@ -49,6 +49,14 @@ class GroupworkRepository extends BaseRepository{
 
   readRequests() async{
     var data = await super.read(namespace: "requests");
+    return data.map((value){
+      return RequestModel.fromJson(value);
+    }).toList().cast<RequestModel>();
+  }
+
+  updateRequest({@required data}) async{
+    await super.update(data:data,namespace: "requests");
+
   }
 
   uploadProfileImage(File image,String groupId) async {

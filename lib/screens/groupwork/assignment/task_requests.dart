@@ -41,62 +41,67 @@ class _TaskRequestsViewState extends State<TaskRequestsView> {
                     Text('Task: ${data[index].task.task}'),
                     Row(
                     children: <Widget>[
-                      RaisedButton(
-                        color: Colors.green,
-                        child: Text("Approve"),
-                        onPressed: (){
-                          showDialog(
-                            context: context,
-                            builder: (context){
-                              data[index].approval = Approval.approved;
-                              return DialogWithAvatar(
-                                avatarIcon: Icon(Icons.check),
-                                children: <Widget>[
-                                  DateTimeField(
-                                    decoration: InputDecoration(
-                                      labelText: "Due Date"
+                      Expanded(
+                        child: RaisedButton(
+                          color: Colors.green,
+                          child: Text("Approve"),
+                          onPressed: (){
+                            showDialog(
+                              context: context,
+                              builder: (context){
+                                data[index].approval = Approval.approved;
+                                return DialogWithAvatar(
+                                  avatarIcon: Icon(Icons.check),
+                                  height: 150,
+                                  children: <Widget>[
+                                    DateTimeField(
+                                      decoration: InputDecoration(
+                                        labelText: "Due Date"
+                                      ),
+                                      controller: _dueDate,
+                                      format: format,
+                                      onShowPicker: (context, currentValue) async {
+                                        final date = await showDatePicker(
+                                            context: context,
+                                            firstDate: DateTime(1900),
+                                            initialDate: currentValue ?? DateTime.now(),
+                                            lastDate: DateTime(2100));
+                                        if (date != null) {
+                                          final time = await showTimePicker(
+                                            context: context,
+                                            initialTime:
+                                                TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                                          );
+                                          return DateTimeField.combine(date, time);
+                                        } else {
+                                          return currentValue;
+                                        }
+                                      },
                                     ),
-                                    controller: _dueDate,
-                                    format: format,
-                                    onShowPicker: (context, currentValue) async {
-                                      final date = await showDatePicker(
-                                          context: context,
-                                          firstDate: DateTime(1900),
-                                          initialDate: currentValue ?? DateTime.now(),
-                                          lastDate: DateTime(2100));
-                                      if (date != null) {
-                                        final time = await showTimePicker(
-                                          context: context,
-                                          initialTime:
-                                              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                                        );
-                                        return DateTimeField.combine(date, time);
-                                      } else {
-                                        return currentValue;
-                                      }
+                                  ],
+                                  bottomRight: FlatButton(
+                                    onPressed: (){
+                                       data[index].dueDate = DateTime.parse(_dueDate.text);
+                                      _bloc.add(UpdateTaskRequestEvent(data: data[index]));
                                     },
+                                    child: Text("Confirm"),
                                   ),
-                                ],
-                                bottomRight: FlatButton(
-                                  onPressed: (){
-                                     data[index].dueDate = DateTime.parse(_dueDate.text);
-                                    _bloc.add(UpdateTaskRequestEvent(data: data[index]));
-                                  },
-                                  child: Text("Confirm"),
-                                ),
-                              );
-                            }
-                          );
-                        },
+                                );
+                              }
+                            );
+                          },
+                        ),
                       ),
                       SizedBox(width: 10,),
-                      RaisedButton(
-                        color: Colors.red,
-                        child: Text("Deny"),
-                        onPressed: (){
-                          data[index].approval = Approval.deny;
-                          _bloc.add(UpdateTaskRequestEvent(data: data[index]));
-                        },
+                      Expanded(
+                        child: RaisedButton(
+                          color: Colors.red,
+                          child: Text("Deny"),
+                          onPressed: (){
+                            data[index].approval = Approval.deny;
+                            _bloc.add(UpdateTaskRequestEvent(data: data[index]));
+                          },
+                        ),
                       )
                     ],
                   ),

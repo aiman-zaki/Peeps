@@ -45,10 +45,10 @@ class _GroupworkTemplateFormViewState extends State<GroupworkTemplateFormView> {
       context: (context),
       builder: (context){
         return DialogWithAvatar(
-          height: 450,
+          height: 460,
           avatarIcon: Icon(Icons.question_answer),
           description: "",
-          title: Text("Assignment Title"),
+          title: Text("Assignment Information"),
           children: <Widget>[
             TextFormField(
               decoration: InputDecoration(

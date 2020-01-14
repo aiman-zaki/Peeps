@@ -65,7 +65,7 @@ class _CoursesSuperviseViewState extends State<CoursesSuperviseView> {
                   onTap: (){
                     Navigator.of(context).push(
                       CupertinoPageRoute(builder: (context) => 
-                        BlocProvider(builder: (context) => 
+                        BlocProvider(create: (context) => 
                           GroupworkTemplateSupervisorBloc(
                             repository: SGroupworkTemplateRepository(data: courses[index].code))
                             ..add(ReadGroupworkTemplateSupervisorEvent()),child: SupervisorGroupworkTemplateView(),)

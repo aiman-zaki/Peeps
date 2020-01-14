@@ -166,16 +166,7 @@ class AccountViewState extends State<AccountView> {
             leading: Icon(Icons.edit),
             title: Text('Edit Profile'),
           ),
-          ListTile(
-            leading: Icon(Icons.security),
-            title: Text('Privacy'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-          ),
-          ListTile(
-            leading: Icon(Icons.fiber_smart_record),
-            title: Text('Record | Achievement'),
-            trailing: Icon(Icons.keyboard_arrow_right),
-          ),
+         
           _buildSupervsiorEnableButton(),
         ],
       );

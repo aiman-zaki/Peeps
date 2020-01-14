@@ -23,7 +23,7 @@ class RequestBloc extends Bloc<RequestEvent, RequestState> {
       yield LoadedRequestsState(data: data);
     }
     if(event is AnswerButtonClicked){
-    
+      await groupworkRepository.updateRequest(data: event.data);
       yield InitialRequestState();
     }
   }

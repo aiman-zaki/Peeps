@@ -39,7 +39,7 @@ class WelcomeGroupworkHubDialog extends StatelessWidget {
   Widget build(BuildContext context) {
     return DialogWithAvatar(
       width: 500,
-      height: 350,
+      height: 360,
       avatarIcon: Icon(Icons.info),
       description: "Hey, welcome to ${groupwork.name} hub views",
       title: Center(child: Text("Welcome",style: TextStyle(fontSize: 26,),textAlign: TextAlign.center,)),

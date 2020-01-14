@@ -8,7 +8,7 @@ class AdminUsersBloc extends Bloc<AdminUsersEvent, AdminUsersState> {
   final UsersRepository repository;
 
   AdminUsersBloc({
-    @required this.repository
+    @required this.repository,
   });
 
   @override

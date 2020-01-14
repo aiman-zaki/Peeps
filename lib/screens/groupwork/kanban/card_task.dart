@@ -55,33 +55,35 @@ class CardTask extends StatelessWidget {
             );
     }
 
-    return GestureDetector(
-      onTap: () {
-        _showDialog(context, task, _color);
-      },
-      child: Card(
-        margin: EdgeInsets.all(2),
-        color: _color,
-        child: Padding(
-          padding: EdgeInsets.all(3),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: <Widget>[
-              Text(
-                task.task,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
+    return SingleChildScrollView(
+      child: GestureDetector(
+        onTap: () {
+          _showDialog(context, task, _color);
+        },
+        child: Card(
+          margin: EdgeInsets.all(2),
+          color: _color,
+          child: Padding(
+            padding: EdgeInsets.all(3),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: <Widget>[
+                Text(
+                  task.task,
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.bottomRight,
-                child: Text(
-                  '${task.assignTo.split("@")[0]}',
-                  style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-                ),
-              )
-            ],
+                Align(
+                  alignment: Alignment.bottomRight,
+                  child: Text(
+                    '${task.assignTo.split("@")[0]}',
+                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

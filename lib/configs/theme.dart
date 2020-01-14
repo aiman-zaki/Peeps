@@ -37,7 +37,6 @@ class ThemeController {
         ),
         scaffoldBackgroundColor: Colors.grey[300],
         primaryColor: Color.fromARGB(255, 24, 118, 210),
-        cardColor: Colors.grey[300],
         accentColor: Colors.indigo[400],
         backgroundColor: Colors.grey[100],
         focusColor: Colors.blueGrey[600],

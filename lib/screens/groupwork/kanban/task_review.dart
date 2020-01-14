@@ -8,6 +8,7 @@ import 'package:peeps/bloc/user/profile/profile_bloc.dart';
 import 'package:peeps/enum/approval_enum.dart';
 import 'package:peeps/models/task.dart';
 import 'package:peeps/screens/common/tag.dart';
+import 'package:peeps/screens/common/webviewexporer.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 import 'package:peeps/screens/groupwork/kanban/task_review_form.dart';
 import 'package:peeps/screens/splash_page.dart';
@@ -54,7 +55,19 @@ class _TaskReviewViewState extends State<TaskReviewView> {
             itemCount: items.length,
             itemBuilder: (context,index){
               return ListTile(
-                title: Text(items[index].item),
+                title: items[index].item.contains(new RegExp(r'(http.)'))
+              ? InkWell(
+                child: Text(items[index].item),
+                onTap: (){
+                  Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => WebViewExplorer(url: items[index].item,),
+                      fullscreenDialog: true,
+                    )
+                  );
+                },
+              )
+              : Text(items[index].item),
               );
             },
           ),
@@ -170,9 +183,9 @@ class _TaskReviewViewState extends State<TaskReviewView> {
             context: context,
             builder: (context){
               return DialogWithAvatar(
+                height: 190,
                 avatarIcon: Icon(Icons.add_circle_outline),
                 title: Text("${isAssignedTo? "Submit Material" : "Open Suggestions"}",style: TextStyle(fontSize: 20),),
-                description: "",
                 children: <Widget>[
                   TextFormField(
                     controller: isAssignedTo? _itemController : _suggestionController,

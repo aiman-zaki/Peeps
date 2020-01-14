@@ -37,27 +37,29 @@ class _GroupworksComplaintViewState extends State<GroupworkComplaintView> {
       child: ListView.builder(
         itemCount: complaints.length,
         itemBuilder: (context,index){
-          return Slidable(
-            actionPane: SlidableDrawerActionPane(),
-            actions: <Widget>[
-              IconSlideAction(
-                color: Colors.green,
-                icon: Icons.check,
-                caption: "Resolve",
-                onTap: (){
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      fullscreenDialog: true,
-                      builder: (context) => 
-                        BlocProvider.value(value: _bloc,child: ComplaintResolveFormView(complaint: complaints[index],),)
-                    ));
-                    
-                },
-              )
-            ],
-            child: ListTile(
-              title: Text("${complaints[index].title}"),
-              subtitle: Text("${complaints[index].by}"),
+          return Card(
+            child: Slidable(
+              actionPane: SlidableDrawerActionPane(),
+              actions: <Widget>[
+                IconSlideAction(
+                  color: Colors.green,
+                  icon: Icons.check,
+                  caption: "Resolve",
+                  onTap: (){
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        fullscreenDialog: true,
+                        builder: (context) => 
+                          BlocProvider.value(value: _bloc,child: ComplaintResolveFormView(complaint: complaints[index],),)
+                      ));
+                      
+                  },
+                )
+              ],
+              child: ListTile(
+                title: Text("${complaints[index].title}"),
+                subtitle: Text("${complaints[index].by}"),
+              ),
             ),
           );
           },

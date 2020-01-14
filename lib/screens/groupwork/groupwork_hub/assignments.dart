@@ -139,7 +139,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
               MaterialPageRoute(
                 builder: (context) => 
                 BlocProvider(
-                  builder: (context) => AssignmentTaskRequestsBloc(repository: TasksRepository(data: data[index].id))
+                  create: (context) => AssignmentTaskRequestsBloc(repository: TasksRepository(data: data[index].id))
                     ..add(ReadTaskRequestsEvent()),  
                   child: TaskRequestsView())
               )
@@ -233,7 +233,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                     onTap: () {
                       Navigator.of(context).push(CupertinoPageRoute(
                         builder: (context) => BlocProvider<TaskBloc>(
-                          builder: (context) => TaskBloc(
+                          create: (context) => TaskBloc(
                               repository: TasksRepository(data: data[index].id), timelineBloc: _timelineBloc),
                           child: BlocProvider<MembersBloc>.value(
                             value: _membersBloc,
@@ -259,7 +259,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                         MultiBlocProvider(
                           providers: [
                             BlocProvider<PeerReviewBloc>(
-                              builder: (context) => PeerReviewBloc(repository: AssignmentRepository(data: data[index].id))
+                              create: (context) => PeerReviewBloc(repository: AssignmentRepository(data: data[index].id))
                               ..add(LoadPeerReviewEvent()),
                            
                             ),
@@ -279,7 +279,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => 
                           BlocProvider(
-                            builder: (context) => AssignmentTimelineBloc(
+                            create: (context) => AssignmentTimelineBloc(
                               repository: TimelineAssignmentRepository(
                                 data: widget.groupData.id,data2:data[index].id))..add(ReadAssignmentTimelineEvent()),
                             child: AssignmentTimelineView()))

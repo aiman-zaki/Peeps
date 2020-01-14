@@ -122,7 +122,7 @@ class _GroupworksViewState extends State<GroupworksView> {
                   builder: (context) => 
                   BlocProvider(
                     child: GroupworkHub(userData: widget.user,groupData: data[index],),
-                    builder: (context) => 
+                    create: (context) => 
                     TimelineBloc(
                       liveTimeline: LiveTimeline(namespace: "timeline",room: data[index].id), 
                       repository: TimelineRepository(data: data[index].id)),)
