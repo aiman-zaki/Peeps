@@ -27,6 +27,6 @@ class StashRepository extends BaseRepository {
   }
 
   createReference({data}) async {
-    await super.create(data: data, namespace: "references");
+    return await super.create(data: data, namespace: "references");
   }
 }

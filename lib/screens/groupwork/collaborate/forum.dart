@@ -8,9 +8,9 @@ import 'package:peeps/screens/groupwork/collaborate/discussion.dart';
 import 'package:peeps/screens/groupwork/collaborate/discussion_form.dart';
 
 class CollaborateForumView extends StatefulWidget {
-
+  final isAdmin;
   final course;
-  CollaborateForumView({Key key,this.course}) : super(key: key);
+  CollaborateForumView({Key key,this.course,@required this.isAdmin}) : super(key: key);
 
   _CollaborateForumViewState createState() => _CollaborateForumViewState();
 }
@@ -28,12 +28,16 @@ class _CollaborateForumViewState extends State<CollaborateForumView> {
             child: ListTile(
               title: Text(data[index].title),
               subtitle: Text(data[index].by),
+              onLongPress: widget.isAdmin?
+              (){
+                _bloc.add(DeleteDiscussionEvent(data: {'forum_id':data[index].id}));
+              }: null,
               onTap: (){
                 Navigator.of(context).push(
                   CupertinoPageRoute(
                     builder: (context) => BlocProvider(
                       create: (context) => CollaborateDiscussionBloc(repository: DiscussionRepository(data: widget.course,data2: data[index].id)),
-                      child: DiscussionView(),
+                      child: DiscussionView(isAdmin: widget.isAdmin ,),
                     ),
                   ),
                 );
@@ -72,19 +76,20 @@ class _CollaborateForumViewState extends State<CollaborateForumView> {
            
          ),
        ),
-       floatingActionButton: FloatingActionButton(
+      floatingActionButton: !widget.isAdmin?
+       FloatingActionButton(
          child: Icon(Icons.add),
          onPressed: (){
            Navigator.of(context).push(
              MaterialPageRoute(
                builder: (context) => BlocProvider.value(
                  value: _bloc,
-                 child: DiscussionFormView(),
+                 child: DiscussionFormView(isAdmin: widget.isAdmin),
                ),
              ),
            );
          },
-       ),
+       ) : null
     );
   }
 }

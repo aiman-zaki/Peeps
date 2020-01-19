@@ -33,7 +33,7 @@ class _AssignmentsCountdownState extends State<AssignmentsCountdown> {
         key: widget.showCaseKey['assignmentsCountdown'],
         description: "Display Currently ongoing Assignment",
         child: Container(
-          height: 200,
+          height: 300,
           padding: EdgeInsets.all(3.0),
           child: Card(
             elevation: 8.00,
@@ -70,44 +70,46 @@ class _AssignmentsCountdownState extends State<AssignmentsCountdown> {
                         height: 15,
                         color: Colors.pink[100],
                       ),
-                      ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: data.length,
-                        itemBuilder: (context, index) {
-                          if (data[index]['assignments'].isNotEmpty) {
-                            var assignments = data[index]['assignments'];
-                            return ListView.builder(
-                              shrinkWrap: true,
-                              itemCount: assignments.length,
-                              itemBuilder: (context, index2) {
-                                var countdown = assignments[index2]
-                                    .dueDate
-                                    .difference(DateTime.now())
-                                    .inDays;
-                                if (countdown > 0) {
-                                  return Row(
-                                    children: <Widget>[
-                                      Expanded(
-                                          flex: 5,
-                                          child: Text(assignments[index2].title)),
-                                      SizedBox(
-                                        width: 15,
-                                      ),
-                                      Expanded(
-                                          flex: 2,
-                                          child: Text(
-                                              "days : ${countdown.toString()}")),
-                                    ],
-                                  );
-                                } else {
-                                  return Container();
-                                }
-                              },
-                            );
-                          } else {
-                            return Container();
-                          }
-                        },
+                      Expanded(
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          itemCount: data.length,
+                          itemBuilder: (context, index) {
+                            if (data[index]['assignments'].isNotEmpty) {
+                              var assignments = data[index]['assignments'];
+                              return ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: assignments.length,
+                                itemBuilder: (context, index2) {
+                                  var countdown = assignments[index2]
+                                      .dueDate
+                                      .difference(DateTime.now())
+                                      .inDays;
+                                  if (countdown > 0) {
+                                    return Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                            flex: 5,
+                                            child: Text(assignments[index2].title)),
+                                        SizedBox(
+                                          width: 15,
+                                        ),
+                                        Expanded(
+                                            flex: 2,
+                                            child: Text(
+                                                "days : ${countdown.toString()}")),
+                                      ],
+                                    );
+                                  } else {
+                                    return Container();
+                                  }
+                                },
+                              );
+                            } else {
+                              return Container();
+                            }
+                          },
+                        ),
                       ),
                     ],
                   ),

@@ -5,8 +5,8 @@ import 'package:peeps/models/discussion.dart';
 import 'package:peeps/screens/common/captions.dart';
 
 class DiscussionFormView extends StatefulWidget {
-
-  DiscussionFormView({Key key}) : super(key: key);
+  final bool isAdmin;
+  DiscussionFormView({Key key,@required this.isAdmin}) : super(key: key);
   
   _DiscussionFormViewState createState() => _DiscussionFormViewState();
 }
@@ -51,18 +51,19 @@ class _DiscussionFormViewState extends State<DiscussionFormView> {
            ),
          ),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.check),
-        onPressed: (){
-          _bloc.add(CreateNewDiscussionEvent(data: DiscussionModel(
-            id: "0",
-            title: _titleController.text,
-            description: _descriptionController.text,
-            replies: [], by: "",
-            createdDate: DateTime.now(),
-          )));
-        },
-      ),
+      floatingActionButton: !widget.isAdmin?
+        FloatingActionButton(
+          child: Icon(Icons.check),
+          onPressed: (){
+            _bloc.add(CreateNewDiscussionEvent(data: DiscussionModel(
+              id: "0",
+              title: _titleController.text,
+              description: _descriptionController.text,
+              replies: [], by: "",
+              createdDate: DateTime.now(),
+            )));
+          },
+        ) : null
     );
   }
 }

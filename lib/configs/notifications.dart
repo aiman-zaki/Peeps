@@ -4,6 +4,7 @@ import 'dart:typed_data';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:meta/meta.dart';
 
 class LocalNotifications {
 
@@ -22,15 +23,16 @@ class LocalNotifications {
     
   }
 
-  Future<void> showNotification(flutterLocalNotificationsPlugin) async {
+  static Future<void> showNotification(flutterLocalNotificationsPlugin,{@required channelId,@required channelName,@required channelDescription,@required title,@required body}) async {
     var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
+        '$channelId', '$channelName', '$channelDescription',
         importance: Importance.Max, priority: Priority.High, ticker: 'ticker');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    //var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+
     var platformChannelSpecifics = NotificationDetails(
-        androidPlatformChannelSpecifics, iOSPlatformChannelSpecifics);
+        androidPlatformChannelSpecifics, null);
     await flutterLocalNotificationsPlugin.show(
-        0, 'plain title', 'plain body', platformChannelSpecifics,
+        0, '$title', '$body', platformChannelSpecifics,
         payload: 'item x');
   }
 

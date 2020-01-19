@@ -11,7 +11,8 @@ import 'package:peeps/screens/groupwork/collaborate/reply_form.dart';
 import 'package:peeps/screens/splash_page.dart';
 
 class DiscussionView extends StatefulWidget {
-  DiscussionView({Key key}) : super(key: key);
+  final bool isAdmin;
+  DiscussionView({Key key,@required this.isAdmin}) : super(key: key);
 
   _DiscussionViewState createState() => _DiscussionViewState();
 }
@@ -205,7 +206,7 @@ class _DiscussionViewState extends State<DiscussionView> {
           },
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: widget.isAdmin ? FloatingActionButton(
           child: Icon(Icons.reply),
           onPressed: () {
             if (bottomOpened) {
@@ -220,7 +221,7 @@ class _DiscussionViewState extends State<DiscussionView> {
             } else {
               _showBottomSheet(context);
             }
-          }),
+          }) : null
     );
   }
 }

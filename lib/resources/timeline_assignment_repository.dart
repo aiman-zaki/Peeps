@@ -16,4 +16,9 @@ class TimelineAssignmentRepository extends BaseRepository{
       return ContributionModel.fromJson(contribution);
     }).toList().cast<ContributionModel>();
   }
+
+  readUserOnlyContributions() async {
+    var data =  await super.read(namespace: "contributions/user");
+    return data;
+  }
 }

@@ -27,7 +27,7 @@ class AssignmentRepository extends BaseRepository {
   }
 
   createAssignment({@required data}) async {
-    await super.create(data: data, namespace: "assignments");
+    return await super.create(data: data, namespace: "assignments");
   }
 
   deleteAssignment({@required id}) async {
@@ -53,6 +53,11 @@ class AssignmentRepository extends BaseRepository {
     if (data != null)
       print(data);
       return PeerReviewsModel.fromJson(data);
+  }
+
+  readPeerReviewScore() async {
+    var data = await super.read(namespace: "peer_review/user");
+    return data;
   }
 
   readPoint() async {

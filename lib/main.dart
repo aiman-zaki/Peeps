@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:peeps/global/notification_manager.dart';
 import 'package:peeps/resources/user_repository.dart';
 
 import 'package:peeps/router.dart' as router;
@@ -30,6 +31,7 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   BlocSupervisor.delegate = SimpleBlocDelegate();
+  NotificationManager notificationManager = NotificationManager();
   final authRepository = AuthRepository();
   final userRepository = UserRepository();
 
@@ -37,6 +39,7 @@ void main() async {
 
   //RefreshToken
   periodicSub = Stream.periodic(Duration(minutes: 15)).listen((_)=> authRepository.refreshToken());
+  //Stream.periodic(Duration(minutes: 1)).listen((_) => notificationManager.pollingSupervisorNotification(flutterLocalNotificationsPlugin));
   flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
   runApp(
     MultiBlocProvider(

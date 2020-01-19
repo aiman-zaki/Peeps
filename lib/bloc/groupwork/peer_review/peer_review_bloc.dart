@@ -21,8 +21,8 @@ class PeerReviewBloc extends Bloc<PeerReviewEvent, PeerReviewState> {
   ) async* {
     if(event is LoadPeerReviewEvent){
       yield LoadingPeerReviewState();
-      var data = await repository.readPeerReview();
-      yield LoadedPeerReviewState(data: data);
+      //var data = await repository.readPeerReview();
+      yield LoadedPeerReviewState(data: {});
     }
   }
 }

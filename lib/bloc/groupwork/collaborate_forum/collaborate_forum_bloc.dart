@@ -30,5 +30,15 @@ class CollaborateForumBloc extends Bloc<CollaborateForumEvent, CollaborateForumS
       await repository.create(data:event.data);
       this.add(LoadForumEvent());
     }
+    if(event is DeleteDiscussionEvent){
+      try{
+        var message = await repository.deleteForum(data: event.data);
+        yield MessageForumState(message: message['message']);
+      } catch(e){
+        yield MessageForumState(message: e);
+      }
+      this.add(LoadForumEvent());
+
+    }
   }
 }

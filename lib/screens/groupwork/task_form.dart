@@ -91,7 +91,7 @@ class _TaskFormState extends State<TaskForm> {
                   task: TaskModel(task: _taskController.text, description: _descriptionController.text, 
                                   creator: email, createdDate: DateTime.now(), 
                                   assignDate: assignDate, 
-                                  dueDate: dueDate, assignTo: _assignedTo, lastUpdated: DateTime.now(), priority: _priority,status: TaskStatus.todo,reviews: [],items: [])));
+                                  dueDate: dueDate, assignTo: _assignedTo, lastUpdated: DateTime.now(), priority: _priority,status: TaskStatus.todo,reviews: [],items: [], acceptedDate: null)));
             Navigator.of(context).pop();
           },
           child: Text("Accept"),
@@ -289,7 +289,7 @@ class _TaskFormState extends State<TaskForm> {
               priority: _priority,
               reviews: widget.task.reviews,
               items: widget.task.items,
-              seq: widget.task.seq
+              seq: widget.task.seq, acceptedDate: null
             )));
             
           }

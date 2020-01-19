@@ -18,7 +18,6 @@ class _UsersListViewState extends State<UsersListView> {
     
     _buildUsersList(List<UserModel> data){
       return Container(
-          padding: EdgeInsets.all(9),
           child: Column(
             children: <Widget>[
               Expanded(child: 

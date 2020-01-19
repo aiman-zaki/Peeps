@@ -22,10 +22,12 @@ class ForumRepository extends BaseRepository{
     if(data != null){
       for(Map<String,dynamic> discussion in data){
       discussions.add(DiscussionModel.fromJson(discussion));
-    }
-    }
-      
+    }} 
     return discussions;
+  }
+
+  deleteForum({@required data}) async{
+    return await super.update(data: data);
   }
 
   @override

@@ -29,7 +29,7 @@ class PeerReviewModel{
       reviewer: reviewer,
       reviewee: json['reviewee'],
       answers: json['answers'].map((answer){
-        return QuestionModel.fromJson(answer);
+        return AnsweredModel.fromJson(answer);
       }).toList(),
     );
   }
@@ -38,12 +38,34 @@ class PeerReviewModel{
     return {
       "reviewer":this.reviewer,
       "reviewee":this.reviewee,
-      "answers":this.answers.map((answer){
-        return answer.toJson();
-      }).toList(),
+      "answers":this.answers
+    };
+  }
+  String toString() => "Reviewer : $reviewee , Reviewee : $reviewee , Anwesers : ${answers.toString()}";
+}
+
+class AnsweredModel{
+  final String questionId;
+  final int answerIndex;
+
+  AnsweredModel({
+    @required this.questionId,
+    @required this.answerIndex,
+  });
+
+  Map<String,dynamic> toJson(){
+    return {
+      "question_id":questionId,
+      "answer_index":answerIndex,
     };
   }
 
-  String toString() => "Reviewer : $reviewee , Reviewee : $reviewee , Anwesers : ${answers.toString()}";
+  static AnsweredModel fromJson(Map<String,dynamic> json){
+    return AnsweredModel(
+      answerIndex: json['answer_index'],
+      questionId: json['question_id']['\$oid']
+    );
+  }
+
 
 }

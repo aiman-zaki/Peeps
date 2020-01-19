@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -17,6 +18,22 @@ class UserRepository extends BaseRepository{
   const UserRepository(
   ):super(baseUrl:userUrl);
 
+    testFirebase() async {
+    const FCMTOKEN = "d8Q6RQ9IyUU:APA91bHdPIOUJeJQd08UKr79shcU-3LNOJ-lc3uKoJPjeLLPpic-6azsiBaQ1AwkCnSsadps4NfbkSAnXm_zHutokTmL9eQU4WBODnYDgfPTENjw6JkYvCtxlSmE-NKhmcjeBTXXwJhN";
+    const SERVERTOKEN = "AAAA9FFp-qU:APA91bE81AVpcv7rhpG1TU6eS5L6ofodVVV0ZQt5SxccNejxjGHsZlZEgRaP58u_MhSJGxFsk_nVNyIjfi07iZwb8Vya7X5mADOV8fjpTgaWi3yaolySujWp_ARSvieooqTJg9fqJj7J";
+    final Map data = 
+    {
+      "notification": {"body": "oi oi oi","title": "ew ew ew ew"}, 
+      "priority": "high", "data": {"click_action": "FLUTTER_NOTIFICATION_CLICK", "id": "1", "status": "done"}, "to": "$FCMTOKEN"};
+    
+    var response = await http.post("https://fcm.googleapis.com/fcm/send",
+      body: jsonEncode(data),
+      headers: {HttpHeaders.authorizationHeader: "key=$SERVERTOKEN",
+                  "Content-Type":"application/json"
+      });
+    print(response.body);
+    
+  }
 
   readProfile() async {
     var data = await super.read(namespace: 'profile');
@@ -95,19 +112,24 @@ class UserRepository extends BaseRepository{
     }
     return tasks;
   }
-
+  
   readUserAssignment() async {
     var data = await super.read(namespace: "assignments");
-   
     for(Map<String,dynamic> groupwork in data){
       groupwork['assignments'] = groupwork['assignments'].map((assignment){
         return AssignmentModel.fromJson(assignment);
       }).toList();
     }
-
-     print(data);
+    print(data);
     return data;
   }
+
+  readOverallStats() async {
+    var data = await super.read(namespace: "stats");
+    return data;
+  }
+
+  
 
 
 

@@ -25,3 +25,4 @@ export 'task/user_task_state.dart';
 export 'assignment/assignments_bloc.dart';
 export 'assignment/assignments_event.dart';
 export 'assignment/assignments_state.dart';
+export 'stats/bloc.dart';

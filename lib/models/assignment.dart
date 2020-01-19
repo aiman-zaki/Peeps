@@ -14,9 +14,11 @@ class AssignmentModel{
   final DateTime createdDate;
   final DateTime startDate;
   final DateTime dueDate;
+  final DateTime submittedDate;
   final double userPoint;
   final Approval approval;
   final String templateId;
+  final String assignmentLink;
   List<TaskModel> tasks;
   List<TaskModel> todo;
   List<TaskModel> ongoing;
@@ -36,12 +38,14 @@ class AssignmentModel{
       @required this.createdDate,
       @required this.startDate,
       @required this.dueDate,
+      this.submittedDate,
       @required this.templateId,
       this.userPoint,
       this.approval,
       this.todo,
       this.ongoing,
       this.done,  
+      this.assignmentLink,
     }
   );
 
@@ -76,7 +80,8 @@ class AssignmentModel{
       userPoint: json['user_point'] != null ? json['user_point'].toDouble() : null,
       approval: json['approval'] != null ? Approval.values.elementAt(json['approval']) : null,
       templateId: json['template_id'] != null ? json['template_id']['\$oid'] : null,
-    
+      assignmentLink: json['assignment_link'] != null ? json['assignment_link'] : null,
+      submittedDate: json['submitted_date'] != null ? DateTime.parse(json['submitted_date']) : null,
     );
   }
 

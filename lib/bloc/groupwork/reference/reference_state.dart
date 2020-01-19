@@ -28,3 +28,15 @@ class LoadedReferenceState extends ReferenceState{
   @override
   String toString() => "LoadedReferenceState";
 }
+
+class MessageReferenceState extends ReferenceState{
+  final message;
+  MessageReferenceState({
+    @required this.message
+  });
+  @override
+  String toString() => "MessageReferenceState";
+
+  @override
+  List<Object> get props => [];
+}

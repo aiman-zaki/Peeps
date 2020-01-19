@@ -48,7 +48,7 @@ class _GroupworksViewState extends State<GroupworksView> {
         child: CustomNetworkProfilePicture(
           bottomRadius: 0,
           topRadius: 10,
-          heigth: 100,
+          heigth: 180,
           image: groupwork.profilePicturerUrl,
           child: Center(child: Text(groupwork.name),),
         ),
@@ -62,7 +62,7 @@ class _GroupworksViewState extends State<GroupworksView> {
           child: Column(
             children: <Widget>[
               _buildAvatar(groupwork),
-              Container(
+              /*Container(
                 width: double.infinity,
                 color: Theme.of(context).primaryColor,
                 padding: const EdgeInsets.all(12),
@@ -95,7 +95,7 @@ class _GroupworksViewState extends State<GroupworksView> {
                     )
                   ],
                 ),
-              ),
+              ),*/
             ],
           ),
         ),

@@ -33,16 +33,21 @@ class ReferenceBloc extends Bloc<ReferenceEvent, ReferenceState> {
       yield LoadedReferenceState(data: data);
     }
     if(event is CreateNewReferenceEvent){
-      await stashRepository.createReference(data: event.data.toJson());
-      timelineBloc.add(SendDataTimelineEvent(
-        intial: false,
-        data: ContributionModel(
-        who: event.data.creator,
-        what: WhatEnum.create,
-        when: DateTime.now(),
-        how: "new", where: WhereEnum.reference, why: "",taskId: null,
-        room: stashRepository.data, from: null, assignmentId: null)));
-      this.add(ReadReferencesEvent());
+      try{
+        var message = await stashRepository.createReference(data: event.data.toJson());
+        timelineBloc.add(SendDataTimelineEvent(
+          intial: false,
+          data: ContributionModel(
+          who: event.data.creator,
+          what: WhatEnum.create,
+          when: DateTime.now(),
+          how: "new", where: WhereEnum.reference, why: "",taskId: null,
+          room: stashRepository.data, from: null, assignmentId: null)));
+          yield MessageReferenceState(message: message['message']);
+        this.add(ReadReferencesEvent());
+      } catch (e){
+        yield MessageReferenceState(message: e);
+      }
     }
   }
 }

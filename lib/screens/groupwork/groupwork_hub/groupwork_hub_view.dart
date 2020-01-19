@@ -63,7 +63,8 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
 
   @override
   Widget build(BuildContext context) {
-  
+    final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
+    
     final _referencesBloc = BlocProvider.of<ReferenceBloc>(context);
     final size = MediaQuery.of(context).size;
     
@@ -84,7 +85,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                   BlocProvider<CollaborateMapBloc>(
                     create: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course))),
                   BlocProvider<CollaborateForumBloc>(
-                    create: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course))),
+                    create: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course),)),
                   BlocProvider<CollaborateBloc>(
                     create: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course))),
                   BlocProvider<CollaborateGroupworkBloc>(
@@ -118,7 +119,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                                   BlocProvider<CollaborateMapBloc>(
                                     create: (context) => CollaborateMapBloc(repository: MarkerRepository(data: widget.groupData.course))),
                                   BlocProvider<CollaborateForumBloc>(
-                                    create: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course))),
+                                    create: (context) => CollaborateForumBloc(repository: ForumRepository(data: widget.groupData.course), )),
                                   BlocProvider<CollaborateBloc>(
                                     create: (context) => CollaborateBloc(collaborate: LiveCollaborate(namespace: "collaborate",room: widget.groupData.course))),
                                   BlocProvider<CollaborateGroupworkBloc>(
@@ -150,7 +151,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
             CupertinoPageRoute(
               builder: (context) => BlocProvider.value(
                 value: _referencesBloc,
-                child: StashView())
+                child: BlocProvider.value(value:_assignmentBloc, child: StashView(isPublic: false,)))
             )
           );
         },
@@ -172,7 +173,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                             CupertinoPageRoute(
                               builder: (context) => BlocProvider.value(
                                 value: _referencesBloc,
-                                child: StashView())
+                                child: BlocProvider.value(value:_assignmentBloc,child: StashView(isPublic: false,)))
                             )
                           );
                         },
@@ -192,13 +193,13 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
         appBar: AppBar(
           centerTitle: true,
           title: Text("Overview"),
-          elevation: 0.00,
+          elevation: 1.00,
         ),
         body: SingleChildScrollView(
           child: Stack(
             children: <Widget>[
               Positioned(
-                  top: 0,
+                  top: 1,
                   child: ClipPath(
                       clipper: WaveClipperTwo(),
                       child: Container(
@@ -212,7 +213,7 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                         ])),
                       ))),
               Positioned(
-                  bottom: 0,
+                  bottom: 1,
                   child: ClipPath(
                       clipper: WaveClipperTwo(reverse: true),
                       child: Container(

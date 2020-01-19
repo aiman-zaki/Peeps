@@ -15,7 +15,7 @@ class QuestionModel {
   });
 
   static QuestionModel fromJson(Map<String,dynamic> json){
-    //TODO: will return length == null.
+
     List<dynamic> temp = json['answers'];
     List<AnswerModel> answers = [];
     for(int i = 0 ; i<temp.length; i++){
@@ -61,3 +61,4 @@ class AnswerModel{
     };
   }
 }
+

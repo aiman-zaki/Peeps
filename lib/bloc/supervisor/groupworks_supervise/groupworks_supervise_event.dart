@@ -13,3 +13,11 @@ class ReadGroupworksSuperviseEvent extends GroupworksSuperviseEvent{
   List<Object> get props => [];
 }
 
+
+class CreateGroupworkAnnouncementEvent extends GroupworksSuperviseEvent{
+  @override
+  String toString() => "CreateGroupworkAnnouncementEvent";
+
+  @override
+  List<Object> get props => [];
+}

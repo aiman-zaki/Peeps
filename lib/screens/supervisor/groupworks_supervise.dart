@@ -6,11 +6,14 @@ import 'package:peeps/bloc/supervisor/bloc.dart';
 import 'package:peeps/bloc/supervisor/groupworks_supervise/groupworks_supervise_bloc.dart';
 import 'package:peeps/models/course.dart';
 import 'package:peeps/models/groupwork.dart';
+import 'package:peeps/resources/assignment_repository.dart';
 import 'package:peeps/resources/groupwork_repository.dart';
 import 'package:peeps/resources/stash.dart';
 import 'package:peeps/screens/common/common_profile_picture.dart';
 import 'package:peeps/screens/common/tag.dart';
+import 'package:peeps/screens/common/withAvatar_dialog.dart';
 import 'package:peeps/screens/groupwork/stash/references.dart';
+import 'package:peeps/screens/groupwork/stash/stash.dart';
 import 'package:peeps/screens/splash_page.dart';
 import 'package:peeps/screens/supervisor/complaints.dart';
 
@@ -29,6 +32,32 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
     final _bloc = BlocProvider.of<GroupworksSuperviseBloc>(context);
     final _courseBloc = BlocProvider.of<CoursesSupervisorBloc>(context);
     final _size = MediaQuery.of(context).size;
+
+    final titleController = TextEditingController();
+    final bodyController = TextEditingController();
+
+    _showAnnouncementDialog(){
+      return showDialog(
+        context: context,
+        child: DialogWithAvatar(
+          width: _size.width,
+          height: 220,
+          avatarIcon: Icon(Icons.announcement),
+          title: Text("Send Message to All Groupwork Members"),
+          children: <Widget>[
+            TextFormField(controller: titleController,),
+            TextFormField(controller: bodyController,)
+          ],
+          bottomRight: FlatButton(
+            onPressed: (){
+              
+
+            },
+            child: Text("Confirm"),
+          ),
+        )
+      );
+    }
   
     _buildSupevisorCoursesList(List<CourseModel> courses){
       return Column(
@@ -113,15 +142,17 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               fullscreenDialog: true,
-                              builder: (context) => BlocProvider(
-                                create: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
-                                ..add(ReadPublicReferencesEvent()),
-                                child: Scaffold(
-                                  appBar: AppBar(title: Text("Public References"),),
-                                  body: Container(
-                                    child: ReferencesView(isPublic: true,),
-                                  ),
-                                ),
+                              builder: (context) => MultiBlocProvider(
+                                providers: [
+                                  BlocProvider<ReferenceBloc>(
+                                    create: (context) => ReferenceBloc(stashRepository: StashRepository(data: data[index].id))
+                                    ..add(ReadPublicReferencesEvent()),
+                                    ),
+                                  BlocProvider<AssignmentBloc>(
+                                    create: (context) => AssignmentBloc(repository: AssignmentRepository(data: data[index].id),timelineBloc: null)..add(LoadAssignmentEvent()),
+                                  )
+                                ],
+                                child: StashView(isPublic: true,)
                               )
                             )
                           );
@@ -168,6 +199,14 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
                           );
                         },
                         caption: "Reports",
+                      ),
+                      IconSlideAction(
+                        icon: Icons.announcement,
+                        color: Colors.blue,
+                        onTap: (){
+                          _showAnnouncementDialog();
+                        },
+                        caption: "Announcement",
                       )
                     ],
                 child: Container(

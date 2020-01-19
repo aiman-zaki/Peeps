@@ -26,6 +26,17 @@ class PeersReviewsQuestionsBloc extends Bloc<PeersReviewsQuestionsEvent, PeersRe
       var data = await repository.readQuestions();
       yield LoadedPeersReviewsQuestionsState(data: data);
     }
+    if(event is ReadPeersReviewsScoredWithQuestion){
+      yield LoadingPeersReviewsQuestionsState();
+      var questions = await repository.readQuestions();
+      var score = await assignmentRepository.readPeerReviewScore();
+      yield LoadedPeersReviewsQuestionsState(data: {
+        "questions":questions,
+        "score":score,
+      });
+    }
+
+
     if(event is SubmitPeersReviewQustionsWithAnswers){
 
       await assignmentRepository.createPeerReview(data: event.data.toJson());

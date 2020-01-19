@@ -45,3 +45,17 @@ class UpdatedAssignmentStatusState extends AssignmentState{
   @override
   List<Object> get props => [];
 }
+
+class MessageAssignmentState extends AssignmentState{
+  final message;
+
+  MessageAssignmentState({
+    @required this.message
+  }); 
+  
+  @override
+  String toString() => "MessageAssignmentState";
+
+  @override
+  List<Object> get props => [];
+}

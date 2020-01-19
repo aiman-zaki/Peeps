@@ -34,3 +34,16 @@ class LoadedForumState extends CollaborateForumState{
   @override
   List<Object> get props =>[data];
 }
+
+class MessageForumState extends CollaborateForumState{
+  final message;
+  MessageForumState({
+    @required this.message
+  });
+  
+  @override
+  String toString() => "MessageForumState";
+
+  @override
+  List<Object> get props => [];
+}

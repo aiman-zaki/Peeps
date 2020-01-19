@@ -46,6 +46,10 @@ class GroupworkRepository extends BaseRepository{
   updateTemplate() async {
     await super.create(data: null,namespace: "template/update");
   }
+  
+  createSupervisorMessages({@required data}) async {
+    await super.create(data: data,namespace: 'supervisor/messages');
+  }
 
   readRequests() async{
     var data = await super.read(namespace: "requests");

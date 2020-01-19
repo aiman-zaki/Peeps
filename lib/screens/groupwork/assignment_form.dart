@@ -157,63 +157,73 @@ class _AssignmentFormState extends State<AssignmentFormView> {
         appBar: AppBar(
           title: Text('Assignment Form'),
         ),
-        body: SingleChildScrollView(
-          child: Form(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  _captions(text: "Make it short"),
-                  TextFormField(
-                    controller: _titleController,
-                    decoration: InputDecoration(labelText: "Title"),
-                  ),
-                  SizedBox(height: 15,),
-                  _captions(text: "Summary of the Assignment"),
-                  TextFormField(
-                    minLines: 1,
-                    maxLines: 2,
-                    controller: _descriptionController,
-                    decoration: InputDecoration(labelText: "Description"),
-                  ),
-                  SizedBox(height: 15,),
-                  _captions(text: "Choose the leader responsible for the Assignment \nDropdown or Dynamic[soon]"),
-                  _buildMembersDropdown(),
-                  SizedBox(height: 15,),
-                  _captions(text: "Total carry mark"),
-                  TextFormField(
-                    keyboardType: TextInputType.number,
-                    controller: _totalMarks,
-                    decoration: InputDecoration(labelText: "Total Marks"),
-                  ),
-                  SizedBox(height: 15,),
-                  DateTimeField(
-                    decoration: InputDecoration(
-                      labelText: "Due Date"
+        body: BlocListener(
+          bloc: _assignmentBloc,
+          listener: (context,state){
+            if(state is MessageAssignmentState){
+              return Scaffold.of(context).showSnackBar(SnackBar(
+                content: Text(state.message),
+              ));
+            }
+          },
+          child: SingleChildScrollView(
+            child: Form(
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    _captions(text: "Make it short"),
+                    TextFormField(
+                      controller: _titleController,
+                      decoration: InputDecoration(labelText: "Title"),
                     ),
-                    controller: _dueDate,
-                    format: format,
-                    onShowPicker: (context, currentValue) async {
-                      final date = await showDatePicker(
-                          context: context,
-                          firstDate: DateTime(1900),
-                          initialDate: currentValue ?? DateTime.now(),
-                          lastDate: DateTime(2100));
-                      if (date != null) {
-                        final time = await showTimePicker(
-                          context: context,
-                          initialTime:
-                              TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
-                        );
-                        return DateTimeField.combine(date, time);
-                      } else {
-                        return currentValue;
-                      }
-                    },
-                  ),
-                ],
+                    SizedBox(height: 15,),
+                    _captions(text: "Summary of the Assignment"),
+                    TextFormField(
+                      minLines: 1,
+                      maxLines: 2,
+                      controller: _descriptionController,
+                      decoration: InputDecoration(labelText: "Description"),
+                    ),
+                    SizedBox(height: 15,),
+                    _captions(text: "Choose the leader responsible for the Assignment \nDropdown or Dynamic[soon]"),
+                    _buildMembersDropdown(),
+                    SizedBox(height: 15,),
+                    _captions(text: "Total carry mark"),
+                    TextFormField(
+                      keyboardType: TextInputType.number,
+                      controller: _totalMarks,
+                      decoration: InputDecoration(labelText: "Total Marks"),
+                    ),
+                    SizedBox(height: 15,),
+                    DateTimeField(
+                      decoration: InputDecoration(
+                        labelText: "Due Date"
+                      ),
+                      controller: _dueDate,
+                      format: format,
+                      onShowPicker: (context, currentValue) async {
+                        final date = await showDatePicker(
+                            context: context,
+                            firstDate: DateTime(1900),
+                            initialDate: currentValue ?? DateTime.now(),
+                            lastDate: DateTime(2100));
+                        if (date != null) {
+                          final time = await showTimePicker(
+                            context: context,
+                            initialTime:
+                                TimeOfDay.fromDateTime(currentValue ?? DateTime.now()),
+                          );
+                          return DateTimeField.combine(date, time);
+                        } else {
+                          return currentValue;
+                        }
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),

@@ -36,41 +36,38 @@ class _PeersReviewViewState extends State<PeersReviewView> {
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
     final _bloc = BlocProvider.of<PeerReviewBloc>(context);
 
-    _buildMembers(
-        {@required PeerReviewsModel data, @required MemberModel member}) {
+    _buildMembers({@required  data, @required MemberModel member}) {
       bool reviewed = false;
       PeerReviewModel reviewedAnswer;
-      for (PeerReviewModel review in data.peerReviews) {
+      /*for (PeerReviewModel review in data.peerReviews) {
         if (review.reviewee == member.email) reviewed = true;
         reviewedAnswer = review;
-      }
-      return ListTile(
-        title: Text(member.email),
-        trailing: reviewed ? Text("Reviewed") : Text("Nope"),
-        onTap: () {
-          if (!reviewed) {
-            Navigator.of(context).push(CupertinoPageRoute(
-                builder: (context) => BlocProvider(
-                    create: (context) => PeersReviewsQuestionsBloc(
-                        assignmentRepository:
-                            AssignmentRepository(data: widget.assignment.id),
-                        repository: QuestionsRepository())
-                      ..add(ReadPeersReviewsQuestions()),
-                    child: PeerReviewQuestionsView(
-                      reviewed: reviewed,
-                      assignmentId: widget.assignment.id,
-                      reviewee: member.email,
-                    ))));
-          }
-        },
+      }*/
+      return Card(
+        child: ListTile(
+          title: Text(member.email),
+          trailing: reviewed ? Text("Reviewed") : Text("Nope"),
+          onTap: () {
+            if (!reviewed) {
+              Navigator.of(context).push(CupertinoPageRoute(
+                  builder: (context) => BlocProvider(
+                      create: (context) => PeersReviewsQuestionsBloc(
+                          assignmentRepository:
+                              AssignmentRepository(data: widget.assignment.id),
+                          repository: QuestionsRepository())
+                        ..add(ReadPeersReviewsQuestions()),
+                      child: PeerReviewQuestionsView(
+                        reviewed: reviewed,
+                        assignmentId: widget.assignment.id,
+                        reviewee: member.email,
+                      ))));
+            }
+          },
+        ),
       );
     }
 
-    return Scaffold(
-        appBar: AppBar(
-          title: Text("Peers Reviews"),
-        ),
-        body: BlocBuilder(
+    return BlocBuilder(
           bloc: _membersBloc,
           builder: (context, memberState) {
             if (memberState is LoadedMembersState) {
@@ -109,6 +106,5 @@ class _PeersReviewViewState extends State<PeersReviewView> {
                       );
             }
           },
-        ));
-  }
+        );}
 }

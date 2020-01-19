@@ -35,15 +35,22 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
       yield LoadedAssignmentState(data:assignments);
     }
     if(event is AddAssignmentEvent){
-      await repository.createAssignment(data: event.assignment.toJson());
-      timelineBloc.add(SendDataTimelineEvent(
-        intial: true,
-        data: ContributionModel(
-          who: event.assignment.leader,
-          what: WhatEnum.create,
-          when: DateTime.now(),
-          how: "new", where: WhereEnum.assignment, why: "",assignmentId: null,taskId: null,
-          room: repository.data, from: null)));
+      try { 
+        var message = await repository.createAssignment(data: event.assignment.toJson());
+        yield MessageAssignmentState(message: message['message']);
+        timelineBloc.add(SendDataTimelineEvent(
+          intial: true,
+          data: ContributionModel(
+            who: event.assignment.leader,
+            what: WhatEnum.create,
+            when: DateTime.now(),
+            how: "new", where: WhereEnum.assignment, why: "",assignmentId: null,taskId: null,
+            room: repository.data, from: null)));
+        }
+      catch(e){
+        yield MessageAssignmentState(message: e.message);
+      }
+      this.add(LoadAssignmentEvent());
     }
     if(event is TaskRefreshButtonClicked){
       yield LoadingAssignmentState();
@@ -58,7 +65,7 @@ class AssignmentBloc extends Bloc<AssignmentEvent, AssignmentState> {
       yield UpdatingAssignmentStatusState();
       await repository.updateAssignmentState(data: event.data);
       yield UpdatedAssignmentStatusState();
-      print(event.data);
+
        timelineBloc.add(SendDataTimelineEvent(
          intial: false,
          data: ContributionModel(

@@ -7,14 +7,17 @@ import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/enum/status_enum.dart';
 import 'package:peeps/models/assignment.dart';
 import 'package:peeps/resources/assignment_repository.dart';
+import 'package:peeps/resources/questions_repository.dart';
 
 import 'package:peeps/resources/tasks_repository.dart';
 import 'package:peeps/resources/timeline_assignment_repository.dart';
 import 'package:peeps/screens/common/withAvatar_dialog.dart';
 import 'package:peeps/screens/groupwork/assignment/task_requests.dart';
 import 'package:peeps/screens/groupwork/assignment/timeline.dart';
+import 'package:peeps/screens/groupwork/assignment/timeline_base.dart';
 import 'package:peeps/screens/groupwork/kanban/kanban.dart';
 import 'package:peeps/screens/groupwork/review/peer_review.dart';
+import 'package:peeps/screens/groupwork/review/peer_review_base.dart';
 
 import '../assignment_form.dart';
 
@@ -46,6 +49,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
     final _assignmentBloc = BlocProvider.of<AssignmentBloc>(context);
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
     final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
+    final _linkController = TextEditingController();
     final size = MediaQuery.of(context).size;
 
     _showConfirmationDialog(data,index,String fun){
@@ -54,10 +58,19 @@ class _HubAssignmentsState extends State<HubAssignments> {
         builder: (context){
           return DialogWithAvatar(
             avatarIcon: Icon(Icons.check),
-            width: 300,
-            height: 200,
+            width: 320,
+            height: fun.contains("update")? 220 : 200,
             title: Text("Confirmation"),
             description: "Are you sure want to $fun ${data[index].title}",
+            children: fun.contains("update") ? <Widget> [
+              TextField(
+                controller: _linkController,
+                decoration: InputDecoration(
+                  labelText: "Google drive link / Dropbox or any"
+                ),
+              ),
+
+            ] : null,
             bottomLeft: FlatButton(
               child: Text("Cancel"),
               onPressed: (){
@@ -86,7 +99,8 @@ class _HubAssignmentsState extends State<HubAssignments> {
                           user: email,
                           data: {
                             "assignment_id":data[index].id,
-                            "status":updated.index
+                            "status":updated.index,
+                            "assignment_link":_linkController.text
                           }
                         ));
                     Navigator.of(context).pop();
@@ -265,9 +279,10 @@ class _HubAssignmentsState extends State<HubAssignments> {
                             ),
                             BlocProvider<MembersBloc>.value(
                               value: _membersBloc,
-                            )
+                            ),
+                            
                           ],
-                          child: PeersReviewView(assignment: data[index],)),
+                          child: PeerReviewBase(assignment: data[index],)),
                       ));
                     },
                   ),
@@ -278,11 +293,21 @@ class _HubAssignmentsState extends State<HubAssignments> {
                     onTap: (){
                       Navigator.of(context).push(
                         MaterialPageRoute(builder: (context) => 
-                          BlocProvider(
-                            create: (context) => AssignmentTimelineBloc(
-                              repository: TimelineAssignmentRepository(
-                                data: widget.groupData.id,data2:data[index].id))..add(ReadAssignmentTimelineEvent()),
-                            child: AssignmentTimelineView()))
+                          MultiBlocProvider(
+                            providers: [
+                              BlocProvider<AssignmentTimelineBloc>(
+                                create: (context) => AssignmentTimelineBloc(
+                                  repository: TimelineAssignmentRepository(
+                                    data: widget.groupData.id,data2:data[index].id))..add(ReadAssignmentTimelineEvent()),
+                                ),
+                              BlocProvider<AssignmentTimelineUserBloc>(
+                              create: (context) => AssignmentTimelineUserBloc(
+                                timelineRepository: TimelineAssignmentRepository(
+                                  data: widget.groupData.id,data2:data[index].id))..add(ReadAssignmentTimelineUserEvent()),
+                              ),
+                            ],
+                            child: TimelineBaseView()
+                          ))
                       );
                     },
                   )

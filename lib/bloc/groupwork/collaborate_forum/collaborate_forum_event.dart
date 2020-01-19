@@ -26,3 +26,17 @@ class CreateNewDiscussionEvent extends CollaborateForumEvent{
   @override
   List<Object> get props => [];
 }
+
+class DeleteDiscussionEvent extends CollaborateForumEvent{
+  final data;
+  DeleteDiscussionEvent({
+    @required this.data
+  });
+  
+  @override
+  List<Object> get props =>[];
+
+  @override
+  String toString() => "DeleteDiscussionEvent";
+
+}

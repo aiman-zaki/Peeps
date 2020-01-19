@@ -15,6 +15,14 @@ class ReadPeersReviewsQuestions extends PeersReviewsQuestionsEvent{
   String toString() => "ReadPeersReviewsQuestions";
 }
 
+class ReadPeersReviewsScoredWithQuestion extends PeersReviewsQuestionsEvent{
+  @override
+  List<Object> get props => [];
+
+  @override
+  String toString() => "ReadPeersReviewsQuestions";
+}
+
 class SubmitPeersReviewQustionsWithAnswers extends PeersReviewsQuestionsEvent{
   final data;
   SubmitPeersReviewQustionsWithAnswers({

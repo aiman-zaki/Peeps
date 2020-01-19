@@ -29,7 +29,7 @@ class PeerReviewAnswers extends StatelessWidget {
                       Navigator.of(context).pop(
                         {
                           "star":index,
-                          "_id":answers[index].id,
+                          "index":index,
                         }
                       );
                     },

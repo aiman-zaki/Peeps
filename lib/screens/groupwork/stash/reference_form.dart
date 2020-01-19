@@ -37,39 +37,47 @@ class _ReferenceFormViewState extends State<ReferenceFormView> {
       appBar: AppBar(
         title: Text("Reference Form"),
       ),
-      body: SingleChildScrollView(
-        child: Form(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-       
-                TextFormField(
-                  controller: _titleController,
-                  decoration: InputDecoration(
-                    labelText: "Title"
+      body: BlocListener(
+        bloc: _bloc,
+        listener: (context,state){
+          if(state is MessageReferenceState){
+            return Scaffold.of(context).showSnackBar(SnackBar(content: Text(state.message),));
+          }
+        },
+        child: SingleChildScrollView(
+          child: Form(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+         
+                  TextFormField(
+                    controller: _titleController,
+                    decoration: InputDecoration(
+                      labelText: "Title"
+                    ),
                   ),
-                ),
-                SizedBox(height: 10,),
-                CustomCaptions(text: "Can be Link to the article or something",),
-                TextFormField(
-                  controller: _referenceController,
-                  decoration: InputDecoration(
-                    labelText: "Reference"
+                  SizedBox(height: 10,),
+                  CustomCaptions(text: "Can be Link to the article or something",),
+                  TextFormField(
+                    controller: _referenceController,
+                    decoration: InputDecoration(
+                      labelText: "Reference"
+                    ),
                   ),
-                ),
 
-                DropdownButton<Publicity>(
-                  value: _publicityValue,
-                  items: _generatePublicityDropdown(),
-                  onChanged: (Publicity value){
-                    setState(() {
-                      _publicityValue = value;                      
-                    });                    
-                  },
-                )
-              ],
+                  DropdownButton<Publicity>(
+                    value: _publicityValue,
+                    items: _generatePublicityDropdown(),
+                    onChanged: (Publicity value){
+                      setState(() {
+                        _publicityValue = value;                      
+                      });                    
+                    },
+                  )
+                ],
+              ),
             ),
           ),
         ),

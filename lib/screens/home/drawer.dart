@@ -103,9 +103,11 @@ class _DrawerViewState extends State<DrawerView> {
 
       List<Widget> drawerChildren = [
         header,
+        item(Icons.new_releases, "News", BulletinBoardViewRoute),
         item(Icons.mail, "Inbox", InboxBottomBarViewRoute),
         item(Icons.group, "Groups", GroupsViewRoute),
         item(Icons.search, "Groups Search", SearchViewRoute),
+        item(Icons.stars, "Stats", StatsViewRoute),
         currentUser.role.index == 2 ?
           Container()
         : item(Icons.supervisor_account, 'Groups Supervised',SuperviseGroupworks),
@@ -113,7 +115,7 @@ class _DrawerViewState extends State<DrawerView> {
           Container()
         : item(Icons.code, 'Course',SuperviseCourse),
         currentUser.role == Role.admin ?
-          item(FontAwesomeIcons.superpowers, 'SuperUser',SuperuserUsers)
+          item(FontAwesomeIcons.superpowers, 'Admin',SuperuserUsers)
         : Container(),
         _themeSwitch(),
       ];

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/supervisor/bloc.dart';
+import 'package:peeps/resources/bulletin_board_repository.dart';
+import 'package:peeps/resources/courses_repository.dart';
 
 import 'package:peeps/resources/groupworks_repository.dart';
 import 'package:peeps/resources/stats_repository.dart';
@@ -15,6 +17,7 @@ import 'package:peeps/router/navigator_args.dart';
 import 'package:peeps/screens/admin/admin_hub.dart';
 import 'package:peeps/screens/admin/users.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/groupwork_hub.dart';
+import 'package:peeps/screens/home/bulletin_board.dart';
 import 'package:peeps/screens/inbox/inbox_bottombar.dart';
 import 'package:peeps/screens/supervisor/courses_supervise.dart';
 import 'package:peeps/screens/supervisor/groupworks_supervise.dart';
@@ -23,6 +26,8 @@ import 'package:peeps/screens/user/account.dart';
 import 'package:peeps/screens/user/search.dart';
 import 'screens/home/drawer.dart';
 import 'package:peeps/routing_constant.dart';
+
+import 'screens/user/stats.dart';
 Route<dynamic> generateRoute(RouteSettings settings){
   switch (settings.name){
     case HomeViewRoute:
@@ -84,6 +89,23 @@ Route<dynamic> generateRoute(RouteSettings settings){
           providers: [
             BlocProvider<AdminUsersBloc>(create: (context) => AdminUsersBloc(repository: UsersRepository())..add(ReadUsersEvent())),
             BlocProvider<AdminDashboardBloc>(create: (context) => AdminDashboardBloc(repository: StatsRepository())),
+            BlocProvider<AdminCoursesBloc>(create: (context) => AdminCoursesBloc(coursesRepository: CoursesRepository())..add(ReadCoursesEvent()))
+          ],
+        ));
+    case StatsViewRoute:
+      return CupertinoPageRoute(
+        builder: (context) => MultiBlocProvider(
+          child: UserStatsView(),
+          providers: [
+            BlocProvider<StatsBloc>(create: (context) => StatsBloc(repository: UserRepository())..add(ReadStatsEvent()))
+          ],
+        ));
+    case BulletinBoardViewRoute:
+      return CupertinoPageRoute(
+        builder: (context) => MultiBlocProvider(
+          child: BulletinBoardView(isAdmin: false,),
+          providers: [
+            BlocProvider<AdminBulletinBoardBloc>(create: (context) => AdminBulletinBoardBloc(repository: BulletinBoardRepository())..add(ReadBulletinBoardEvent()))
           ],
         ));
 

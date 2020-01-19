@@ -18,9 +18,7 @@ class GroupworksRepository extends BaseRepository{
     for(Map<String,dynamic> groupwork in response){
       groupworks.add(GroupworkModel.fromJson(groupwork));
     }
-
     return groupworks;
-  
   }
 
 }

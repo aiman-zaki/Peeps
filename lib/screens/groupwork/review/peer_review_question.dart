@@ -142,7 +142,7 @@ class _PeerReviewQuestionsViewState extends State<PeerReviewQuestionsView> {
                             usersAnwsers.add(
                               {
                                 "question_id":questions[index].id,
-                                "answer_id":result["answer"],
+                                "answer_index":result["index"],
                               }
                             );
                           }
@@ -179,7 +179,7 @@ class _PeerReviewQuestionsViewState extends State<PeerReviewQuestionsView> {
                 _bloc.add(SubmitPeersReviewQustionsWithAnswers(data: PeerReviewModel(
                   reviewer: _profileBloc.data.email,
                   reviewee: widget.reviewee,
-                  answers: answers
+                  answers: usersAnwsers
                 )));
                 Navigator.of(context).pop();
               },
