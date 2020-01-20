@@ -59,18 +59,34 @@ class _AssignmentTimelineViewState extends State<AssignmentTimelineView> {
           }
           if(state is LoadedAssignmentTimelineState){
             List<TimelineModel> items = state.data.map((ContributionModel data){
+            int day = DateTime.now().difference(data.when).inDays;
               Map<String,dynamic> iconData = _getWhatIcon(data.what);
               return TimelineModel(
-                Card(
-                  child: Container(
-                    width: size.width,
-                    height: 150,
-                    padding: EdgeInsets.all(9),
-                    child: Column(
-                      children: <Widget>[
-                        Text("${data.who}"),
-                        Text(DateFormat.yMd().format(data.when)),
-                      ],
+                Center(
+                  child: Card(
+                    child: Container(
+                      decoration: ShapeDecoration(
+                        shape: Border.all(
+                          color: iconData['color']
+                        )
+                      ),
+                      width: size.width,
+                      height: 150,
+                      padding: EdgeInsets.all(15),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          SizedBox(height: 5,),
+                          day == 0 ?
+                            Text("today") :
+                          Text(DateTime.now().difference(data.when).inDays.toString()),
+                          Text("${data.who}"),
+
+
+                          SizedBox(height: 10,),
+                          Text("${data.display()}",style: TextStyle(textBaseline: TextBaseline.ideographic, fontSize: 15),),
+                        ],
+                      ),
                     ),
                   ),
                 ),

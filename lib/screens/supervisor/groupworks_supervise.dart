@@ -17,6 +17,8 @@ import 'package:peeps/screens/groupwork/stash/stash.dart';
 import 'package:peeps/screens/splash_page.dart';
 import 'package:peeps/screens/supervisor/complaints.dart';
 
+import 'groupworks_messages_form.dart';
+
 class GroupworksSuperviseView extends StatefulWidget {
   GroupworksSuperviseView({Key key}) : super(key: key);
 
@@ -37,9 +39,8 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
     final bodyController = TextEditingController();
 
     _showAnnouncementDialog(){
-      return showDialog(
-        context: context,
-        child: DialogWithAvatar(
+      final _supervisormessagebloc = BlocProvider.of<SupervisorMessagesBloc>(context);
+      return DialogWithAvatar(
           width: _size.width,
           height: 220,
           avatarIcon: Icon(Icons.announcement),
@@ -55,8 +56,7 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
             },
             child: Text("Confirm"),
           ),
-        )
-      );
+        );
     }
   
     _buildSupevisorCoursesList(List<CourseModel> courses){
@@ -204,7 +204,14 @@ class _GroupworksSuperviseViewState extends State<GroupworksSuperviseView> {
                         icon: Icons.announcement,
                         color: Colors.blue,
                         onTap: (){
-                          _showAnnouncementDialog();
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              fullscreenDialog: true,
+                              builder: (context) => BlocProvider(
+                              create: (context) => SupervisorMessagesBloc(repository: GroupworkRepository(data: data[index].id)),
+                              child: GroupworksMessageForm(),
+                            ))
+                          );
                         },
                         caption: "Announcement",
                       )

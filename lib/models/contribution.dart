@@ -37,6 +37,7 @@ class ContributionModel{
   });
 
   static ContributionModel fromJson(Map<String,dynamic> json){
+    print(json);
     return ContributionModel(
   
       who: json['who'],

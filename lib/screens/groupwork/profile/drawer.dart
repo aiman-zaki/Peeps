@@ -47,24 +47,7 @@ class _GroupworkProfileDrawerViewState extends State<GroupworkProfileDrawerView>
                 },
                 title: Text("Team"),
               ),
-              ListTile(
-                title: Text("Notes | Announcements"),
-
-                leading: Icon(FontAwesomeIcons.stickyNote),
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (context) => BlocProvider(
-                        create: (context) =>
-                            NoteBloc(repository: NoteRepository(data: widget.data)),
-                        child: GroupProfileNotes(
-                          groupId: widget.data.id,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
+              
               ListTile(
                 title: Text("Requests"),
    
@@ -97,7 +80,10 @@ class _GroupworkProfileDrawerViewState extends State<GroupworkProfileDrawerView>
     return Drawer(
       child: Column(
         children: <Widget>[
-          DrawerHeader(child: Container(),),
+          DrawerHeader(
+            child: Container(
+              child: Text("Admin's Features"),
+            ),),
           Expanded(child: _buildDrawerContent(),)
         ],
       ),

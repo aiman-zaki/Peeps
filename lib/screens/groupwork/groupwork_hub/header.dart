@@ -79,7 +79,7 @@ class HubHeader extends StatelessWidget {
                   Flexible(
                     child: Text(
                       groupData.name,
-                      style: TextStyle(fontSize: 23),
+                      style: TextStyle(fontSize: 17),
                     ),
                   ),
                   SizedBox(

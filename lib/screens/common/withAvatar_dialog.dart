@@ -90,7 +90,7 @@ class DialogWithAvatar extends StatelessWidget {
         
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20),
-          color: Colors.grey[850],
+          color: Theme.of(context).cardColor,
           shape: BoxShape.rectangle,
         ),
       child: Container(

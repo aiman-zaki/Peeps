@@ -16,6 +16,7 @@ import 'package:peeps/screens/groupwork/collaborate/user_joined.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/live_timeline.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/members.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/milestone.dart';
+import 'package:peeps/screens/groupwork/groupwork_hub/supervisor_messages.dart';
 import 'package:peeps/screens/groupwork/groupwork_hub/welcome.dart';
 import 'package:peeps/screens/groupwork/stash/stash.dart';
 
@@ -233,10 +234,15 @@ class _GroupworkHubViewState extends State<GroupworkHubView> {
                       isAdmin: _isAdmin,
                       groupData: widget.groupData,
                     ),
+                  
                     SizedBox(
                       height: 10,
                     ),
                     HubMilestoneView(),
+                      SizedBox(
+                      height: 10,
+                    ),
+                    SupervisorMessagesView(),
                     SizedBox(
                       height: 10,
                     ),

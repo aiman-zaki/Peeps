@@ -35,10 +35,11 @@ class ThemeController {
         appBarTheme: AppBarTheme(
           color: Color.fromARGB(255, 24, 118, 210)
         ),
-        scaffoldBackgroundColor: Colors.grey[300],
+        scaffoldBackgroundColor: Colors.grey[400],
         primaryColor: Color.fromARGB(255, 24, 118, 210),
         accentColor: Colors.indigo[400],
-        backgroundColor: Colors.grey[100],
+        cardColor: Colors.grey[300],
+        backgroundColor: Colors.grey[300],
         focusColor: Colors.blueGrey[600],
         buttonColor: Colors.pink[600],
         floatingActionButtonTheme: FloatingActionButtonThemeData(

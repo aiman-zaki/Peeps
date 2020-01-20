@@ -5,7 +5,7 @@ import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:peeps/bloc/supervisor/groupwork_template_supervisor/bloc.dart';
 import 'package:peeps/models/template.dart';
 import 'package:peeps/screens/splash_page.dart';
-
+import 'package:flutter/services.dart';
 import 'groupwork_template_form.dart';
 
 class SupervisorGroupworkTemplateView extends StatefulWidget {
@@ -29,6 +29,16 @@ class _SupervisorGroupworkTemplateViewState extends State<SupervisorGroupworkTem
               child: Slidable(
                 actionPane: SlidableScrollActionPane(),
                 actions: <Widget>[
+                  IconSlideAction(
+                    icon: Icons.content_copy,
+                    caption: "ID",
+                    onTap: (){
+                      Clipboard.setData(new ClipboardData(text: data[index].id));
+                      Scaffold.of(context).showSnackBar(SnackBar(
+                        content: Text("Copied to clipboard"),
+                      ));
+                    },
+                  ),
                   IconSlideAction(
                     icon: Icons.edit,
                     caption: "Edit",

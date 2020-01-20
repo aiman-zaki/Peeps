@@ -73,6 +73,9 @@ class _UserTasksState extends State<UserTasks> {
     }
 
     _buildData(data) {
+      if(data.isEmpty){
+        return Center(child: Text("No task is currently assigned to you!"),);
+      }
       return SizedBox(
         height: 250,
         child: GridView.builder(

@@ -22,25 +22,35 @@ class _BulletinFormViewState extends State<BulletinFormView> {
       appBar: AppBar(
         title: Text("Bulletin Form"),
       ),
-      body: Container(
-        padding: EdgeInsets.all(9),
-        child: Column(
-          children: <Widget>[
-            TextFormField(
-              controller: titleController,
-              decoration: InputDecoration(
-                labelText: "Title"
+      body: BlocListener(
+        bloc:_bloc,
+        listener: (context,state){
+          if(state is MessageBulletinBoardState){
+            Scaffold.of(context).showSnackBar(SnackBar(
+              content: Text(state.message),
+            ));
+          }
+        },
+        child: Container(
+          padding: EdgeInsets.all(9),
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: titleController,
+                decoration: InputDecoration(
+                  labelText: "Title"
+                ),
               ),
-            ),
-            TextFormField(
-              minLines: 10,
-              maxLines: 10,
-              controller: bodyController,
-              decoration: InputDecoration(
-                labelText: "Body"
-              ),
-            )
-          ],
+              TextFormField(
+                minLines: 10,
+                maxLines: 10,
+                controller: bodyController,
+                decoration: InputDecoration(
+                  labelText: "Body"
+                ),
+              )
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(

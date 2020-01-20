@@ -36,7 +36,7 @@ class _PeerReviewBaseState extends State<PeerReviewBase> {
             PeersReviewView(assignment: widget.assignment,),
             BlocProvider<PeersReviewsQuestionsBloc>(
               create: (context) => PeersReviewsQuestionsBloc(assignmentRepository: AssignmentRepository(data: widget.assignment.id),repository: QuestionsRepository())..add(ReadPeersReviewsScoredWithQuestion()),
-              child: PeerReviewedScoreView()
+              child: PeerReviewedScoreView(assignment: widget.assignment,)
             ),
           ],
         ),

@@ -159,6 +159,7 @@ class _TaskFormState extends State<TaskForm> {
         },
       );
     }
+    print("AAAAAAAA: ${widget.task.assignTo}");
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
@@ -226,7 +227,8 @@ class _TaskFormState extends State<TaskForm> {
                   },
                 ),
                 SizedBox(height: 15,),
-                _buildMembersDropdown(),
+                
+                  Text("Please use request button to assigned task"),
                 SizedBox(height: 15,),
                 _captions(text: "Correspond with the Assignment Due Date"),
                 DateTimeField(

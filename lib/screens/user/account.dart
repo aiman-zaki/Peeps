@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/bloc/user/profile_form/profile_form_bloc.dart';
@@ -103,6 +104,12 @@ class AccountViewState extends State<AccountView> {
     }
 
     _buildSupervsiorEnableButton() {
+      if (widget.data.role == Role.admin){
+        return ListTile(
+          leading: Icon(FontAwesomeIcons.superpowers),
+          title: Text("Admin"),
+        );
+      }
       if (widget.data.role == Role.student) {
         return ListTile(
             leading: Icon(Icons.supervisor_account),

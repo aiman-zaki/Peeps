@@ -72,11 +72,11 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
         String newStatus = "";
         if (task.previousStatus == 0) currentStatus = "todo";
         if (task.previousStatus == 1) currentStatus = "ongoing";
-        if (task.previousStatus == 2) currentStatus = "done";
+        if (task.previousStatus == 3) currentStatus = "done";
 
         if (task.status == 0) newStatus = "todo";
         if (task.status == 1) newStatus = "ongoing";
-        if (task.status == 2) newStatus = "done";
+        if (task.status == 3) newStatus = "done";
 
         timelineBloc.add(SendDataTimelineEvent(
           intial: false,
@@ -86,7 +86,7 @@ class TaskBloc extends Bloc<TaskEvent, TaskState> {
               when: DateTime.now(),
               how: "${newStatus}",
               where: WhereEnum.task,
-              why: "${currentStatus}", from: null, assignmentId: this.repository.data,taskId: null)));
+              why: "${currentStatus}", from: null, assignmentId: this.repository.data,taskId: task.taskId)));
       }
       repository.updateTaskStatus(data: changedStatusTask);
       yield DisplayMessageSnackbar(color: "green", message: "Saved");

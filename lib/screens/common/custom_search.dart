@@ -34,7 +34,7 @@ class _CustomSearchState extends State<CustomSearch> {
       context: (context),
       builder: (context){
         return DialogWithAvatar(
-          height: 180,
+          height: 200,
           avatarIcon: Icon(Icons.search),
           children: <Widget>[
             SizedBox(height: 20,),

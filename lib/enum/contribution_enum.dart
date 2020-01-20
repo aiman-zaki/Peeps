@@ -17,7 +17,7 @@ String getWhatEnumString(WhatEnum whatEnum){
     WhatEnum.delete:"Delete",
     WhatEnum.request:"Request",
     WhatEnum.accept:"Accept",
-    WhatEnum.accept:"Deny",
+    WhatEnum.deny:"Deny",
   };
   return enumString[whatEnum];
 }

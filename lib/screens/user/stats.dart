@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/models/question.dart';
 import 'package:peeps/screens/common/tag.dart';
 import 'package:peeps/screens/splash_page.dart';
 
@@ -15,8 +16,9 @@ class _UserStatsViewState extends State<UserStatsView> {
   @override
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<StatsBloc>(context);
+    final _questionBloc = BlocProvider.of<PeersReviewsQuestionsBloc>(context);
 
-    _buildStatsData(Map<String,dynamic> data){
+    _buildStatsData(Map<String,dynamic> data,List<QuestionModel> questions){
       List<Widget> widgets = [];
       List<Widget> peersScore = [];
 
@@ -47,9 +49,16 @@ class _UserStatsViewState extends State<UserStatsView> {
       );
 
       data['score'].forEach((k,v){
+        String questionTitle = "Total you have been reviewed";
+        for (QuestionModel question in questions){
+          if(question.id.contains(k)){
+            questionTitle = question.question;
+          }
+        }
+
         widgets.add(Card(
           child: ListTile(
-            title: Text(k),
+            title: Text(questionTitle),
             trailing: Text(v.toString()),
           ),
         ));
@@ -74,7 +83,20 @@ class _UserStatsViewState extends State<UserStatsView> {
             return Center(child: CircularProgressIndicator(),);
           }
           if(state is LoadedStatsState){
-            return _buildStatsData(state.data);
+            return BlocBuilder(
+              bloc: _questionBloc,
+              builder: (context,state2){
+                if(state2 is InitialPeersReviewsQuestionsState){
+                  return SplashScreen();
+                }
+                if(state2 is LoadingPeersReviewsQuestionsState){
+                  return Center(child: CircularProgressIndicator(),);
+                }
+                if(state2 is LoadedPeersReviewsQuestionsState){
+                  return _buildStatsData(state.data,state2.data);
+                }
+              },
+            );
           }
         },
       ),

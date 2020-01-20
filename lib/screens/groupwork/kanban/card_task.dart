@@ -64,17 +64,21 @@ class CardTask extends StatelessWidget {
           margin: EdgeInsets.all(2),
           color: _color,
           child: Padding(
-            padding: EdgeInsets.all(3),
+            padding: EdgeInsets.all(6),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+                task.acceptedDate != null?
+                Text("Solution Accepted") : Text(''),
                 Text(
-                  task.task,
+                  "${task.task}",
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+
                 Align(
                   alignment: Alignment.bottomRight,
                   child: Text(

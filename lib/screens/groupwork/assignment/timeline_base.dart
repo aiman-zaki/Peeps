@@ -18,7 +18,6 @@ class _TimelineBaseViewState extends State<TimelineBaseView> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Stash"),
           bottom: TabBar(
             tabs: <Widget>[
               Tab(child: Text("Timelines"),),

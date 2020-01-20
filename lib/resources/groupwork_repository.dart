@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:http/http.dart' as http;
+import 'package:peeps/models/bulletin.dart';
 import 'package:peeps/models/groupwork.dart';
 import 'package:peeps/models/member.dart';
 import 'package:peeps/models/members.dart';
@@ -49,6 +50,14 @@ class GroupworkRepository extends BaseRepository{
   
   createSupervisorMessages({@required data}) async {
     await super.create(data: data,namespace: 'supervisor/messages');
+  }
+
+  readSupervisorMessages() async {
+    var data = await super.read(namespace: 'supervisor/messages');
+
+    return data.map((message){
+      return BulletinModel.fromJson(message);
+    }).toList().cast<BulletinModel>();
   }
 
   readRequests() async{

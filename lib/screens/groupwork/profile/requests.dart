@@ -34,15 +34,18 @@ class _GroupRequestState extends State<GroupRequest> {
     }
 
     _buildRequestsList(requests){
-      return Container(
-        child: ListView.builder(
-          itemCount: requests.length,
-          itemBuilder: (context,index){
-            return _buildRequest(requests[index]);
-          },
-        ),
+      if(requests.isEmpty){
+        return Center(child: Text("No Requests"),);
+      }
+        return Container(
+          child: ListView.builder(
+            itemCount: requests.length,
+            itemBuilder: (context,index){
+              return _buildRequest(requests[index]);
+            },
+          ),
 
-      );
+        );
     }
 
     return Scaffold(

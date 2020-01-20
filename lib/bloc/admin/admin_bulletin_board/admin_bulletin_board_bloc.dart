@@ -25,7 +25,7 @@ class AdminBulletinBoardBloc extends Bloc<AdminBulletinBoardEvent, AdminBulletin
     }
     if(event is CreateBulletinEvent){
       var message = await repository.createBulletin(data: event.data);
-      yield MessageBulletinBoardState(message: message);
+      yield MessageBulletinBoardState(message: message['message']);
       this.add(ReadBulletinBoardEvent());
     }
     if(event is DeleteBulletinEvent){

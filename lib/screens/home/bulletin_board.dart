@@ -1,6 +1,9 @@
+import 'package:expandable/expandable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:peeps/bloc/bloc.dart';
+import 'package:peeps/screens/common/tag.dart';
 import 'package:peeps/screens/splash_page.dart';
 
 
@@ -17,15 +20,44 @@ class _BulletinBoardViewState extends State<BulletinBoardView> {
   Widget build(BuildContext context) {
     final _bloc = BlocProvider.of<AdminBulletinBoardBloc>(context);
     _buildBulletinBoard(data){
+      if(data.isEmpty){
+        return Center(child: Text("No News from the Admin"),);
+      }
       return ListView.builder(
         itemCount: data.length,
         itemBuilder: (context,index){
-          return Card(child: 
-            ListTile(
+          return ExpandablePanel(
+            tapBodyToCollapse: true,
+            header: InkWell(
               onLongPress: widget.isAdmin? (){
                 _bloc.add(DeleteBulletinEvent(data: data[index]));
               } : null,
-              title: Text(data[index].title),),);
+              child: CustomTag(color: Colors.cyan[900],padding: EdgeInsets.all(9),text: Text(data[index].title,style: TextStyle(fontSize: 18))),
+            ),
+            expanded: Card(
+              child: Container(
+                padding: EdgeInsets.all(9),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(data[index].body),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Row(children: <Widget>[
+                        Expanded(child: Text(data[index].email)),
+                        Expanded(child: Text(DateFormat.yMd().add_jm().format(data[index].createdDate).toString())),
+
+                      ],),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          );
         },
       );
     }

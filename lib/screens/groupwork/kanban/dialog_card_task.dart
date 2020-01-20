@@ -11,10 +11,6 @@ import '../task_form.dart';
 
 
 class DialogTaskCard extends StatefulWidget {
-  final String assignmentId;
-  final TaskModel task;
-  final Color headerColor;
-  final isLeader;
   DialogTaskCard({
     Key key,
     @required this.task,
@@ -22,6 +18,11 @@ class DialogTaskCard extends StatefulWidget {
     @required this.isLeader,
     @required this.assignmentId,
     }) : super(key: key);
+
+  final String assignmentId;
+  final Color headerColor;
+  final isLeader;
+  final TaskModel task;
 
   @override
   _DialogTaskCardState createState() => _DialogTaskCardState();
@@ -40,6 +41,57 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
     final _membersBloc = BlocProvider.of<MembersBloc>(context);
     final _timelineBloc = BlocProvider.of<TimelineBloc>(context);
     ProfileLoaded _userProfile = BlocProvider.of<ProfileBloc>(context).state;
+
+    _showConfirmationDialog(String title) {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return DialogWithAvatar(
+              width: 400,
+              height: 200,
+              avatarIcon: Icon(Icons.warning),
+              title: Text('Delete $title?'),
+              children: <Widget>[
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Form(
+                    key: _key,
+                    child: TextFormField(
+                      validator: (v) {
+                        if (v.isEmpty) {
+                          return 'Please Enter Task Title';
+                        }
+                        if (_deleteTextController.text != title) {
+                          return 'Not Same';
+                        }
+                        return null;
+                      },
+                      decoration: InputDecoration(
+                        labelText: 'Task Title',
+                      ),
+                      controller: _deleteTextController,
+                    ),
+                  ),
+                )
+              ],
+              bottomLeft: FlatButton(
+                child: Text('Cancel'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+              bottomRight: FlatButton(
+                child: Text('Delete'),
+                onPressed: () {
+                  if (_key.currentState.validate()) {
+                    _taskBloc
+                        .add(DeleteTaskButtonClickedEvent(taskId: widget.task.id));
+                  }
+                },
+              ),
+            );
+          });
+    }
   
     _showRequestConfirmationDialog(data){
       Navigator.of(context).pop();
@@ -141,15 +193,19 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
             Row(
               children: <Widget>[
                 Expanded(
-                  child: FlatButton(
+                  child: RaisedButton(
+                    color: Colors.blue,
                     child: Text("Request"),
                     onPressed: (){
                       _showRequestConfirmationDialog(widget.task);
                     }, 
                   ),
                 ),
+                SizedBox(width: 10,),
                 Expanded(
-                  child: FlatButton(
+                  child: RaisedButton(
+                    color: Colors.green,
+
                     child: Text("Review"),
                     onPressed: (){
                     Navigator.of(context).push(
@@ -165,62 +221,50 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
                   ),
                 ),
               ],
+            ),
+            Row(
+              children: <Widget>[
+                Expanded(
+                  child: RaisedButton(
+                    color: Colors.red,
+
+                    child: Text("Delete"),
+                    onPressed: (){
+                        _showConfirmationDialog(widget.task.task);
+                    },
+                  ),
+                ),
+                SizedBox(width: 10,),
+                Expanded(
+                  child: RaisedButton(
+                    child: Text("Update"),
+                    onPressed: (){
+                       Navigator.pop(context);
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => BlocProvider.value(
+                                value: _taskBloc,
+                                child: BlocProvider.value(
+                                    value: _membersBloc,
+                                    child: BlocProvider.value(
+                                        value: _timelineBloc,
+                                        child: TaskForm(
+                                          task: widget.task,
+                                          edit: true,
+                                        )))),
+                            fullscreenDialog: true,
+                          )
+                        );
+                    },
+                  ),
+                )
+              ],
             )
           ],
         ),
       );
     }
 
-    _showConfirmationDialog(String title) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return DialogWithAvatar(
-              width: 400,
-              height: 200,
-              avatarIcon: Icon(Icons.warning),
-              title: Text('Delete $title?'),
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Form(
-                    key: _key,
-                    child: TextFormField(
-                      validator: (v) {
-                        if (v.isEmpty) {
-                          return 'Please Enter Task Title';
-                        }
-                        if (_deleteTextController.text != title) {
-                          return 'Not Same';
-                        }
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        labelText: 'Task Title',
-                      ),
-                      controller: _deleteTextController,
-                    ),
-                  ),
-                )
-              ],
-              bottomLeft: FlatButton(
-                child: Text('Cancel'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-              bottomRight: FlatButton(
-                child: Text('Delete'),
-                onPressed: () {
-                  if (_key.currentState.validate()) {
-                    _taskBloc
-                        .add(DeleteTaskButtonClickedEvent(taskId: widget.task.id));
-                  }
-                },
-              ),
-            );
-          });
-    }
+    
 
     Widget _buildHeader() {
       return Container(
@@ -233,39 +277,12 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
               topRight: Radius.circular(20),
             )),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                onTap: () {
-                  Navigator.pop(context);
-                  _showConfirmationDialog(widget.task.task);
-                },
-                child: Icon(Icons.delete)),
-            ),
+  
             Flexible(flex:2,child: Text(widget.task.task)),
-            Expanded(
-              flex: 1,
-              child: InkWell(
-                  child: Icon(Icons.edit),
-                  onTap: () {
-                    Navigator.pop(context);
-                    Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => BlocProvider.value(
-                          value: _taskBloc,
-                          child: BlocProvider.value(
-                              value: _membersBloc,
-                              child: BlocProvider.value(
-                                  value: _timelineBloc,
-                                  child: TaskForm(
-                                    task: widget.task,
-                                    edit: true,
-                                  )))),
-                      fullscreenDialog: true,
-                    ));
-                  },
-                ),
-            ),
+           
           ],
         ),
       );
@@ -273,7 +290,7 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
 
     return Center(
       child: Container(
-        height: 315,
+        height: 350,
         child: Dialog(
           elevation: 1.00,
           shape:

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:intl/intl.dart';
 import 'package:peeps/bloc/groupwork/bloc.dart';
 import 'package:peeps/bloc/user/bloc.dart';
 import 'package:peeps/bloc/user/profile/profile_bloc.dart';
@@ -50,11 +51,12 @@ class _TaskReviewViewState extends State<TaskReviewView> {
     _buildItems(List<TaskItemsModel> items){
       return Expanded(
         flex: 1,
-        child: Card(
-          child: ListView.builder(
-            itemCount: items.length,
-            itemBuilder: (context,index){
-              return ListTile(
+        child: ListView.builder(
+          itemCount: items.length,
+          itemBuilder: (context,index){
+            return Card(
+              child: ListTile(
+                trailing: Text(DateFormat.yMd().add_jm().format(items[index].createdDate).toString()),
                 title: items[index].item.contains(new RegExp(r'(http.)'))
               ? InkWell(
                 child: Text(items[index].item),
@@ -68,21 +70,25 @@ class _TaskReviewViewState extends State<TaskReviewView> {
                 },
               )
               : Text(items[index].item),
-              );
-            },
-          ),
+              ),
+            );
+          },
         ),
       );
     }
 
     _buildReviews(List<TaskReviewsModel> reviews){
+
       return Expanded(
         flex: 2,
-        child: Card(
-          child: ListView.builder(
-            itemCount: reviews.length,
-            itemBuilder: (context,index){
-              return Slidable(
+        child: reviews.isEmpty ?
+          Center(child: Text("No Suggestion from Peers"),) :
+          ListView.builder(
+          itemCount: reviews.length,
+          itemBuilder: (context,index){
+           
+            return Card(
+              child: Slidable(
                 actionPane: SlidableDrawerActionPane(),
                 actions: isAssignedTo ?
                   [IconSlideAction(
@@ -110,10 +116,10 @@ class _TaskReviewViewState extends State<TaskReviewView> {
                   trailing: CustomTag(padding:EdgeInsets.all(3), color: Colors.pink,text: Text("${getApprovalEnumString(reviews[index].approval)}"),),
                   
                 ),
-              );
-            },
-            
-          ),
+              ),
+            );
+          },
+          
         ),
       );
     }
@@ -177,7 +183,7 @@ class _TaskReviewViewState extends State<TaskReviewView> {
         )
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add_circle_outline),
+        child: Icon(Icons.add),
         onPressed: (){
           showDialog(
             context: context,

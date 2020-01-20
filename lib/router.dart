@@ -7,6 +7,7 @@ import 'package:peeps/resources/bulletin_board_repository.dart';
 import 'package:peeps/resources/courses_repository.dart';
 
 import 'package:peeps/resources/groupworks_repository.dart';
+import 'package:peeps/resources/questions_repository.dart';
 import 'package:peeps/resources/stats_repository.dart';
 import 'package:peeps/resources/supervise_groupworks_repository.dart';
 import 'package:peeps/resources/supervisor_courses_repository.dart';
@@ -97,7 +98,9 @@ Route<dynamic> generateRoute(RouteSettings settings){
         builder: (context) => MultiBlocProvider(
           child: UserStatsView(),
           providers: [
-            BlocProvider<StatsBloc>(create: (context) => StatsBloc(repository: UserRepository())..add(ReadStatsEvent()))
+            BlocProvider<StatsBloc>(create: (context) => StatsBloc(repository: UserRepository())..add(ReadStatsEvent())),
+            BlocProvider<PeersReviewsQuestionsBloc>(create: (context) => PeersReviewsQuestionsBloc(repository: QuestionsRepository(), assignmentRepository: null)..add(ReadPeersReviewsQuestions()))
+
           ],
         ));
     case BulletinBoardViewRoute:

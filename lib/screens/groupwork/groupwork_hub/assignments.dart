@@ -58,8 +58,8 @@ class _HubAssignmentsState extends State<HubAssignments> {
         builder: (context){
           return DialogWithAvatar(
             avatarIcon: Icon(Icons.check),
-            width: 320,
-            height: fun.contains("update")? 220 : 200,
+            width: 350,
+            height: fun.contains("update")? 240 : 220,
             title: Text("Confirmation"),
             description: "Are you sure want to $fun ${data[index].title}",
             children: fun.contains("update") ? <Widget> [
@@ -347,10 +347,7 @@ class _HubAssignmentsState extends State<HubAssignments> {
                               flex: 1,
                               child: _buildLeaderTag(data[index].leader)
                             ),
-                              Expanded(
-                              flex: 1,
-                              child: _buildPointTag(data[index].userPoint),
-                            ),
+                            
                            
                           ],
                         ),

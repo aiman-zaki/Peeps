@@ -27,3 +27,15 @@ class LoadGroupworkEvent extends GroupworkEvent{
   List<Object> get props => null;
 }
 
+class CreateGroupworkAnnouncement extends GroupworkEvent{
+  final data;
+  CreateGroupworkAnnouncement({
+    @required this.data
+  });
+  
+  @override
+  String toString() => "CreateGroupworkAnnoucenemet";
+
+  @override
+  List<Object> get props => [];
+}
