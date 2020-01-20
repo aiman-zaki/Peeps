@@ -79,13 +79,14 @@ class CardTask extends StatelessWidget {
                   ),
                 ),
 
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    '${task.assignTo.split("@")[0]}',
-                    style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
-                  ),
-                )
+                task.assignTo != null ?
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      '${task.assignTo.split("@")[0]}',
+                      style: TextStyle(fontSize: 14, fontStyle: FontStyle.italic),
+                    ), 
+                  ) : Container(),
               ],
             ),
           ),

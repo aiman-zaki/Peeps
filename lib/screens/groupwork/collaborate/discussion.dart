@@ -24,6 +24,8 @@ class _DiscussionViewState extends State<DiscussionView> {
 
   @override
   Widget build(BuildContext context) {
+     print(widget.isAdmin);
+
     final _bloc = BlocProvider.of<CollaborateDiscussionBloc>(context);
     PersistentBottomSheetController bottomSheetController;
 
@@ -206,7 +208,7 @@ class _DiscussionViewState extends State<DiscussionView> {
           },
         ),
       ),
-      floatingActionButton: widget.isAdmin ? FloatingActionButton(
+      floatingActionButton: !widget.isAdmin ? FloatingActionButton(
           child: Icon(Icons.reply),
           onPressed: () {
             if (bottomOpened) {

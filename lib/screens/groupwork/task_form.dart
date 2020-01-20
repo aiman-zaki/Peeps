@@ -47,6 +47,7 @@ class _TaskFormState extends State<TaskForm> {
         email = state.data.email;
       }
     });
+    print(widget.edit);
 
     if(widget.edit){
       _taskController.text = widget.task.task;
@@ -159,7 +160,6 @@ class _TaskFormState extends State<TaskForm> {
         },
       );
     }
-    print("AAAAAAAA: ${widget.task.assignTo}");
 
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,

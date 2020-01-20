@@ -174,7 +174,8 @@ class _DialogTaskCardState extends State<DialogTaskCard> {
                   'Assign To : ',
                   style: TextStyle(color: Colors.cyan[300]),
                 ),
-                Text(widget.task.assignTo),
+                widget.task.assignTo != null ?
+                Text(widget.task.assignTo): Text("Not assign to")
               ],
             ),
             SizedBox(

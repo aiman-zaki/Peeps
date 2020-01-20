@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:peeps/bloc/bloc.dart';
 import 'package:peeps/screens/common/webviewexporer.dart';
 import 'package:flutter/services.dart';
+import 'package:peeps/screens/splash_page.dart';
 
 class SubmittedMaterialView extends StatefulWidget {
   final GlobalKey<ScaffoldState> scaffoldKey;
@@ -58,6 +59,9 @@ class _SubmittedMaterialViewState extends State<SubmittedMaterialView> {
     return BlocBuilder(
       bloc: _assignmentBloc,
       builder: (context,state){
+        if(state is InitialAssignmentState){
+          return SplashScreen();
+        }
         if(state is LoadingAssignmentState){
           return Center(child: CircularProgressIndicator(),);
         }

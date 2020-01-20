@@ -21,8 +21,8 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();     
-    WidgetsBinding.instance.addPostFrameCallback((_)=>
-      ShowCaseWidget.of(context).startShowCase([_assignmentsCountdown,_userTasks])); 
+    //WidgetsBinding.instance.addPostFrameCallback((_)=>
+      //ShowCaseWidget.of(context).startShowCase([_assignmentsCountdown,_userTasks])); 
   }
 
   
